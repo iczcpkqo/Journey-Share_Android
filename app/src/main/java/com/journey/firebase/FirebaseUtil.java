@@ -1,11 +1,8 @@
 package com.journey.firebase;
 
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,11 +39,12 @@ public class FirebaseUtil {
         return "successful";
     }
 
-    public Map<String, Object> selectByDocumentId(String collectionName, String documentId) {
-
+    public synchronized Map<String, Object> selectByDocumentId(String collectionName, String documentId) {
         try {
             DocumentReference document = db.collection(collectionName).document(documentId);
+
             document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     resultMap = task.getResult().getData();
@@ -67,9 +65,20 @@ public class FirebaseUtil {
             batch.update(ref, user2);
             batch.commit();
         } catch (Exception e) {
+            e.printStackTrace();
             return "failed";
         }
         return "successful";
 
+    }
+
+    public String deleteByDoucumentId(String collctionName, String documentId){
+        try {
+            db.collection(collctionName).document(documentId).delete();
+        }catch (Exception e){
+            e.printStackTrace();
+            return "failed";
+        }
+        return "successful";
     }
 }
