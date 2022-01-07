@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.journey.entity.Message;
 import com.journey.entity.User;
 import com.journey.service.UserDb;
 
@@ -50,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.save:
                 User user = new User(username.getText().toString(),password.getText().toString(),new Date());
                 String result = UserDb.getInstance().save(user);
+
+                // Testing for Message Features.
+                msgFeatureTesting();
+
                 if("failed".equals(result)){
                     Toast.makeText(this, "failed", Toast.LENGTH_LONG).show();
                 }else {
@@ -65,4 +70,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+    /**
+     * @Version: V0.1
+     * @Description: 用于测试各种消息模块的功能的入口函数.
+     * @Author: Xiang Mao
+     * @Date: 7 Jan. 2022
+     */
+    public void msgFeatureTesting(){
+        msgFeatureSaveMSG();
+    }
+
+    /**
+     * @Version: V0.1
+     * @Description: 消息模块. 存储消息.
+     * @Author: Xiang Mao
+     * @Date: 7 Jan. 2022
+     */
+    public void msgFeatureSaveMSG(){
+        Message msg = new Message( new User("test_name_111", "1231231", new Date()),
+                                   new User("test_name_222", "1231231", new Date()),
+                              "sdfsdfsdf",
+                                   new Date() );
+
+        String result =  MessageDb.getInstance().save(msg);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
