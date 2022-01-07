@@ -33,29 +33,5 @@ public class IndexActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bottom_layout);
         navView = findViewById(R.id.nav_view);
-        navView.setOnNavigationItemSelectedListener(navItemListener);
     }
-
-
-    private BottomNavigationView.OnNavigationItemSelectedListener navItemListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()){
-                case R.id.nav_item_record:
-                    Toast.makeText(IndexActivity.this,R.string.record,Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.nav_item_journey:
-                    Toast.makeText(IndexActivity.this,R.string.journey,Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.nav_item_message:
-                    Toast.makeText(IndexActivity.this,R.string.message,Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.nav_item_my:
-                    Toast.makeText(IndexActivity.this,R.string.my,Toast.LENGTH_SHORT).show();
-                    break;
-            }
-            return false;
-        }
-    };
 }
