@@ -1,6 +1,8 @@
 package com.journey;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button save;
     private Button update;
     private Button delete;
+    private Button index;
     private FirebaseFirestore db;
 
     public void init() {
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         save = (Button) findViewById(R.id.save);
         update = (Button) findViewById(R.id.update);
         delete = (Button) findViewById(R.id.delete);
+        index = (Button) findViewById(R.id.index);
     }
 
     @Override
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         save.setOnClickListener(this);
         update.setOnClickListener(this);
         delete.setOnClickListener(this);
+        index.setOnClickListener(this);
     }
 
 
@@ -60,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 User user2 = new User(username.getText().toString(),password.getText().toString(),new Date());
                 String result2 = UserDb.getInstance().updateByDocumentId(user2,"G5V5CALe1CoDW2sWJjQg");
                 Toast.makeText(this, result2, Toast.LENGTH_LONG).show();
+                break;
+            case R.id.index:
+                startActivity(new Intent(this,IndexActivity.class));
                 break;
             default:
                 break;

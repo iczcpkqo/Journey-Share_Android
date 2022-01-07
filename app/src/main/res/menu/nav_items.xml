@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_item_record"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="@string/record"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/nav_item_journey"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="@string/journey"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/nav_item_message"
+        android:icon="@android:drawable/sym_action_email"
+        android:title="@string/message"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/nav_item_my"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="@string/my"
+        app:showAsAction="always" />
+</menu>

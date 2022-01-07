@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">journey_sharing</string>
+    <string name="access_token">sk.eyJ1IjoiZ2F2aW4xOTk5IiwiYSI6ImNreTFjaGt2eDBhMzczMGxnam95cXhxa2wifQ.vEPoB1y-TchqWLT5jOdHtg</string>
+    <string name="record">Record</string>
+    <string name="journey">Journey</string>
+    <string name="message">Message</string>
+    <string name="my">My</string>
 </resources>
