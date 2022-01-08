@@ -1,29 +1,37 @@
 package com.journey;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.entity.User;
 import com.journey.service.UserDb;
 
 import java.util.Calendar;
 import java.util.Date;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.widget.Button;
+
 import android.widget.DatePicker;
 
-public class Register extends AppCompatActivity {
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+
+public class RegisterActivity extends AppCompatActivity {
     private Button login;
     private Button register;
     private Button signup;
@@ -35,7 +43,10 @@ public class Register extends AppCompatActivity {
     private EditText email;
     private EditText password;
     private EditText confirm;
-    private FirebaseFirestore db;
+
+    private static final String TAG = "EmailPassword";
+    // [START declare_auth]
+    private FirebaseAuth mAuth;
 
     public void init() {
         login = (Button) findViewById(R.id.login);
@@ -56,31 +67,31 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_register);
-        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         init();
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User(username.getText().toString(),password.getText().toString(),new Date());
-                String result = UserDb.getInstance().save(user);
-                if("failed".equals(result)){
-                    Toast.makeText(Register.this, "failed", Toast.LENGTH_LONG).show();
-                }else {
-                    Toast.makeText(Register.this, "successful", Toast.LENGTH_LONG).show();
+                String txt_email = username.getText().toString();
+                String txt_password = password.getText().toString();
+                if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)){
+                    Toast.makeText(RegisterActivity.this, "Empty credentials!", Toast.LENGTH_SHORT).show();
+                }else{
+                    createAccount(txt_email,txt_password);
                 }
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_login = new Intent(Register.this, Login.class);
+                Intent intent_login = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent_login);
             }
         });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_login = new Intent(Register.this, Register.class);
+                Intent intent_login = new Intent(RegisterActivity.this, RegisterActivity.class);
                 startActivity(intent_login);
             }
         });
@@ -94,14 +105,44 @@ public class Register extends AppCompatActivity {
 
     public void showDatePickDlg () {
         Calendar calendar = Calendar.getInstance();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(Register.this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Register.this.datepicker.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                RegisterActivity.this.datepicker.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
 
     }
+
+    private void createAccount(String email, String password) {
+        // [START create_user_with_email]
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
+        // [END create_user_with_email]
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
 }

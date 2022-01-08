@@ -36,11 +36,19 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.alibaba:fastjson:1.1.72.android'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
+
+    // Firebase Auth
+    implementation platform('com.google.firebase:firebase-bom:29.0.3')
+    implementation 'com.google.firebase:firebase-auth'
+
+    // Test dependencies
     testImplementation 'junit:junit:4.13'
     testImplementation 'com.google.truth:truth:1.0.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'com.google.truth:truth:1.0.1'
+
+
 
     //Mapbox dependencies
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:6.0.1'
