@@ -19,16 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import com.journey.entity.User;
-import com.journey.service.UserDb;
-
-import java.util.Date;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {

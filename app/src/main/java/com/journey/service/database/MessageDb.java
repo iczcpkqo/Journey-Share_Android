@@ -1,10 +1,7 @@
-package com.journey.service;
+package com.journey.service.database;
 
-import com.alibaba.fastjson.JSON;
 import com.journey.entity.Message;
-import com.journey.firebase.FirebaseUtil;
-
-import java.util.Map;
+import com.journey.tools.firebase.FirebaseUtil;
 
 public class MessageDb implements Db<Message> {
     private static final String collectionName = "message";

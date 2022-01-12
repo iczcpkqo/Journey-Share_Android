@@ -1,9 +1,9 @@
-package com.journey.service;
+package com.journey.service.database;
 
 
 import com.alibaba.fastjson.JSON;
 import com.journey.entity.User;
-import com.journey.firebase.FirebaseUtil;
+import com.journey.tools.firebase.FirebaseUtil;
 
 import java.util.Map;
 
