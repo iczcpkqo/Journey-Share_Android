@@ -18,12 +18,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.journey.entity.User;
-import com.journey.service.UserDb;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import android.widget.DatePicker;
 

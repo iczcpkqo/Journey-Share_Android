@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.entity.User;
-import com.journey.service.UserDb;
+import com.journey.service.database.UserDb;
 
 import java.util.Date;
 

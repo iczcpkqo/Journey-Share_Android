@@ -1,4 +1,4 @@
-package com.journey.firebase;
+package com.journey.tools.firebase;
 
 import androidx.annotation.NonNull;
 

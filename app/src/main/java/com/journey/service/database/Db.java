@@ -1,4 +1,4 @@
-package com.journey.service;
+package com.journey.service.database;
 
 public interface Db<T> {
 
