@@ -1,4 +1,4 @@
-package com.journey.msg;
+package com.journey.msg.message;
 
 import com.journey.entity.Message;
 import com.journey.entity.User;
@@ -6,7 +6,7 @@ import com.journey.entity.User;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Messages implements MessageContainer{
+public class Messages implements MessageContainer {
     private final ArrayList<Message> msgBox = new ArrayList<Message>();
     private String hostUserName;
     private String guestUserName;

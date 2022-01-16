@@ -1,4 +1,4 @@
-package com.journey.msg;
+package com.journey.msg.message;
 
 import com.journey.msg.base.Iterator;
 
