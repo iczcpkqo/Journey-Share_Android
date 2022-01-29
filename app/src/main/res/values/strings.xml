@@ -5,4 +5,31 @@
     <string name="journey">Journey</string>
     <string name="message">Message</string>
     <string name="my">My</string>
+
+    <!-- Strings used for journey condition gender -->
+    <string name="journey_fragment">Journey</string>
+    <string name="record_fragment">Record</string>
+    <string name="account_fragment">Account</string>
+    <string name="message_fragment">Message</string>
+    <string name="title_activity_journey_condition">JourneyConditionActivity</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string-array name="condition_gender">
+        <item>Female</item>
+        <item>Male</item>
+    </string-array>
+
+    <!-- Strings used for condition form -->
+    <string name="dateTime">Date and Time</string>
+    <string name="originAddress">Origin Address</string>
+    <string name="endAddress">End Address</string>
+    <string name="gender">Gender</string>
+    <string name="minAge">Min Age</string>
+    <string name="maxAge">Max Age</string>
+    <string name="minScore">Min Score</string>
+    <string name="submit">Submit</string>
+
+    <!-- Strings used for selectLocation -->
+    <string name="confirm">Confirm</string>
+
 </resources>

@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import com.google.firebase.auth.AuthResult;
+import com.journey.activity.JourneyActivity;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -114,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            startActivity(new Intent(this, IndexActivity.class));
+            startActivity(new Intent(this, JourneyActivity.class));
         }
     }
 }

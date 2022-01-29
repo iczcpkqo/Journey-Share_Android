@@ -13,4 +13,21 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- journey action bar in journey condition -->
+    <style name="Theme.AppCompat.Light.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColor">@color/white</item>
+        <!--the color for actionbar-->
+        <item name="colorPrimary">@color/icon_color</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_baseline_arrow_back_ios_24</item>
+    </style>
+
+    <!-- timepicker theme in journey condition -->
+    <style name="MyTimePickerDialogTheme" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+        <!--the color for dialog background-->
+        <item name="colorAccent">@color/icon_color</item>
+    </style>
 </resources>
