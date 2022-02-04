@@ -39,15 +39,17 @@ public class FirebaseUtil {
         return "successful";
     }
 
+    @Deprecated
     public synchronized Map<String, Object> selectByDocumentId(String collectionName, String documentId) {
         try {
             DocumentReference document = db.collection(collectionName).document(documentId);
 
             document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-
                 @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    resultMap = task.getResult().getData();
+                public synchronized void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        resultMap = task.getResult().getData();
+                    }
                 }
             });
 
@@ -81,4 +83,6 @@ public class FirebaseUtil {
         }
         return "successful";
     }
+
+
 }
