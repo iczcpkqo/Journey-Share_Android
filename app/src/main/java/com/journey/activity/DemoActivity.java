@@ -125,7 +125,9 @@ public class DemoActivity extends AppCompatActivity implements PermissionsListen
                 // This is done by using an image view with the default marker found in the SDK. You can
                 // swap out for your own marker image, just make sure it matches up with the dropped marker.
                 hoveringMarker = new ImageView(DemoActivity.this);
-                hoveringMarker.setImageResource(R.drawable.red_marker);
+
+
+                hoveringMarker.setImageResource(R.drawable.purple_marker);
 
                 FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
