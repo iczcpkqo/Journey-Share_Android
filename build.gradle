@@ -11,7 +11,22 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
+allprojects{
+    repositories {
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+            authentication {
+                basic(BasicAuthentication)
+            }
+            credentials {
+                username = 'mapbox'
+                password = 'sk.eyJ1IjoiZ2F2aW4xOTk5IiwiYSI6ImNremc5dWwwYTB6MDgycG8wY2ljMXBrOTkifQ.YbZW0OG2FTXrsM3DXB9A9g'
+            }
+        }
+        google()
+        jcenter()
+    }
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

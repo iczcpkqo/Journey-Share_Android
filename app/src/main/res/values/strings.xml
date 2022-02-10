@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">journey_sharing</string>
-    <string name="access_token">sk.eyJ1IjoiZ2F2aW4xOTk5IiwiYSI6ImNreTFjaGt2eDBhMzczMGxnam95cXhxa2wifQ.vEPoB1y-TchqWLT5jOdHtg</string>
+    <string name="access_token">sk.eyJ1IjoiZ2F2aW4xOTk5IiwiYSI6ImNremc5dWwwYTB6MDgycG8wY2ljMXBrOTkifQ.YbZW0OG2FTXrsM3DXB9A9g</string>
     <string name="record">Record</string>
     <string name="journey">Journey</string>
     <string name="message">Message</string>
@@ -31,5 +31,7 @@
 
     <!-- Strings used for selectLocation -->
     <string name="confirm">Confirm</string>
-
+    <string name="start_navigation">Start Navigation</string>
+    <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
+    <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
 </resources>
