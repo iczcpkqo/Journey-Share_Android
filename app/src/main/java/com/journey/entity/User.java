@@ -10,10 +10,22 @@ public class User {
 
     private Date createDate;
 
-    public User(String username, String password, Date createDate) {
+    private String birthDate;
+
+    private String gender;
+
+    private String phone;
+
+    private String email;
+
+    public User(String username, String password, Date createDate, String birthDate, String gender, String phone, String email) {
         this.username = username;
         this.password = password;
         this.createDate = createDate;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.phone = phone;
+        this.email = email;
     }
 
     public String getUsername() {
@@ -39,4 +51,20 @@ public class User {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
+    public String getBirthDate() { return birthDate; }
+
+    public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
+
+    public String getGender() { return gender; }
+
+    public void setGender(String gender) { this.gender = gender; }
+
+    public String getPhone() { return phone; }
+
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 }

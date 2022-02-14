@@ -20,20 +20,21 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import android.widget.DatePicker;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.journey.entity.User;
+import com.journey.service.database.UserDb;
 
 
 public class RegisterActivity extends AppCompatActivity {
-    private Button login;
-    private Button register;
+    private Button back;
     private Button signup;
     private Button datepicker;
     private Spinner gender;
-    private EditText login_name;
     private EditText phone;
     private EditText username;
     private EditText email;
@@ -45,12 +46,10 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
     public void init() {
-        login = (Button) findViewById(R.id.login);
-        register = (Button) findViewById(R.id.register);
+        back = (Button) findViewById(R.id.back);
         signup = (Button) findViewById(R.id.signup);
         datepicker = (Button) findViewById(R.id.datepicker);
         gender = (Spinner) findViewById(R.id.gender);
-        login_name = (EditText) findViewById(R.id.login_name);
         phone = (EditText) findViewById(R.id.phone);
         username = (EditText) findViewById(R.id.username);
         email = (EditText) findViewById(R.id.email);
@@ -68,29 +67,30 @@ public class RegisterActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String txt_email = username.getText().toString();
+                // prime key:email
+                String txt_email = email.getText().toString();
                 String txt_password = password.getText().toString();
+                String txt_birthDate = datepicker.getText().toString();
+                String txt_gender = gender.getSelectedItem().toString();
+                String txt_phone = phone.getText().toString();
+                String txt_username = username.getText().toString();
+
                 if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)){
                     Toast.makeText(RegisterActivity.this, "Empty credentials!", Toast.LENGTH_SHORT).show();
                 }else{
-                    createAccount(txt_email,txt_password);
+                    createAccount(txt_username,txt_password,txt_birthDate,txt_gender,txt_phone,txt_email);
                 }
             }
         });
-        login.setOnClickListener(new View.OnClickListener() {
+
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent_login = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent_login);
             }
         });
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent_login = new Intent(RegisterActivity.this, RegisterActivity.class);
-                startActivity(intent_login);
-            }
-        });
+
         datepicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,6 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public void showDatePickDlg () {
         Calendar calendar = Calendar.getInstance();
@@ -112,9 +113,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(String username, String password,String birthDate,String gender,String phone,String email) {
         // [START create_user_with_email]
-        mAuth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -123,6 +124,8 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            User user1 = new User(username,  password, new Date(),  birthDate, gender,  phone,  email);
+                            String result = UserDb.getInstance().save(user1);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
