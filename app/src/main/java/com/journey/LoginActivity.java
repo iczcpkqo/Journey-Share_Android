@@ -15,11 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import com.google.firebase.auth.AuthResult;
 import com.journey.activity.JourneyActivity;
 
 
@@ -79,9 +78,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     signIn(txt_email,txt_password);
                 }
                 break;
-            case R.id.login:
-                Intent intent_login = new Intent(this, LoginActivity.class);
-                startActivity(intent_login);
+//            case R.id.login:
+//                Intent intent_login = new Intent(this, LoginActivity.class);
+//                startActivity(intent_login);
             case R.id.register:
                 Intent intent_register = new Intent(this, RegisterActivity.class);
                 startActivity(intent_register);
