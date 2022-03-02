@@ -11,12 +11,10 @@
     <color name="gray">#E0E0E0</color>
 
     <color name="icon_color">#00BCD4</color>
-    <color name="colorOnPrimary">@color/icon_color</color>
+    <color name="colorPrimary">@color/icon_color</color>
     <color name="colorAccent">@color/icon_color</color>
 
 
-
-    <color name="colorPrimary">#6200EE</color>
     <color name="mapboxWhite">#FFFFFFFF</color>
     <color name="mapboxBlue">#4264fb</color>
     <color name="mapboxGrayLight">#c6d2e1</color>

@@ -8,18 +8,8 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,51 +19,31 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.location.LocationCompat;
 
-import com.google.android.libraries.places.compat.ui.PlaceAutocomplete;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.journey.R;
-import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.api.directions.v5.models.DirectionsResponse;
-import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.api.geocoding.v5.GeocodingCriteria;
 import com.mapbox.api.geocoding.v5.MapboxGeocoding;
 import com.mapbox.api.geocoding.v5.models.CarmenFeature;
 import com.mapbox.api.geocoding.v5.models.GeocodingResponse;
 import com.mapbox.core.exceptions.ServicesException;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-import com.mapbox.mapboxsdk.location.LocationComponentOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.mapboxsdk.utils.BitmapUtils;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
-import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
-import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 import java.util.List;
 
@@ -89,7 +59,7 @@ import timber.log.Timber;
  * @author: Guowen Liu
  * @date: 2022/1/29 11:31
  */
-public class DemoActivity extends AppCompatActivity implements PermissionsListener, OnMapReadyCallback {
+public class SelectLocationActivity extends AppCompatActivity implements PermissionsListener, OnMapReadyCallback {
 
     private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
     private MapView mapView;
@@ -103,7 +73,7 @@ public class DemoActivity extends AppCompatActivity implements PermissionsListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(this, getString(R.string.access_token));
-        setContentView(R.layout.activity_demo);
+        setContentView(R.layout.activity_select_location);
         // Initialize the mapboxMap view
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -112,19 +82,19 @@ public class DemoActivity extends AppCompatActivity implements PermissionsListen
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-        DemoActivity.this.mapboxMap = mapboxMap;
+        SelectLocationActivity.this.mapboxMap = mapboxMap;
         mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull final Style style) {
                 enableLocationPlugin(style);
 
                 // Toast instructing user to tap on the mapboxMap
-                Toast.makeText( DemoActivity.this, getString(R.string.move_map_instruction), Toast.LENGTH_SHORT).show();
+                Toast.makeText( SelectLocationActivity.this, getString(R.string.move_map_instruction), Toast.LENGTH_SHORT).show();
 
                 // When user is still picking a location, we hover a marker above the mapboxMap in the center.
                 // This is done by using an image view with the default marker found in the SDK. You can
                 // swap out for your own marker image, just make sure it matches up with the dropped marker.
-                hoveringMarker = new ImageView(DemoActivity.this);
+                hoveringMarker = new ImageView(SelectLocationActivity.this);
 
 
                 hoveringMarker.setImageResource(R.drawable.purple_marker);
@@ -155,7 +125,7 @@ public class DemoActivity extends AppCompatActivity implements PermissionsListen
 
                             // Transform the appearance of the button to become the cancel button
                             selectLocationButton.setBackgroundColor(
-                                    ContextCompat.getColor(DemoActivity.this, R.color.colorAccent));
+                                    ContextCompat.getColor(SelectLocationActivity.this, R.color.colorAccent));
                             selectLocationButton.setText(getString(R.string.location_picker_select_location_button_cancel));
 
                             // Show the SymbolLayer icon to represent the selected map location
@@ -177,7 +147,7 @@ public class DemoActivity extends AppCompatActivity implements PermissionsListen
 
                             // Switch the button appearance back to select a location.
                             selectLocationButton.setBackgroundColor(
-                                    ContextCompat.getColor(DemoActivity.this, R.color.colorPrimary));
+                                    ContextCompat.getColor(SelectLocationActivity.this, R.color.colorPrimary));
                             selectLocationButton.setText(getString(R.string.location_picker_select_location_button_select));
 
                             // Show the red hovering ImageView marker
@@ -305,7 +275,7 @@ public class DemoActivity extends AppCompatActivity implements PermissionsListen
                                 @Override
                                 public void onStyleLoaded(@NonNull Style style) {
                                     if (style.getLayer(DROPPED_MARKER_LAYER_ID) != null) {
-                                        Toast.makeText(DemoActivity.this,
+                                        Toast.makeText(SelectLocationActivity.this,
                                                 String.format(getString(R.string.location_picker_place_name_result),
                                                         feature.placeName()), Toast.LENGTH_SHORT).show();
                                     }
@@ -313,7 +283,7 @@ public class DemoActivity extends AppCompatActivity implements PermissionsListen
                             });
 
                         } else {
-                            Toast.makeText(DemoActivity.this,
+                            Toast.makeText(SelectLocationActivity.this,
                                     getString(R.string.location_picker_dropped_marker_snippet_no_results), Toast.LENGTH_SHORT).show();
                         }
                     }
