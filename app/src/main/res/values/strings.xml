@@ -44,4 +44,5 @@
     <string name="placeName">placeName</string>
     <string name="longitude">longitude</string>
     <string name="latitude">latitude</string>
+    <string name="locationMarker">locationMarker</string>
 </resources>

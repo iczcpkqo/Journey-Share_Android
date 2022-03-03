@@ -59,7 +59,8 @@ public class ConditionActivity extends AppCompatActivity {
     String[] conditionGenders;
     private ArrayAdapter<String> adapterItems;
     private static final String TAG ="postRequestActivity" ;
-
+    private static final String ORIGIN_LOCATION = "0";
+    private static final String END_LOCATION = "1";
     JSONPlaceholder jsonPlaceholder;
 
     public  void init(){
@@ -241,20 +242,24 @@ public class ConditionActivity extends AppCompatActivity {
 
     // open origin place map
     private void openOriginLocationActivity() {
-        int placeId = 0;
-        Intent intent = new Intent(this, SelectLocationActivity.class);
-        intent.putExtra("id", placeId);
-        startActivityForResult(intent, GET_PLACE_INFORMATION);
+
+        startActivityForResult(setLocationMarker(ORIGIN_LOCATION), GET_PLACE_INFORMATION);
     }
 
     // open end place map
     private void openEndLocationActivity() {
-        int placeId = 1;
-        Intent intent = new Intent(this, SelectLocationActivity.class);
-        intent.putExtra("id", placeId);
-        startActivityForResult(intent, GET_PLACE_INFORMATION);
+
+        startActivityForResult(setLocationMarker(END_LOCATION), GET_PLACE_INFORMATION);
     }
 
+    private Intent setLocationMarker(String locationMarker)
+    {
+        Intent intent = new Intent(this, SelectLocationActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putCharSequence(getString(R.string.locationMarker),locationMarker);
+        intent.putExtras(bundle);
+        return intent;
+    }
     /**
      *@desc:Get the location information in map
      *@author: Guowen Liu
@@ -268,13 +273,18 @@ public class ConditionActivity extends AppCompatActivity {
             String placeName = this.getString(R.string.placeName);
             String latitude = this.getString(R.string.latitude);
             String longitude = this.getString(R.string.longitude);
+            String locationMarker = this.getString(R.string.locationMarker);
             int pId;
             //Get place name
             if (data.hasExtra(placeName)) {
                 String address = data.getExtras().getString(placeName);
-                if(data.getIntExtra("id",0) == 0){
+
+                if(data.getExtras().getString(locationMarker).equals(ORIGIN_LOCATION))
+                {
                     originPlace.setText(address);
-                }else if(data.getIntExtra("id",0) == 1){
+                }
+                else if(data.getExtras().getString(locationMarker).equals(END_LOCATION))
+                {
                     endPlace.setText(address);
                 }
             }

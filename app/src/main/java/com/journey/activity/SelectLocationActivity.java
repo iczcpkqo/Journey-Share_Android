@@ -74,6 +74,8 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
     private Layer droppedMarkerLayer;
     private CarmenFeature SaveFeature;
     private static final int GET_PLACE_INFORMATION = 485;
+    private String id;
+    private static final String ID = "id";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,8 +85,14 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-    }
 
+    }
+    private String getId()
+    {
+        Intent parentIntent = getIntent();
+        Bundle bundle = parentIntent.getExtras();
+        return bundle.getString(getString(R.string.locationMarker));
+    }
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         SelectLocationActivity.this.mapboxMap = mapboxMap;
@@ -173,6 +181,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
                 selectSaveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
                         Intent data =  getPlaceResult();
                         finish();
                     }
@@ -193,7 +202,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
         }
         else
         {
-            data.putExtra("id",placeId);
+            data.putExtra(getString(R.string.locationMarker),getId());
             data.putExtra(getString(R.string.placeName), SaveFeature.placeName());
             data.putExtra(getString(R.string.longitude), SaveFeature.center().longitude());
             data.putExtra(getString(R.string.latitude), SaveFeature.center().latitude());
