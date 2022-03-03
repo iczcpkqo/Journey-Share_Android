@@ -8,6 +8,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -62,13 +63,16 @@ import timber.log.Timber;
 public class SelectLocationActivity extends AppCompatActivity implements PermissionsListener, OnMapReadyCallback {
 
     private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
+
     private MapView mapView;
     private MapboxMap mapboxMap;
     private Button selectLocationButton;
+    private Button selectSaveButton;
     private PermissionsManager permissionsManager;
     private ImageView hoveringMarker;
     private Layer droppedMarkerLayer;
-
+    private CarmenFeature SaveFeature;
+    private static final int GET_PLACE_INFORMATION = 485;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,8 +165,38 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
                         }
                     }
                 });
+
+                //Button for user to save address
+                selectSaveButton = findViewById(R.id.select_button);
+                // Activity finished ok, return the data
+                selectSaveButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent data =  getPlaceResult();
+                        finish();
+                    }
+                });
             }
         });
+    }
+
+    private Intent getPlaceResult()
+    {
+        Intent data = new Intent();
+        if(SaveFeature==null ||SaveFeature.placeName().equals(""))
+        {
+            setResult(RESULT_CANCELED, data);
+        }
+        else
+        {
+
+            data.putExtra(getString(R.string.placeName), SaveFeature.placeName());
+            data.putExtra(getString(R.string.longitude), SaveFeature.center().longitude());
+            data.putExtra(getString(R.string.latitude), SaveFeature.center().latitude());
+            setResult(RESULT_OK, data);
+        }
+
+        return data;
     }
 
     private void initDroppedMarker(@NonNull Style loadedMapStyle) {
@@ -269,7 +303,8 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
                         List<CarmenFeature> results = response.body().features();
                         if (results.size() > 0) {
                             CarmenFeature feature = results.get(0);
-
+                            //Save placeName
+                            SaveFeature =  feature;
                             // If the geocoder returns a result, we take the first in the list and show a Toast with the place name.
                             mapboxMap.getStyle(new Style.OnStyleLoaded() {
                                 @Override
@@ -300,14 +335,17 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
         }
     }
 
+
     @SuppressWarnings({"MissingPermission"})
     private void enableLocationPlugin(@NonNull Style loadedMapStyle) {
+
             // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 
             // Get an instance of the component. Adding in LocationComponentOptions is also an optional
             // parameter
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
+
             locationComponent.activateLocationComponent(LocationComponentActivationOptions.builder(
                     this, loadedMapStyle).build());
             locationComponent.setLocationComponentEnabled(true);

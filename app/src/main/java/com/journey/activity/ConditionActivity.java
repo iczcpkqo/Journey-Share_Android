@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,9 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,7 +44,7 @@ public class ConditionActivity extends AppCompatActivity {
     private EditText minAge;
     private EditText maxAge;
     private EditText score;
-
+    private static final int GET_PLACE_INFORMATION = 485;
     private Calendar calendar;
     private Button submit;
     private AutoCompleteTextView autoCompleteGender;
@@ -230,8 +234,36 @@ public class ConditionActivity extends AppCompatActivity {
 
     // open map
     private void openLocationActivity() {
-        Intent intent = new Intent(this, SelectLocationActivity.class);
-        startActivity(intent);
+        startActivityForResult(new Intent(this, SelectLocationActivity.class), GET_PLACE_INFORMATION);
+    }
+
+    /**
+     *@desc:Get the location information in map
+     *@author: Guowen Liu
+     *@date: 2022/3/3 11:31
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == GET_PLACE_INFORMATION) {
+            String placeName = this.getString(R.string.placeName);
+            String latitude = this.getString(R.string.latitude);
+            String longitude = this.getString(R.string.longitude);
+            //Get place name
+            if (data.hasExtra(placeName)) {
+                data.getExtras().getString(placeName);
+            }
+            //Get place Longitude and latitude
+            if (data.hasExtra(latitude) && data.hasExtra(longitude)) {
+                data.getExtras().getString(latitude);
+                data.getExtras().getString(longitude);
+            }
+        }
+        else if (resultCode == RESULT_CANCELED)
+        {
+            // No results
+        }
     }
 
     // back journey home listener
