@@ -11,7 +11,15 @@ import androidx.fragment.app.Fragment;
 
 import com.journey.R;
 import com.journey.activity.ConditionActivity;
-
+/**
+ * @Description:
+ * @author: Congqin Yan
+ * @Email: yancongqin@gmail.com
+ * @date: 2022-01-17-11:00
+ * @Modify date and time:
+ * @Modified by:
+ * @Modified remark:
+ */
 public class DailyFragment extends Fragment {
 
     private Button daily_journey_condition;

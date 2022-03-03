@@ -13,7 +13,15 @@ import com.journey.fragments.AccountFragment;
 import com.journey.fragments.JourneyFragment;
 import com.journey.fragments.MessageFragment;
 import com.journey.fragments.RecordFragment;
-
+/**
+ * @Description:
+ * @author: Congqin Yan
+ * @Email: yancongqin@gmail.com
+ * @date: 2022-01-17-11:00
+ * @Modify date and time:
+ * @Modified by:
+ * @Modified remark:
+ */
 public class JourneyActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;

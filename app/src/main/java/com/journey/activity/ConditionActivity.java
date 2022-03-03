@@ -36,7 +36,15 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+/**
+ * @Description:
+ * @author: Congqin Yan
+ * @Email: yancongqin@gmail.com
+ * @date: 2022-01-17-11:00
+ * @Modify date and time:
+ * @Modified by:
+ * @Modified remark:
+ */
 public class ConditionActivity extends AppCompatActivity {
     private EditText chooseDateTime;
     private EditText originPlace;
@@ -91,7 +99,6 @@ public class ConditionActivity extends AppCompatActivity {
     }
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
-            infoChecker();
             Intent intent = new Intent(this, PostActivity.class);
             startActivity(intent);
         });
@@ -224,17 +231,28 @@ public class ConditionActivity extends AppCompatActivity {
 
     //set origin place onclick listener
     private void setOriginPlaceListener(EditText originPlace) {
-        originPlace.setOnClickListener(view -> openLocationActivity());
+        originPlace.setOnClickListener(view -> openOriginLocationActivity());
     }
 
     //set end place onclick listener
     private void setEndPlaceListener(EditText originPlace) {
-        originPlace.setOnClickListener(view -> openLocationActivity());
+        originPlace.setOnClickListener(view -> openEndLocationActivity());
     }
 
-    // open map
-    private void openLocationActivity() {
-        startActivityForResult(new Intent(this, SelectLocationActivity.class), GET_PLACE_INFORMATION);
+    // open origin place map
+    private void openOriginLocationActivity() {
+        int placeId = 0;
+        Intent intent = new Intent(this, SelectLocationActivity.class);
+        intent.putExtra("id", placeId);
+        startActivityForResult(intent, GET_PLACE_INFORMATION);
+    }
+
+    // open end place map
+    private void openEndLocationActivity() {
+        int placeId = 1;
+        Intent intent = new Intent(this, SelectLocationActivity.class);
+        intent.putExtra("id", placeId);
+        startActivityForResult(intent, GET_PLACE_INFORMATION);
     }
 
     /**
@@ -250,9 +268,15 @@ public class ConditionActivity extends AppCompatActivity {
             String placeName = this.getString(R.string.placeName);
             String latitude = this.getString(R.string.latitude);
             String longitude = this.getString(R.string.longitude);
+            int pId;
             //Get place name
             if (data.hasExtra(placeName)) {
-                data.getExtras().getString(placeName);
+                String address = data.getExtras().getString(placeName);
+                if(data.getIntExtra("id",0) == 0){
+                    originPlace.setText(address);
+                }else if(data.getIntExtra("id",0) == 1){
+                    endPlace.setText(address);
+                }
             }
             //Get place Longitude and latitude
             if (data.hasExtra(latitude) && data.hasExtra(longitude)) {

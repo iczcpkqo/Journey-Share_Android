@@ -61,6 +61,7 @@ import timber.log.Timber;
  * @date: 2022/1/29 11:31
  */
 public class SelectLocationActivity extends AppCompatActivity implements PermissionsListener, OnMapReadyCallback {
+    private int placeId;
 
     private static final String DROPPED_MARKER_LAYER_ID = "DROPPED_MARKER_LAYER_ID";
 
@@ -182,14 +183,17 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
 
     private Intent getPlaceResult()
     {
-        Intent data = new Intent();
+        /**
+         * changing the intent parameters, intent to condition page, and send data.
+         */
+        Intent data = new Intent(this, ConditionActivity.class);
         if(SaveFeature==null ||SaveFeature.placeName().equals(""))
         {
             setResult(RESULT_CANCELED, data);
         }
         else
         {
-
+            data.putExtra("id",placeId);
             data.putExtra(getString(R.string.placeName), SaveFeature.placeName());
             data.putExtra(getString(R.string.longitude), SaveFeature.center().longitude());
             data.putExtra(getString(R.string.latitude), SaveFeature.center().latitude());

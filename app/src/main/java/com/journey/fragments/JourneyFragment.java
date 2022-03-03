@@ -14,7 +14,15 @@ import com.journey.R;
 import com.journey.fragments.journeyModeFragments.DailyFragment;
 import com.journey.fragments.journeyModeFragments.RealTimeFragment;
 
-
+/**
+ * @Description:
+ * @author: Congqin Yan
+ * @Email: yancongqin@gmail.com
+ * @date: 2022-01-17-11:00
+ * @Modify date and time:
+ * @Modified by:
+ * @Modified remark:
+ */
 public class JourneyFragment extends Fragment {
 
     BottomNavigationView modeNavigationView;
