@@ -53,6 +53,7 @@
     <string name="longitude">longitude</string>
     <string name="latitude">latitude</string>
     <string name="locationMarker">locationMarker</string>
+
     <!--VALIDATION MESSAGE-->
     <string name="invalid_datetime">Please choose the date</string>
     <string name="invalid_origin_address">Please choose the origin address</string>

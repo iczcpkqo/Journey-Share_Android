@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.journey.R;
 import com.journey.fragments.AccountFragment;
+import com.journey.R;
 import com.journey.fragments.JourneyFragment;
 import com.journey.fragments.MessageFragment;
 import com.journey.fragments.RecordFragment;

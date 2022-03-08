@@ -12,15 +12,12 @@
         android:textColor="@color/white"
         android:textSize="25sp"
         />
-    <TextView
+
+    <Button
+        android:id="@+id/information_container_fragment"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:text="info page"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textAlignment="center"
-        android:layout_gravity="center"
-        />
+        android:layout_height="wrap_content"
+        android:text="Person Information"
+        android:layout_marginTop="60dp" />
 
 </FrameLayout>
