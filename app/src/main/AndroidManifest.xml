@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Journey_sharing">
         <activity
-            android:name=".MainActivity"
+            android:name=".msg.message.Chat"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

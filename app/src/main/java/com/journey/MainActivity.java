@@ -1,11 +1,12 @@
 package com.journey;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -93,7 +94,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                               "sdfsdfsdf",
                                    new Date() );
 
-        String result =  MessageDb.getInstance().save(msg);
+//        String result =  MessageDb.getInstance().save(msg);
+        String result = "test for msg feature save msg."; // MessageDb.getInstance().save(msg);
     }
 }
 

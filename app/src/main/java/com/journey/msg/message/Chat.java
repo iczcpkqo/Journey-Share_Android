@@ -41,6 +41,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("dsf");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.msg_chat);
 
@@ -86,7 +87,6 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
         adapter = new ChatMsgAdapter(list);
         recyclerView.setAdapter(adapter);
-
     }
 
     @Override
