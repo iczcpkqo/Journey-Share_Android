@@ -3,6 +3,9 @@ package com.journey.service.database;
 import com.journey.entity.Message;
 import com.journey.tools.firebase.FirebaseUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MessageDb implements Db<Message> {
     private static final String collectionName = "message";
 
@@ -33,7 +36,7 @@ public class MessageDb implements Db<Message> {
     }
 
     @Override
-    public Message selectByDocumentId(String id) {
+    public Map<String, Object> selectByDocumentId(String id) {
         return null;
     }
 }

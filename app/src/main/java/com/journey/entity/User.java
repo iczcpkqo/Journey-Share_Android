@@ -18,7 +18,9 @@ public class User {
 
     private String email;
 
-    public User(String username, String password, Date createDate, String birthDate, String gender, String phone, String email) {
+    private Double mark;
+
+    public User(String username, String password, Date createDate, String birthDate, String gender, String phone, String email, Double mark) {
         this.username = username;
         this.password = password;
         this.createDate = createDate;
@@ -26,6 +28,7 @@ public class User {
         this.gender = gender;
         this.phone = phone;
         this.email = email;
+        this.mark = mark;
     }
 
     public String getUsername() {
@@ -67,4 +70,9 @@ public class User {
     public String getEmail() { return email; }
 
     public void setEmail(String email) { this.email = email; }
+
+    public Double getMark() {  return mark; }
+
+    public void setMark(Double mark) { this.mark = mark; }
+
 }

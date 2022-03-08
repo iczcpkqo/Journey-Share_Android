@@ -1,5 +1,8 @@
 package com.journey.service.database;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public interface Db<T> {
 
     public String save(T t);
@@ -8,5 +11,5 @@ public interface Db<T> {
 
     public String deleteByDocumentId(String id);
 
-    public T selectByDocumentId(String id);
+    public Map<String, Object> selectByDocumentId(String id);
 }

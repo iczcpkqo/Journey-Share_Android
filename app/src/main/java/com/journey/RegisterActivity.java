@@ -78,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)){
                     Toast.makeText(RegisterActivity.this, "Empty credentials!", Toast.LENGTH_SHORT).show();
                 }else{
-                    createAccount(txt_username,txt_password,txt_birthDate,txt_gender,txt_phone,txt_email);
+                    createAccount(txt_username,txt_password,txt_birthDate,txt_gender,txt_phone,txt_email,  5.0);
                 }
             }
         });
@@ -113,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void createAccount(String username, String password,String birthDate,String gender,String phone,String email) {
+    private void createAccount(String username, String password,String birthDate,String gender,String phone,String email, Double mark) {
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -124,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-                            User user1 = new User(username,  password, new Date(),  birthDate, gender,  phone,  email);
+                            User user1 = new User(username,  password, new Date(),  birthDate, gender,  phone,  email, mark);
                             String result = UserDb.getInstance().save(user1);
                         } else {
                             // If sign in fails, display a message to the user.

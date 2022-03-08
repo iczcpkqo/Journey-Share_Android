@@ -1,7 +1,14 @@
 package com.journey.service.database;
 
 
+import androidx.annotation.NonNull;
+
 import com.alibaba.fastjson.JSON;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.entity.User;
 import com.journey.tools.firebase.FirebaseUtil;
 
@@ -11,6 +18,9 @@ public class UserDb implements Db<User> {
     private static final String collectionName = "users";
 
     private static FirebaseUtil firebaseUtil = FirebaseUtil.getInstance();
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    private static Map<String, Object> resultMap;
 
     private static UserDb instance;
 
@@ -25,6 +35,7 @@ public class UserDb implements Db<User> {
     public String save(User user) {
         return firebaseUtil.insert(collectionName, user);
     }
+
 
     @Override
     public String updateByDocumentId(User user, String documentId) {
@@ -44,16 +55,24 @@ public class UserDb implements Db<User> {
     }
 
 
-    public User selectByDocumentId(String documentId) {
-        User user = null;
-        Map<String, Object> map = firebaseUtil.selectByDocumentId(collectionName, documentId);
-        if (map == null) {
-            return user;
-        }
-        String jsonString1 = JSON.toJSONString(map);
-        user = JSON.parseObject(jsonString1, User.class);
-        return user;
-    }
+    public Map<String, Object> selectByDocumentId(String documentId) {
+        try {
+            DocumentReference document = db.collection(collectionName).document(documentId);
 
+            document.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public synchronized void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        resultMap = task.getResult().getData();
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return resultMap;
+    }
 
 }
