@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="choose_date_time_dt" type="id"/>
+    <item name="origin_address_dt" type="id"/>
+    <item name="end_address_dt" type="id"/>
+    <item name="min_age_dt" type="id"/>
+    <item name="max_age_dt" type="id"/>
+    <item name="score_dt" type="id"/>
+</resources>

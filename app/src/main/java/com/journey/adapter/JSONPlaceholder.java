@@ -24,9 +24,9 @@ public interface JSONPlaceholder {
     @GET("posts")
     Call<List<Peer>> getPeer();
 
-    @FormUrlEncoded
-    @POST("posts")
-    Call<Peer> createPeer(@Field("userId") String userId , @Field("title") String title , @Field("body") String text);
+
+    @POST("match")
+    Call<Peer> postPeer();
 
     @DELETE("posts/{id}")
     Call<Void> deletePeer(@Path("id") int id);

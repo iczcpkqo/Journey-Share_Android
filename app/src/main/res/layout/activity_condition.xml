@@ -1,128 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.ConditionActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/choose_date_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
-            android:focusable="false"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/choose_date_time"
+        style="@style/textInputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="681dp"
+        android:focusable="false"
+        android:importantForAutofill="no"
+        app:helperTextTextColor="@color/red"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:imeOptions="actionNext"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@id/choose_date_time_dt"
+            android:maxLength="20"
             android:hint="@string/dateTime"
-            android:importantForAutofill="no"
-            android:inputType="none"
-            app:layout_constraintBottom_toTopOf="@+id/origin_edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:inputType="datetime"
+            android:background="@drawable/text_input_round"
+            style="@style/textInput" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/origin_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/origin_address"
+        style="@style/textInputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:focusable="false"
+        app:counterEnabled="true"
+        app:counterMaxLength="40"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/choose_date_time"
+        android:imeOptions="actionNext">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@id/origin_address_dt"
+            style="@style/textInput"
             android:hint="@string/originAddress"
-            android:importantForAutofill="no"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/end_edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choose_date_time" />
+            android:background="@drawable/text_input_round"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/end_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
-            android:hint="@string/endAddress"
-            android:importantForAutofill="no"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/end_address"
+        style="@style/textInputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:focusable="false"
+        app:counterEnabled="true"
+        app:counterMaxLength="40"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/origin_address"
+        android:imeOptions="actionNext">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@id/end_address_dt"
+            style="@style/textInput"
             android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/auto_complete_gender"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/origin_edit" />
+            android:hint="@string/originAddress"
+            android:background="@drawable/text_input_round"
+            android:maxLength="20" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/gender"
+        style="@style/textInputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:focusable="false"
+        app:counterEnabled="true"
+        app:counterMaxLength="20"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/end_address"
+        android:imeOptions="actionNext">
 
         <AutoCompleteTextView
-            android:id="@+id/auto_complete_gender"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+            style="@style/textInput"
             android:hint="@string/gender"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            app:layout_constraintBottom_toTopOf="@+id/min_age_edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/end_edit" />
+            android:id="@+id/auto_complete_gender"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/min_age"
+        style="@style/textInputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:focusable="false"
+        app:counterEnabled="true"
+        app:counterMaxLength="2"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gender"
+        android:imeOptions="actionNext">
 
-        <EditText
-            android:id="@+id/min_age_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@id/min_age_dt"
+            style="@style/textInput"
             android:hint="@string/minAge"
-            android:importantForAutofill="no"
             android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@+id/max_age_edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/auto_complete_gender" />
+            android:background="@drawable/text_input_round"
+            android:maxLength="2" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/max_age"
+        style="@style/textInputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:focusable="false"
+        app:counterEnabled="true"
+        app:counterMaxLength="2"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/min_age"
+        android:imeOptions="actionNext">
 
-        <EditText
-            android:id="@+id/max_age_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@id/max_age_dt"
+            style="@style/textInput"
             android:hint="@string/maxAge"
-            android:importantForAutofill="no"
             android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@+id/min_score_edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/min_age_edit" />
+            android:background="@drawable/text_input_round"
+            android:maxLength="2" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/score"
+        style="@style/textInputLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:focusable="false"
+        app:counterEnabled="true"
+        app:counterMaxLength="3"
+        app:endIconMode="clear_text"
+        app:helperTextTextColor="@color/red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/max_age"
+        android:imeOptions="actionDone">
 
-        <EditText
-            android:id="@+id/min_score_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:drawableEnd="@drawable/ic_baseline_arrow_forward_ios_24"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@id/score_dt"
+            style="@style/textInput"
             android:hint="@string/minScore"
-            android:importantForAutofill="no"
-            android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@+id/submit_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/max_age_edit" />
+            android:inputType="numberDecimal"
+            android:background="@drawable/text_input_round"
+            android:maxLength="3" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/submit_btn"
-            android:layout_width="210dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="200dp"
-            android:background="@drawable/round_corner"
-            android:text="@string/submit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/min_score_edit" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/round_corner"
+        android:text="@string/create"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/score" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,10 +45,10 @@ public class PeerAdapter extends RecyclerView.Adapter<PeerAdapter.PeerViewHolder
     @Override
     public void onBindViewHolder(@NonNull PeerViewHolder holder, int position) {
         Peer peer = peerList.get(position);
-        holder.userId.setText("userId : " + peer.getUserId());
-        holder.id.setText("id : " + peer.getId());
-        holder.title.setText("title :" + peer.getTitle());
-        holder.body.setText("body :" + peer.getBody());
+        holder.email.setText("userId : " + peer.getEmail());
+        holder.gender.setText("id : " + peer.getGender());
+        holder.age.setText("title :" + peer.getAge());
+        holder.score.setText("body :" + peer.getScore());
     }
 
     @Override
@@ -57,15 +57,15 @@ public class PeerAdapter extends RecyclerView.Adapter<PeerAdapter.PeerViewHolder
     }
 
     public class PeerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView userId, id, title, body;
+        TextView email, gender, age, score;
         Button delete;
 
         public PeerViewHolder(@NonNull View itemView) {
             super(itemView);
-            userId = itemView.findViewById(R.id.user_id_tv);
-            id = itemView.findViewById(R.id.id_tv);
-            title = itemView.findViewById(R.id.title_tv);
-            body = itemView.findViewById(R.id.body_tv);
+            email = itemView.findViewById(R.id.user_id_tv);
+            gender = itemView.findViewById(R.id.id_tv);
+            age = itemView.findViewById(R.id.title_tv);
+            score = itemView.findViewById(R.id.body_tv);
             delete = itemView.findViewById(R.id.delete);
 
             delete.setOnClickListener(this);

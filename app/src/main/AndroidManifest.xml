@@ -17,9 +17,9 @@
         <activity
             android:name=".activity.PeerGroupActivity"
             android:exported="true"
-            android:parentActivityName=".activity.PostActivity"/>
+            android:parentActivityName=".activity.RealTimeJourneyTableActivity"/>
         <activity
-            android:name=".activity.PostActivity"
+            android:name=".activity.RealTimeJourneyTableActivity"
             android:exported="true"
             android:parentActivityName=".activity.ConditionActivity"/>
         <activity
