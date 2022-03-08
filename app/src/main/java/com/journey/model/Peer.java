@@ -9,44 +9,108 @@ package com.journey.model;
  * @Modified remark:
  */
 public class Peer {
-    private String userId, id, title, body;
-//    private int image;
+    String email;
+    int gender;
+    int age;
+    double score;
 
-    public Peer(String userId, String title, String body) {
-        this.userId = userId;
-        this.title = title;
-        this.body = body;
+    double longitude;
+    double latitude;
+    double dLongtitude;
+    double dLatitude;
+    long startTime;
+    long endTime;
+
+    public Peer(String email, int gender, int age, int score, double longitude, double latitude, double dLongtitude, double dLatitude, long startTime, long endTime) {
+        this.email = email;
+        this.gender = gender;
+        this.age = age;
+        this.score = score;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.dLongtitude = dLongtitude;
+        this.dLatitude = dLatitude;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getEmail() {
+        return email;
     }
 
-    public String getId() {
-        return id;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getTitle() {
-        return title;
+    public int getGender() {
+        return gender;
     }
 
-    public String getBody() {
-        return body;
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public int getAge() {
+        return age;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAge(int age) {
+        this.age = age;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public double getScore() {
+        return score;
     }
 
-    public void setBody(String body) {
-        this.body = body;
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getdLongtitude() {
+        return dLongtitude;
+    }
+
+    public void setdLongtitude(double dLongtitude) {
+        this.dLongtitude = dLongtitude;
+    }
+
+    public double getdLatitude() {
+        return dLatitude;
+    }
+
+    public void setdLatitude(double dLatitude) {
+        this.dLatitude = dLatitude;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 }

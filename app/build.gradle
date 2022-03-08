@@ -41,8 +41,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.3')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.libraries.places:places-compat:2.4.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.firebase:firebase-database:20.0.3'
+    implementation 'com.basgeekball:awesome-validation:4.2'
 
 
     // Test dependencies
@@ -66,9 +65,11 @@ dependencies {
     //retrofit json
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-
+    //cardView, recyclerview
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    //awesome validation
+    implementation 'com.basgeekball:awesome-validation:4.2'
 
 }
 

@@ -15,16 +15,13 @@
         android:theme="@style/Theme.Journey_sharing"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.InformationActivity"
-            android:exported="true" />
-        <activity
             android:name=".activity.PeerGroupActivity"
             android:exported="true"
-            android:parentActivityName=".activity.PostActivity" />
+            android:parentActivityName=".activity.RealTimeJourneyTableActivity"/>
         <activity
-            android:name=".activity.PostActivity"
+            android:name=".activity.RealTimeJourneyTableActivity"
             android:exported="true"
-            android:parentActivityName=".activity.ConditionActivity" />
+            android:parentActivityName=".activity.ConditionActivity"/>
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />

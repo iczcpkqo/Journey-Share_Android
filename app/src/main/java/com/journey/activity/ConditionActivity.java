@@ -2,9 +2,7 @@ package com.journey.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ClipData;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,25 +15,22 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+import com.google.android.material.textfield.TextInputEditText;
 import com.journey.R;
 import com.journey.adapter.JSONPlaceholder;
-import com.journey.adapter.PeerAdapter;
-import com.journey.model.Peer;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 /**
  * @Description:
  * @author: Congqin Yan
@@ -46,12 +41,13 @@ import retrofit2.Response;
  * @Modified remark:
  */
 public class ConditionActivity extends AppCompatActivity {
-    private EditText chooseDateTime;
-    private EditText originPlace;
-    private EditText endPlace;
-    private EditText minAge;
-    private EditText maxAge;
-    private EditText score;
+    private TextInputEditText chooseDateTime;
+    private TextInputEditText originPlace;
+    private TextInputEditText endPlace;
+    private TextInputEditText minAge;
+    private TextInputEditText maxAge;
+    private TextInputEditText score;
+
     private static final int GET_PLACE_INFORMATION = 485;
     private Calendar calendar;
     private Button submit;
@@ -62,14 +58,18 @@ public class ConditionActivity extends AppCompatActivity {
     private static final String ORIGIN_LOCATION = "0";
     private static final String END_LOCATION = "1";
     JSONPlaceholder jsonPlaceholder;
+    AwesomeValidation awesomeValidation;
+    //location contains latitude and longitude
+    List<Double> location = new ArrayList<Double>();
+
 
     public  void init(){
-        chooseDateTime = findViewById(R.id.choose_date_time);
-        originPlace = findViewById(R.id.origin_edit);
-        endPlace = findViewById(R.id.end_edit);
-        minAge = findViewById(R.id.min_age_edit);
-        maxAge = findViewById(R.id.max_age_edit);
-        score = findViewById(R.id.min_score_edit);
+        chooseDateTime = (TextInputEditText)findViewById(R.id.choose_date_time_dt);
+        originPlace = (TextInputEditText)findViewById(R.id.origin_address_dt);
+        endPlace = (TextInputEditText)findViewById(R.id.end_address_dt);
+        minAge = (TextInputEditText)findViewById(R.id.min_age_dt);
+        maxAge = (TextInputEditText)findViewById(R.id.max_age_dt);
+        score = (TextInputEditText)findViewById(R.id.score_dt);
 
         calendar = Calendar.getInstance();
         submit = findViewById(R.id.submit_btn);
@@ -78,13 +78,16 @@ public class ConditionActivity extends AppCompatActivity {
         adapterItems = new ArrayAdapter<>(ConditionActivity.this,
                 R.layout.gender_dropdown_item,
                 conditionGenders);
+
+        //initialize validation style
+        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_condition);
-         init();
+        init();
         //condition bar
         setConditionActionBar();
         //daily and realtime mode select
@@ -100,67 +103,62 @@ public class ConditionActivity extends AppCompatActivity {
     }
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
-            Intent intent = new Intent(this, PostActivity.class);
-            startActivity(intent);
+            getConInfo();
         });
     }
-    private void infoChecker(){
-        if(!chooseDateTime.getText().toString().equals("")){
-            String dateTime = chooseDateTime.getText().toString();
-        }else {
-            Toast.makeText(ConditionActivity.this, "Please Choose DateTime" , Toast.LENGTH_SHORT).show();
-        }
-        if(!originPlace.getText().toString().equals("")){
-            String oPlace = originPlace.getText().toString();
-        }else {
-            Toast.makeText(ConditionActivity.this, "Please Choose Origin Place" , Toast.LENGTH_SHORT).show();
-        }
-        if(!endPlace.getText().toString().equals("")){
-            String ePlace = endPlace.getText().toString();
-        }else {
-            Toast.makeText(ConditionActivity.this, "Please Choose End Place" , Toast.LENGTH_SHORT).show();
-        }
-        if(!autoCompleteGender.getText().toString().equals("")){
-            String gender = autoCompleteGender.getText().toString();
-        }else {
-            Toast.makeText(ConditionActivity.this, "Please Choose the Gender" , Toast.LENGTH_SHORT).show();
-        }
-        if(!minAge.getText().toString().equals("")){
-            String iAge = minAge.getText().toString();
-        }else {
-            Toast.makeText(ConditionActivity.this, "Please Choose the minimum age" , Toast.LENGTH_SHORT).show();
-        }
-        if(!maxAge.getText().toString().equals("")){
-            String aAge = maxAge.getText().toString();
-        }else {
-            Toast.makeText(ConditionActivity.this, "Please Choose the maximum age" , Toast.LENGTH_SHORT).show();
-        }
-        if(!score.getText().toString().equals("")){
-            String s = score.getText().toString();
-        }else {
-            Toast.makeText(ConditionActivity.this, "Please Choose the score" , Toast.LENGTH_SHORT).show();
-        }
-    }
+    /**
+     *@desc: send the information into realTimeJourneyTable
+     *@author: Congqin yan
+     *@date: 2022/3/7 19:05
+     */
+    private void getConInfo(){
+        infoChecker();
+        Intent conInfo = new Intent(this, RealTimeJourneyTableActivity.class);
+        if(awesomeValidation.validate()){
 
-    private void createPost(){
-        //   Post post = new Post("18" , "First Title" , "First Text");
-        Call<Peer> call = jsonPlaceholder.createPeer("13" , "Second Title" , "Second Text");
-        call.enqueue(new Callback<Peer>() {
-            @Override
-            public void onResponse(Call<Peer> call, Response<Peer> response) {
-                if (!response.isSuccessful()){
-                    Toast.makeText(ConditionActivity.this, response.code() , Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                List<Peer> postList = new ArrayList<>();
-                postList.add(response.body());
-                Toast.makeText(ConditionActivity.this, response.code() + " Response", Toast.LENGTH_SHORT).show();
-            }
-            @Override
-            public void onFailure(Call<Peer> call, Throwable t) {
-                Toast.makeText(ConditionActivity.this, t.getMessage() , Toast.LENGTH_SHORT).show();
-            }
-        });
+            conInfo.putExtra("datetime", chooseDateTime.getText().toString());
+            conInfo.putExtra("originAddress", originPlace.getText().toString());
+            conInfo.putExtra("endAddress", endPlace.getText().toString());
+            conInfo.putExtra("gender", autoCompleteGender.getText().toString());
+            conInfo.putExtra("minAge", minAge.getText().toString());
+            conInfo.putExtra("maxAge", maxAge.getText().toString());
+            conInfo.putExtra("score", score.getText().toString());
+            conInfo.putExtra("origin_lat",location.get(0).toString());
+            conInfo.putExtra("origin_lon",location.get(1).toString());
+            conInfo.putExtra("end_lat",location.get(2).toString());
+            conInfo.putExtra("end_lon",location.get(3).toString());
+            startActivity(conInfo);
+        }else{
+            Toast.makeText(this, "Validation Failed, Please check your information!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    /**
+     *@desc: check the user input fields
+     *@author: Congqin yan
+     *@date: 2022/3/7 19:05
+     */
+    private void infoChecker(){
+        //add validation for data time
+        awesomeValidation.addValidation(this,R.id.choose_date_time_dt,
+                RegexTemplate.NOT_EMPTY,R.string.invalid_datetime);
+        //add validation for origin address
+        awesomeValidation.addValidation(this,R.id.origin_address_dt,
+                RegexTemplate.NOT_EMPTY,R.string.invalid_origin_address);
+        //add validation for end address
+        awesomeValidation.addValidation(this,R.id.end_address_dt,
+                RegexTemplate.NOT_EMPTY,R.string.invalid_end_address);
+        //add validation for gender
+        awesomeValidation.addValidation(this,R.id.auto_complete_gender,
+                RegexTemplate.NOT_EMPTY,R.string.invalid_gender);
+        //add validation for min age
+        awesomeValidation.addValidation(this,R.id.min_age_dt,
+                RegexTemplate.NOT_EMPTY,R.string.invalid_min_age);
+        //add validation for max age
+        awesomeValidation.addValidation(this,R.id.max_age_dt,
+                RegexTemplate.NOT_EMPTY,R.string.invalid_max_age);
+        //add validation for score
+        awesomeValidation.addValidation(this,R.id.score_dt,
+                RegexTemplate.NOT_EMPTY,R.string.invalid_min_score);
     }
 
     private void setGenderDropDown() {
@@ -268,13 +266,11 @@ public class ConditionActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == RESULT_OK && requestCode == GET_PLACE_INFORMATION) {
             String placeName = this.getString(R.string.placeName);
             String latitude = this.getString(R.string.latitude);
             String longitude = this.getString(R.string.longitude);
             String locationMarker = this.getString(R.string.locationMarker);
-            int pId;
             //Get place name
             if (data.hasExtra(placeName)) {
                 String address = data.getExtras().getString(placeName);
@@ -282,30 +278,39 @@ public class ConditionActivity extends AppCompatActivity {
                 if(data.getExtras().getString(locationMarker).equals(ORIGIN_LOCATION))
                 {
                     originPlace.setText(address);
+                    //Get place Longitude and latitude
+                    if (data.hasExtra(latitude) && data.hasExtra(longitude)) {
+                        double origin_lat = data.getExtras().getDouble(latitude);
+                        double origin_lon = data.getExtras().getDouble(longitude);
+                        location.add(origin_lat);
+                        location.add(origin_lon);
+                    }
                 }
                 else if(data.getExtras().getString(locationMarker).equals(END_LOCATION))
                 {
                     endPlace.setText(address);
+                    //Get place Longitude and latitude
+                    if (data.hasExtra(latitude) && data.hasExtra(longitude)) {
+                        double end_lat = data.getExtras().getDouble(latitude);
+                        double end_lon = data.getExtras().getDouble(longitude);
+                        location.add(end_lat);
+                        location.add(end_lon);
+                    }
                 }
             }
-            //Get place Longitude and latitude
-            if (data.hasExtra(latitude) && data.hasExtra(longitude)) {
-                data.getExtras().getString(latitude);
-                data.getExtras().getString(longitude);
-            }
         }
-        else if (resultCode == RESULT_CANCELED)
-        {
+//        else if (resultCode == RESULT_CANCELED)
+//        {
             // No results
-        }
+//        }
     }
 
     // back journey home listener
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if (item.getItemId() == android.R.id.home){
-           finish();
-           return true;
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

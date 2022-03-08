@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.journey.R;
 import com.journey.adapter.JSONPlaceholder;
 import com.journey.adapter.PeerAdapter;
+import com.journey.adapter.ReqResApi;
 import com.journey.model.Peer;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
  * @Description:
  * @author: Congqin Yan
@@ -34,7 +36,6 @@ public class PeerGroupActivity extends AppCompatActivity {
 
     JSONPlaceholder jsonPlaceholder;
     RecyclerView recyclerView;
-
     Button cancel;
 
     @Override
@@ -47,71 +48,50 @@ public class PeerGroupActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// create recyclerview in linear layout
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://jsonplaceholder.typicode.com/")
+                .baseUrl("http://192.168.0.137:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
 
-        getPeer();
-        cancelJourney();
+
+        try {
+            createPost(retrofit);
+//            cancelJourney();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void getPeer(){
-        Call<List<Peer>> call = jsonPlaceholder.getPeer();
-        call.enqueue(new Callback<List<Peer>>() {
-            @Override
-            public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
-                if (!response.isSuccessful()){
-                    Toast.makeText(PeerGroupActivity.this, response.code(), Toast.LENGTH_SHORT).show();
-                    return;
+
+    private void createPost(Retrofit retrofit) {
+
+        Peer peer = new Peer("123@qq.com", 1, 20, 3, 23.443232, 45.4343334, 23.3324234, 46.434344, 43438, 5425425);
+
+        ReqResApi reqResApi = retrofit.create(ReqResApi.class);
+        try {
+            reqResApi.createUser(peer).enqueue(new Callback<List<Peer>>() {
+                @Override
+                public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
+                    Toast.makeText(PeerGroupActivity.this, response.code() + " Response", Toast.LENGTH_SHORT).show();
                 }
-                List<Peer> peerList = response.body();
-                PeerAdapter peerAdapter = new PeerAdapter(PeerGroupActivity.this , peerList);
-                recyclerView.setAdapter(peerAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<List<Peer>> call, Throwable t) {
-
-                Toast.makeText(PeerGroupActivity.this, t.getMessage() , Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Peer>> call, Throwable t) {
+                    System.out.println(t.toString());
+                    Toast.makeText(PeerGroupActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            Toast.makeText(PeerGroupActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void cancelJourney() {
         cancel.setOnClickListener(view -> {
-            Intent intent = new Intent(this,  JourneyActivity.class);
+            Intent intent = new Intent(this, JourneyActivity.class);
             startActivity(intent);
         });
     }
-
-//    private ArrayList<Peer> getMylist() {
-//        ArrayList<Peer> peers = new ArrayList<>();
-//        Peer m = new Peer();
-//        m.setName("john");
-//        m.setScore("4");
-//        m.setImage(R.drawable.u1);
-//        peers.add(m);
-//
-//        m = new Peer();
-//        m.setName("james");
-//        m.setScore("8");
-//        m.setImage(R.drawable.u2);
-//        peers.add(m);
-//
-//        m = new Peer();
-//        m.setName("matthew");
-//        m.setScore("5");
-//        m.setImage(R.drawable.u3);
-//        peers.add(m);
-//
-//        m = new Peer();
-//        m.setName("jordan");
-//        m.setScore("2");
-//        m.setImage(R.drawable.u4);
-//        peers.add(m);
-//
-//        return peers;
-//    }
 }

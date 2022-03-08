@@ -27,7 +27,15 @@
     <string name="minAge">Min Age</string>
     <string name="maxAge">Max Age</string>
     <string name="minScore">Min Score</string>
-    <string name="submit">Submit</string>
+    <string name="create">Create</string>
+
+    <string name="time">datetime</string>
+    <string name="origin">originAddress</string>
+    <string name="end">endAddress</string>
+    <string name="gen">gender</string>
+    <string name="minA">minAge</string>
+    <string name="maxA">maxAge</string>
+    <string name="score">score</string>
 
     <!-- Strings used for selectLocation -->
     <string name="confirm">Confirm</string>
@@ -45,6 +53,12 @@
     <string name="longitude">longitude</string>
     <string name="latitude">latitude</string>
     <string name="locationMarker">locationMarker</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!--VALIDATION MESSAGE-->
+    <string name="invalid_datetime">Please choose the date</string>
+    <string name="invalid_origin_address">Please choose the origin address</string>
+    <string name="invalid_end_address">Please choose the end address</string>
+    <string name="invalid_gender">Invalid gender</string>
+    <string name="invalid_min_age">Invalid minimum age</string>
+    <string name="invalid_max_age">Invalid maximum age</string>
+    <string name="invalid_min_score">Invalid score</string>
 </resources>

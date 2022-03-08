@@ -124,6 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             User user1 = new User(username,  password, new Date(),  birthDate, gender,  phone,  email, mark);
                             String result = UserDb.getInstance().save(user1);
+                            System.out.println(result);
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {

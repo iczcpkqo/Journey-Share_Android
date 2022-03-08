@@ -101,10 +101,10 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
             public void onStyleLoaded(@NonNull final Style style) {
                 enableLocationPlugin(style);
 
-                // Toast instructing user to tap on the mapboxMap
+                // Toast instructing the user to tap on the mapboxMap
                 Toast.makeText( SelectLocationActivity.this, getString(R.string.move_map_instruction), Toast.LENGTH_SHORT).show();
 
-                // When user is still picking a location, we hover a marker above the mapboxMap in the center.
+                // When a user is still picking a location, we hover a marker above the mapboxMap in the centre.
                 // This is done by using an image view with the default marker found in the SDK. You can
                 // swap out for your own marker image, just make sure it matches up with the dropped marker.
                 hoveringMarker = new ImageView(SelectLocationActivity.this);
@@ -352,7 +352,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
     @SuppressWarnings({"MissingPermission"})
     private void enableLocationPlugin(@NonNull Style loadedMapStyle) {
 
-            // Check if permissions are enabled and if not request
+        // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 
             // Get an instance of the component. Adding in LocationComponentOptions is also an optional
