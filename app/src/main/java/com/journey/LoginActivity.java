@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson.JSON;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -19,7 +20,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.activity.JourneyActivity;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -29,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText password;
     private Button login_in;
 
-    private FirebaseFirestore db;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private static final String TAG = "EmailPassword";
     // [START declare_auth]
@@ -98,8 +106,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            if(currentUser!=null){
+                                String userEmail = currentUser.getEmail();
+                                saveUserInformation(userEmail);
+                            }
+                            updateUI(currentUser);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
@@ -115,6 +127,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             startActivity(new Intent(this, JourneyActivity.class));
+        }
+    }
+
+    private void saveUserInformation(String userEmail) {
+        if(userEmail != null){
+            System.out.println(userEmail);
+            db.collection("users")
+                    .whereEqualTo("email", userEmail)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String jsonMsg = JSON.toJSON(document.getData()).toString();
+                                    try {
+                                        File fs = new File(android.os.Environment.getExternalStorageDirectory()+"/UserInformation.txt");
+                                        FileOutputStream outputStream =new FileOutputStream(fs, false);
+                                        outputStream.write(jsonMsg.getBytes());
+                                        outputStream.flush();
+                                        outputStream.close();
+                                        Toast.makeText(getBaseContext(), "File created successfully", Toast.LENGTH_LONG).show();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else {
+//                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
         }
     }
 
