@@ -1,18 +1,31 @@
 package com.journey.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.journey.entity.Record;
 import com.journey.fragments.AccountFragment;
 import com.journey.R;
 import com.journey.fragments.JourneyFragment;
 import com.journey.fragments.MessageFragment;
 import com.journey.fragments.RecordFragment;
+
+import java.util.Map;
+
 /**
  * @Description:
  * @author: Congqin Yan
@@ -65,4 +78,25 @@ public class JourneyActivity extends AppCompatActivity {
             return true;
         }
     };
+    public void showDetail(View view){
+        Log.d("intent test","good!");
+        Intent intent = new Intent(this, showDetail.class);
+        String targetDocumentId = view.getTag().toString();
+        intent.putExtra("targetID",targetDocumentId);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("record").document(targetDocumentId);
+        Log.d("intent",targetDocumentId);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+                Log.d("intent", String.valueOf(document.exists()));
+                Map<String, Object> data = document.getData();
+                Record tmp = new Record((String)document.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate());
+                intent.putExtra("DocObj",tmp);
+                startActivity(intent);
+            }
+        });
+
+    }
 }

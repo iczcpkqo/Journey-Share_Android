@@ -49,7 +49,7 @@
         android:id="@+id/email"
         android:layout_width="355dp"
         android:layout_height="42dp"
-        android:hint="Email"
+        android:hint="Email (Use lowercase letters)"
         android:paddingLeft="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
