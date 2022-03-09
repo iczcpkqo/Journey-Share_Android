@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="#B2DFDB">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/main_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <!-- Departure Address-->
+            <TextView
+                android:id="@+id/dep_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:text="Departure Address:"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/dep_detail_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dep_text_view"
+                android:layout_gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingEnd="16dp"
+                android:text="Trinity College Dublin"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textSize="16dp" />
+
+            <!-- Arrival Address-->
+            <TextView
+
+                android:id="@+id/arr_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dep_detail_text_view"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:text="Arrival Address:"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/arr_detail_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/arr_text_view"
+                android:layout_gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingEnd="16dp"
+                android:text="Dorset Point, 107 Dorset Street Upper"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textSize="16dp" />
+
+            <!-- Departure time-->
+            <TextView
+
+                android:id="@+id/dep_time_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/arr_detail_text_view"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:text="Departure Time:"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/dep_time_detail_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dep_time_text_view"
+                android:layout_gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingEnd="16dp"
+                android:text="9:40 26th/Dec/2021"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textSize="16dp" />
+
+            <!-- Arrival time-->
+            <TextView
+
+                android:id="@+id/arr_time_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dep_time_detail_text_view"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:text="Arrival Time:"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/arr_time_detail_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/arr_time_text_view"
+                android:layout_gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingEnd="16dp"
+                android:text="10:00 26th/Dec/2021"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <!-- Additional Information-->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/addi_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_below="@id/main_information"
+        android:background="@color/white">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Order number,Companion,rating -->
+            <TextView
+                android:id="@+id/order_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:text="Order Number:"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/order_number_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/order_number"
+                android:layout_gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingEnd="16dp"
+                android:text="11111111"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/companion_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:text="Companions:"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/companion_list_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/companion_list"
+                android:layout_gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingEnd="16dp"
+                android:text="Tom, Jack, Abby, Lisa"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:text="Distance:"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/distance_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/companion_list"
+                android:layout_gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingEnd="16dp"
+                android:text="1.6km"
+                android:textAppearance="?attr/textAppearanceBody2"
+                android:textSize="16dp" />
+
+
+            <TextView
+                android:id="@+id/rate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingTop="16dp"
+                android:paddingEnd="16dp"
+                android:text="Rate:"
+                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+            <RatingBar
+                android:paddingVertical="16dp"
+                android:id="@+id/ratingBar"
+                android:numStars="5"
+                android:rating="3.5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/ratingBarStyle"
+                android:isIndicator="true"
+                android:layout_gravity="center_horizontal"
+                />
+
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</RelativeLayout>
+

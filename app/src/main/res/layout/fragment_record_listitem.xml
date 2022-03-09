@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#B2DFDB">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginRight="16dp"
+                >
+
+                <!-- Image -->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    app:srcCompat="@drawable/ic_record"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Departure -->
+
+                    <LinearLayout
+                        android:id="@+id/departure_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:text="Departure:"
+                            android:textAppearance="?attr/textAppearanceHeadline4"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/departure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Trinity College Dublin"
+                            android:textAppearance="?attr/textAppearanceHeadline4" />
+                    </LinearLayout>
+
+                    <!-- Arrival-->
+                    <LinearLayout
+                        android:id="@+id/Destination_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Arrival:"
+                            android:textAppearance="?attr/textAppearanceHeadline4"
+                            android:textStyle="bold"
+                            />
+
+                        <TextView
+                            android:id="@+id/arrival"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="Dorset Point"
+                            android:textAppearance="?attr/textAppearanceHeadline4"
+                            />
+
+                    </LinearLayout>
+                    <!-- Date-->
+                    <LinearLayout
+                        android:id="@+id/date_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Arrive time:"
+                            android:textAppearance="?attr/textAppearanceHeadline4"
+                            android:textStyle="bold"
+                            />
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:text="10:00 26th/Dec/2021"
+                            android:textAppearance="?attr/textAppearanceHeadline4"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:background="@color/white">
+
+                <Button
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Detail"
+                    android:onClick="showDetail"
+                    android:id="@+id/detailBtn"
+                    />
+
+                <TextView
+                    style="?attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="96dp"
+                    android:layout_marginRight="8dp"
+                    android:text="Score:" />
+
+                <RatingBar
+                    android:paddingVertical="16dp"
+                    android:id="@+id/ratingBar"
+                    android:numStars="5"
+                    android:rating="3.5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?android:attr/ratingBarStyleSmall"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
