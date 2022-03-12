@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
 
     <application
         android:allowBackup="true"
@@ -15,12 +18,15 @@
         android:theme="@style/Theme.Journey_sharing"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.showDetail"
+            android:exported="false" />
+        <activity
             android:name=".activity.InformationActivity"
             android:exported="true" />
         <activity
             android:name=".activity.PeerGroupActivity"
             android:exported="true"
-            android:parentActivityName=".activity.RealTimeJourneyTableActivity"/>
+            android:parentActivityName=".activity.RealTimeJourneyTableActivity" />
         <activity
             android:name=".activity.RealTimeJourneyTableActivity"
             android:exported="true"

@@ -48,20 +48,20 @@ public class RecordFragment extends Fragment {
         mlistView.setAdapter(adapter);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("record").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for (QueryDocumentSnapshot document: task.getResult()){
-                        Map<String, Object> data = document.getData();
-                        Record tmp = new Record((String)document.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate());
-//                        records.add(tmp);
-                        adapter.add(tmp);
-                        Log.d("Pengbo",document.getId() + "=>" + document.getData().get("departure"));
-                    }
-                }
-            }
-        });
+//        db.collection("record").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()){
+//                    for (QueryDocumentSnapshot document: task.getResult()){
+//                        Map<String, Object> data = document.getData();
+//                        Record tmp = new Record((String)document.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate());
+////                        records.add(tmp);
+//                        adapter.add(tmp);
+//                        Log.d("Pengbo",document.getId() + "=>" + document.getData().get("departure"));
+//                    }
+//                }
+//            }
+//        });
 
         lg = db.collection("record").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

@@ -31,7 +31,5 @@ public class showDetail extends AppCompatActivity {
         marrival.setText(record.getArrival());
         mdate.setText(record.getCreateDateString());
 
-
-
     }
 }

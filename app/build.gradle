@@ -71,6 +71,9 @@ dependencies {
     //awesome validation
     implementation 'com.basgeekball:awesome-validation:4.2'
 
+    //noinspection GradleCompatible
+    implementation 'com.android.support:design:22.2.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
