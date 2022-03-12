@@ -14,11 +14,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,6 +31,9 @@ import android.widget.DatePicker;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.entity.User;
 import com.journey.service.database.UserDb;
 
@@ -44,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
     // [START declare_auth]
     private FirebaseAuth mAuth;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public void init() {
         back = (Button) findViewById(R.id.back);
@@ -78,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)){
                     Toast.makeText(RegisterActivity.this, "Empty credentials!", Toast.LENGTH_SHORT).show();
                 }else{
-                    createAccount(txt_username,txt_password,txt_birthDate,txt_gender,txt_phone,txt_email,  5.0);
+                    createAccount(txt_username,txt_password,txt_birthDate,txt_gender,txt_phone,txt_email,  5.0, 0);
                 }
             }
         });
@@ -113,7 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void createAccount(String username, String password,String birthDate,String gender,String phone,String email, Double mark) {
+    private void createAccount(String username, String password,String birthDate,String gender,String phone,String email, Double mark, Integer order) {
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -122,7 +131,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            User user1 = new User(username,  password, new Date(),  birthDate, gender,  phone,  email, mark);
+                            User user1 = new User(username,  password, new Date(),  birthDate, gender,  phone,  email, mark, order);
                             String result = UserDb.getInstance().save(user1);
                             System.out.println(result);
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -141,7 +150,42 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
+            String userEmail = user.getEmail();
+            saveUserInformation(userEmail);
             startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
+
+    private void saveUserInformation(String userEmail) {
+        if(userEmail != null){
+            System.out.println(userEmail);
+            db.collection("users")
+                    .whereEqualTo("email", userEmail)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String jsonMsg = JSON.toJSON(document.getData()).toString();
+                                    try {
+                                        File fs = new File(android.os.Environment.getExternalStorageDirectory()+"/UserInformation.txt");
+                                        FileOutputStream outputStream =new FileOutputStream(fs, false);
+                                        outputStream.write(jsonMsg.getBytes());
+                                        outputStream.flush();
+                                        outputStream.close();
+                                        Toast.makeText(getBaseContext(), "File created successfully", Toast.LENGTH_LONG).show();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else {
+//                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
         }
     }
 

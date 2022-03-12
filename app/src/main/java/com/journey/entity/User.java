@@ -20,7 +20,9 @@ public class User {
 
     private Double mark;
 
-    public User(String username, String password, Date createDate, String birthDate, String gender, String phone, String email, Double mark) {
+    private Integer order;
+
+    public User(String username, String password, Date createDate, String birthDate, String gender, String phone, String email, Double mark, Integer order) {
         this.username = username;
         this.password = password;
         this.createDate = createDate;
@@ -29,6 +31,7 @@ public class User {
         this.phone = phone;
         this.email = email;
         this.mark = mark;
+        this.order = order;
     }
 
     public String getUsername() {
@@ -74,5 +77,9 @@ public class User {
     public Double getMark() {  return mark; }
 
     public void setMark(Double mark) { this.mark = mark; }
+
+    public Integer getOrder() { return order; }
+
+    public void setOrder(Integer order) { this.order = order; }
 
 }
