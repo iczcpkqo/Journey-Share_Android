@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,8 +25,8 @@ import com.journey.R;
 import com.journey.entity.Message;
 
 import java.util.ArrayList;
-
 public class Chat extends AppCompatActivity implements View.OnClickListener {
+//public class Chat extends Fragment{
     public static final int CHAT_MSG_TYPE_LEFT = 2;
     public static final int CHAT_MSG_TYPE_RIGHT = 1;
 
@@ -41,6 +42,7 @@ public class Chat extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//    public void onCreateView(Bundle savedInstanceState) {
         System.out.println("dsf");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.msg_chat);
