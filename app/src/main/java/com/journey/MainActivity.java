@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @Date: 7 Jan. 2022
      */
     public void msgFeatureSaveMSG(){
-        Message msg = new Message( new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
-                                   new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
+        Message msg = new Message( new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
+                                   new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
                               "sdfsdfsdf",
                                    new Date() );
 

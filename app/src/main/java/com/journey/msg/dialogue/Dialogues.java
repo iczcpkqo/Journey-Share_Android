@@ -18,17 +18,17 @@ public class Dialogues implements DialogueContainer {
         // ...
 
         //聊天对象先写死
-        this.diaBox.add(new Dialogue(new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
-                new User("test_name_222", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0)));
+        this.diaBox.add(new Dialogue(new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
+                new User("test_name_222", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0)));
 
-        this.diaBox.add(new Dialogue(new User("test_name_333", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
-                new User("test_name_444", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0)));
+        this.diaBox.add(new Dialogue(new User("test_name_333", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0,0),
+                new User("test_name_444", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0)));
 
-        this.diaBox.add(new Dialogue(new User("test_name_555", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
-                new User("test_name_6666", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0)));
+        this.diaBox.add(new Dialogue(new User("test_name_555", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
+                new User("test_name_6666", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0)));
 
-        this.diaBox.add(new Dialogue(new User("test_name_777", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
-                new User("test_name_888", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0)));
+        this.diaBox.add(new Dialogue(new User("test_name_777", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
+                new User("test_name_888", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0)));
     }
 
     public void setHostUserName(String name){ this.hostUserName = name; }

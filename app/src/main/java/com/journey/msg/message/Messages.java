@@ -19,13 +19,13 @@ public class Messages implements MessageContainer {
 
         //聊天消息写死
         this.msgBox.add(new Message(
-                new User("test_name_999", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
-                new User("test_name_1010", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
+                new User("test_name_999", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
+                new User("test_name_1010", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
             "sdfsdfsdf", new Date() ));
 
         this.msgBox.add(new Message(
-                new User("test_name_2121", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
-                new User("test_name_3131", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
+                new User("test_name_2121", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
+                new User("test_name_3131", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
                 "222222", new Date() ));
     }
 
