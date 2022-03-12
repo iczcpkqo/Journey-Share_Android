@@ -9,8 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.journey.entity.Message;
 import com.journey.entity.User;
 import com.journey.service.database.UserDb;
 
@@ -73,4 +76,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+    /**
+     * @Version: V0.1
+     * @Description: 用于测试各种消息模块的功能的入口函数.
+     * @Author: Xiang Mao
+     * @Date: 7 Jan. 2022
+     */
+    public void msgFeatureTesting(){
+        msgFeatureSaveMSG();
+    }
+
+    /**
+     * @Version: V0.1
+     * @Description: 消息模块. 存储消息.
+     * @Author: Xiang Mao
+     * @Date: 7 Jan. 2022
+     */
+    public void msgFeatureSaveMSG(){
+        Message msg = new Message( new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
+                                   new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0),
+                              "sdfsdfsdf",
+                                   new Date() );
+
+//        String result =  MessageDb.getInstance().save(msg);
+        String result = "test for msg feature save msg."; // MessageDb.getInstance().save(msg);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
