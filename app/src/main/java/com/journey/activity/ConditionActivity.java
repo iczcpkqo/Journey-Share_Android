@@ -25,6 +25,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.journey.R;
 import com.journey.adapter.JSONPlaceholder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +60,9 @@ public class ConditionActivity extends AppCompatActivity {
     private static final String TAG ="postRequestActivity" ;
     private static final String ORIGIN_LOCATION = "0";
     private static final String END_LOCATION = "1";
+
+
+
     JSONPlaceholder jsonPlaceholder;
     AwesomeValidation awesomeValidation;
     //location contains latitude and longitude
@@ -106,6 +112,46 @@ public class ConditionActivity extends AppCompatActivity {
             getConInfo();
         });
     }
+
+    /**
+     *@className: TEST
+     *@desc:
+     *@author: Guowen Liu
+     *@date: 2022/3/12 14:45
+     */
+    private void testNavigationActivity(){
+        String testJson  = "[{\n" +
+                " \"email\": \"11@qq.com\",\n" +
+                " \"gender\": 1,\n" +
+                " \"age\": 29,\n" +
+                " \"score\": 4.1,\n" +
+                " \"longitude\": 53.13424,\n" +
+                " \"latitude\": -6.13929,\n" +
+                " \"dLongtitude\": 53.15922,\n" +
+                " \"dLatitude\": -6.1012,\n" +
+                " \"startTime\": 2193932002,\n" +
+                " \"endTime\": 2196662719,\n" +
+                " \"limit\": 5,\n" +
+                " \"isLeader\": true\n" +
+                "}, {\n" +
+                " \"email\": \"11@qq.com\",\n" +
+                " \"gender\": 1,\n" +
+                " \"age\": 29,\n" +
+                " \"score\": 4.1,\n" +
+                " \"longitude\": 53.13424,\n" +
+                " \"latitude\": -6.13929,\n" +
+                " \"dLongtitude\": 53.15922,\n" +
+                " \"dLatitude\": -6.1012,\n" +
+                " \"startTime\": 2193932002,\n" +
+                " \"endTime\": 2196662719,\n" +
+                " \"limit\": 5,\n" +
+                " \"isLeader\": false\n" +
+                "}]";
+
+        Intent conInfo = new Intent(this, NavigationActivity.class);
+        conInfo.putExtra("list", testJson);
+        startActivity(conInfo);
+    }
     /**
      *@desc: send the information into realTimeJourneyTable
      *@author: Congqin yan
@@ -114,6 +160,7 @@ public class ConditionActivity extends AppCompatActivity {
     private void getConInfo(){
         infoChecker();
         Intent conInfo = new Intent(this, RealTimeJourneyTableActivity.class);
+
         if(awesomeValidation.validate()){
 
             conInfo.putExtra("datetime", chooseDateTime.getText().toString());
@@ -249,6 +296,8 @@ public class ConditionActivity extends AppCompatActivity {
 
         startActivityForResult(setLocationMarker(END_LOCATION), GET_PLACE_INFORMATION);
     }
+
+
 
     private Intent setLocationMarker(String locationMarker)
     {

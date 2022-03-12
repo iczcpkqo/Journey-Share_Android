@@ -74,6 +74,12 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:design:22.2.0'
 
+    //mapbox navigation
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.42.6'
+    //implementation 'com.mapbox.navigator:mapbox-navigation-native:7.0.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation:0.42.6'
+    implementation "com.mapbox.navigation:android:2.3.0"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
