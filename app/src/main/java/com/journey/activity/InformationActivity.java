@@ -78,6 +78,7 @@ public class InformationActivity extends AppCompatActivity {
     private EditText username;
     private EditText email;
     private EditText mark;
+    private Button logout;
 
     private FirebaseAuth mAuth;
 
@@ -94,6 +95,7 @@ public class InformationActivity extends AppCompatActivity {
         email.setEnabled(false);
         mark = (EditText) findViewById(R.id.mark);
         mark.setEnabled(false);
+        logout = (Button) findViewById(R.id.logout);
     }
 
     @Override
@@ -109,6 +111,14 @@ public class InformationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDatePickDlg();
+            }
+        });
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent_login = new Intent(InformationActivity.this, LoginActivity.class);
+                startActivity(intent_login);
             }
         });
         submit.setOnClickListener(new View.OnClickListener() {
