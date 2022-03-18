@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.journey.R;
 import com.journey.model.Peer;
+import com.mapbox.mapboxsdk.maps.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,10 +47,10 @@ public class PeerAdapter extends RecyclerView.Adapter<PeerAdapter.PeerViewHolder
     @Override
     public void onBindViewHolder(@NonNull PeerViewHolder holder, int position) {
         Peer peer = peerList.get(position);
-        holder.email.setText("userId : " + peer.getEmail());
-        holder.gender.setText("id : " + peer.getGender());
-        holder.age.setText("title :" + peer.getAge());
-        holder.score.setText("body :" + peer.getScore());
+        holder.email.setText("Peer : " + peer.getEmail());
+        holder.gender.setText("gender : " + peer.getGender());
+        holder.age.setText("age :" + peer.getAge());
+        holder.score.setText("score :" + peer.getScore());
     }
 
     @Override
@@ -58,6 +60,7 @@ public class PeerAdapter extends RecyclerView.Adapter<PeerAdapter.PeerViewHolder
 
     public class PeerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView email, gender, age, score;
+        ImageView imageView;
         Button delete;
 
         public PeerViewHolder(@NonNull View itemView) {
@@ -66,9 +69,9 @@ public class PeerAdapter extends RecyclerView.Adapter<PeerAdapter.PeerViewHolder
             gender = itemView.findViewById(R.id.id_tv);
             age = itemView.findViewById(R.id.title_tv);
             score = itemView.findViewById(R.id.body_tv);
-            delete = itemView.findViewById(R.id.delete);
-
-            delete.setOnClickListener(this);
+//            delete = itemView.findViewById(R.id.delete);
+//
+//            delete.setOnClickListener(this);
         }
 
         @Override

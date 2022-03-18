@@ -27,7 +27,7 @@
             android:id="@id/choose_date_time_dt"
             android:maxLength="20"
             android:hint="@string/dateTime"
-            android:inputType="datetime"
+            android:inputType="text"
             android:background="@drawable/text_input_round"
             style="@style/textInput" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -75,18 +75,18 @@
             android:id="@id/end_address_dt"
             style="@style/textInput"
             android:inputType="text"
-            android:hint="@string/originAddress"
+            android:hint="@string/endAddress"
             android:background="@drawable/text_input_round"
             android:maxLength="20" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/gender"
         style="@style/textInputLayout"
+        android:id="@+id/gender_input_layout"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:focusable="false"
         app:counterEnabled="true"
-        app:counterMaxLength="20"
+        app:counterMaxLength="2"
         app:endIconMode="clear_text"
         app:helperTextTextColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,11 +94,13 @@
         app:layout_constraintTop_toBottomOf="@id/end_address"
         android:imeOptions="actionNext">
 
-        <AutoCompleteTextView
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@id/prefer_gender_dt"
             style="@style/textInput"
-            android:hint="@string/gender"
-            android:id="@+id/auto_complete_gender"
-            android:inputType="text" />
+            android:hint="@string/preferGender"
+            android:inputType="text"
+            android:background="@drawable/text_input_round"
+            android:maxLength="6" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/min_age"
@@ -112,7 +114,7 @@
         app:helperTextTextColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gender"
+        app:layout_constraintTop_toBottomOf="@id/gender_input_layout"
         android:imeOptions="actionNext">
 
         <com.google.android.material.textfield.TextInputEditText

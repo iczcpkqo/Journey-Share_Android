@@ -24,7 +24,7 @@
         >
 
         <Button
-            android:id="@+id/navigate_btn"
+            android:id="@+id/confirm_btn"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"

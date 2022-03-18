@@ -32,10 +32,16 @@
     <string name="time">datetime</string>
     <string name="origin">originAddress</string>
     <string name="end">endAddress</string>
-    <string name="gen">gender</string>
+    <string name="preferGender">preferGender</string>
     <string name="minA">minAge</string>
     <string name="maxA">maxAge</string>
     <string name="score">score</string>
+
+    <string name="originLat">originLat</string>
+    <string name="originLon">originLon</string>
+    <string name="endLat">endLat</string>
+    <string name="endLon">endLon</string>
+
 
     <!-- Strings used for selectLocation -->
     <string name="confirm">Confirm</string>

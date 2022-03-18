@@ -10,6 +10,6 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface ReqResApi{
-    @POST("match")
+    @POST("matchLeader")
     Call<List<Peer>> createUser(@Body Peer peer);
 }
