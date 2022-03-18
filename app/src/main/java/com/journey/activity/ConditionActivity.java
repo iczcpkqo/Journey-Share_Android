@@ -191,10 +191,10 @@ public class ConditionActivity extends AppCompatActivity {
                     min_score,origin_lon,origin_lat,end_lon,end_lat);
             //send serialized conditionInfo to real time activity
             conInfo.putExtra(CONDITION_INFO,conditionInfo);
+            startActivity(conInfo);
         }else{
             Toast.makeText(this, "Validation Failed, Please check your information!", Toast.LENGTH_SHORT).show();
         }
-        startActivity(conInfo);
     }
     /**
      *@desc: check the user input fields

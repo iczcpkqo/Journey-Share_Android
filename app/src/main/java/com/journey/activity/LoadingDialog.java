@@ -33,13 +33,13 @@ public class LoadingDialog{
         alertDialog = builder.create();
         //set round background for alert dialog
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.real_time_table_round);
-        alertDialog.setMessage("60");
+        alertDialog.setMessage("10");
         alertDialog.show();
 
         startCounting();
     }
     private void startCounting(){
-        new CountDownTimer(60000,1000) {
+        new CountDownTimer(10000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 alertDialog.setMessage(" " + millisUntilFinished / 1000 + "s");

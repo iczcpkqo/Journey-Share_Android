@@ -12,90 +12,46 @@ import java.io.Serializable;
  * @Modified remark:
  */
 public class Peer implements Serializable {
-    //user info
-    String username;
-    String birthday;
-    String gender;
-    String phone;
     String email;
-    Double mark;
+
+    String gender;
+
     Integer age;
+
+    Double score;
+
+    Double longitude;
+
+    Double latitude;
+
+    Double dLongtitude;
+
+    Double dLatitude;
+
+    Long startTime;
+
+    Long endTime;
+
     Integer order;
 
-
-    //condition info
-    String dateTime;
-    String originAddress;
-    String endAddress;
-    String preferGender;
-    Integer minAge;
-    Integer maxAge;
-    Double score;
-    Double originLon;
-    Double originLat;
-    Double endLon;
-    Double endLat;
-    Long startTime;
-    Long endTime;
     Integer limit;
+
     Boolean isLeader;
 
-    public Peer(String username, String birthday, String gender, String phone, String email, Double mark, Integer age, Integer order, String dateTime, String originAddress, String endAddress, String preferGender, int minAge, int maxAge, Double score, Double originLon, Double originLat, Double endLon, Double endLat, Long startTime, Long endTime, Integer limit, Boolean isLeader) {
-        this.username = username;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.phone = phone;
+    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean isLeader) {
         this.email = email;
-        this.mark = mark;
+        this.gender = gender;
         this.age = age;
-        this.order = order;
-        this.dateTime = dateTime;
-        this.originAddress = originAddress;
-        this.endAddress = endAddress;
-        this.preferGender = preferGender;
-        this.minAge = minAge;
-        this.maxAge = maxAge;
         this.score = score;
-        this.originLon = originLon;
-        this.originLat = originLat;
-        this.endLon = endLon;
-        this.endLat = endLat;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.dLongtitude = dLongtitude;
+        this.dLatitude = dLatitude;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.order = order;
         this.limit = limit;
         this.isLeader = isLeader;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getEmail() {
@@ -106,12 +62,12 @@ public class Peer implements Serializable {
         this.email = email;
     }
 
-    public Double getMark() {
-        return mark;
+    public String getGender() {
+        return gender;
     }
 
-    public void setMark(Double mark) {
-        this.mark = mark;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public Integer getAge() {
@@ -122,62 +78,6 @@ public class Peer implements Serializable {
         this.age = age;
     }
 
-    public Integer getOrder() {
-        return order;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
-    }
-
-    public String getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    public String getOriginAddress() {
-        return originAddress;
-    }
-
-    public void setOriginAddress(String originAddress) {
-        this.originAddress = originAddress;
-    }
-
-    public String getEndAddress() {
-        return endAddress;
-    }
-
-    public void setEndAddress(String endAddress) {
-        this.endAddress = endAddress;
-    }
-
-    public String getPreferGender() {
-        return preferGender;
-    }
-
-    public void setPreferGender(String preferGender) {
-        this.preferGender = preferGender;
-    }
-
-    public int getMinAge() {
-        return minAge;
-    }
-
-    public void setMinAge(int minAge) {
-        this.minAge = minAge;
-    }
-
-    public int getMaxAge() {
-        return maxAge;
-    }
-
-    public void setMaxAge(int maxAge) {
-        this.maxAge = maxAge;
-    }
-
     public Double getScore() {
         return score;
     }
@@ -186,36 +86,36 @@ public class Peer implements Serializable {
         this.score = score;
     }
 
-    public Double getOriginLon() {
-        return originLon;
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setOriginLon(Double originLon) {
-        this.originLon = originLon;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
-    public Double getOriginLat() {
-        return originLat;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setOriginLat(Double originLat) {
-        this.originLat = originLat;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
-    public Double getEndLon() {
-        return endLon;
+    public Double getdLongtitude() {
+        return dLongtitude;
     }
 
-    public void setEndLon(Double endLon) {
-        this.endLon = endLon;
+    public void setdLongtitude(Double dLongtitude) {
+        this.dLongtitude = dLongtitude;
     }
 
-    public Double getEndLat() {
-        return endLat;
+    public Double getdLatitude() {
+        return dLatitude;
     }
 
-    public void setEndLat(Double endLat) {
-        this.endLat = endLat;
+    public void setdLatitude(Double dLatitude) {
+        this.dLatitude = dLatitude;
     }
 
     public Long getStartTime() {
@@ -234,6 +134,14 @@ public class Peer implements Serializable {
         this.endTime = endTime;
     }
 
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
     public Integer getLimit() {
         return limit;
     }
@@ -249,4 +157,32 @@ public class Peer implements Serializable {
     public void setLeader(Boolean leader) {
         isLeader = leader;
     }
+    //user info
+//    String username;
+//    String birthday;
+//    String gender;
+//    String phone;
+//    String email;
+//    Double mark;
+//    Integer age;
+//    Integer order;
+
+
+    //condition info
+//    String dateTime;
+//    String originAddress;
+//    String endAddress;
+//    String preferGender;
+//    Integer minAge;
+//    Integer maxAge;
+//    Double score;
+//    Double originLon;
+//    Double originLat;
+//    Double endLon;
+//    Double endLat;
+//    Long startTime;
+//    Long endTime;
+//    Integer limit;
+//    Boolean isLeader;
+
 }

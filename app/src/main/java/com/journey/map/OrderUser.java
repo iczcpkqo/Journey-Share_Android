@@ -1,9 +1,11 @@
 package com.journey.map;
 
-public class OrderUser {
+import java.io.Serializable;
+
+public class OrderUser implements Serializable {
 
     private   String emailTag;
-    private   int genderTag;
+    private   String genderTag;
     private   int ageTag;
     private   double scoreTag;
     private   double longitudeTag;
@@ -15,7 +17,7 @@ public class OrderUser {
     private   int  limitTag;
     private   boolean  isLeaderTag;
 
-    public OrderUser(String emailTag, int genderTag, int ageTag, double scoreTag, double longitudeTag, double latitudeTag, double dLongitudeTag, double dLatitudeTag, long startTimeTag, long endTimeTag, int limitTag, boolean isLeaderTag) {
+    public OrderUser(String emailTag, String genderTag, int ageTag, double scoreTag, double longitudeTag, double latitudeTag, double dLongitudeTag, double dLatitudeTag, long startTimeTag, long endTimeTag, int limitTag, boolean isLeaderTag) {
         this.emailTag = emailTag;
         this.genderTag = genderTag;
         this.ageTag = ageTag;
@@ -34,48 +36,95 @@ public class OrderUser {
         return emailTag;
     }
 
-    public int getGenderTag() {
+    public void setEmailTag(String emailTag) {
+        this.emailTag = emailTag;
+    }
+
+    public String getGenderTag() {
         return genderTag;
+    }
+
+    public void setGenderTag(String genderTag) {
+        this.genderTag = genderTag;
     }
 
     public int getAgeTag() {
         return ageTag;
     }
 
+    public void setAgeTag(int ageTag) {
+        this.ageTag = ageTag;
+    }
+
     public double getScoreTag() {
         return scoreTag;
+    }
+
+    public void setScoreTag(double scoreTag) {
+        this.scoreTag = scoreTag;
     }
 
     public double getLongitudeTag() {
         return longitudeTag;
     }
 
+    public void setLongitudeTag(double longitudeTag) {
+        this.longitudeTag = longitudeTag;
+    }
+
     public double getLatitudeTag() {
         return latitudeTag;
+    }
+
+    public void setLatitudeTag(double latitudeTag) {
+        this.latitudeTag = latitudeTag;
     }
 
     public double getdLongitudeTag() {
         return dLongitudeTag;
     }
 
+    public void setdLongitudeTag(double dLongitudeTag) {
+        this.dLongitudeTag = dLongitudeTag;
+    }
+
     public double getdLatitudeTag() {
         return dLatitudeTag;
+    }
+
+    public void setdLatitudeTag(double dLatitudeTag) {
+        this.dLatitudeTag = dLatitudeTag;
     }
 
     public long getStartTimeTag() {
         return startTimeTag;
     }
 
+    public void setStartTimeTag(long startTimeTag) {
+        this.startTimeTag = startTimeTag;
+    }
+
     public long getEndTimeTag() {
         return endTimeTag;
+    }
+
+    public void setEndTimeTag(long endTimeTag) {
+        this.endTimeTag = endTimeTag;
     }
 
     public int getLimitTag() {
         return limitTag;
     }
 
+    public void setLimitTag(int limitTag) {
+        this.limitTag = limitTag;
+    }
+
     public boolean isLeaderTag() {
         return isLeaderTag;
     }
 
+    public void setLeaderTag(boolean leaderTag) {
+        isLeaderTag = leaderTag;
+    }
 }

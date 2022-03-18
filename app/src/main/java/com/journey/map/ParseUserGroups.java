@@ -39,7 +39,7 @@ public class ParseUserGroups {
 
                 JSONObject jsonObject = userList.getJSONObject(i);
                 String email = jsonObject.optString(emailTag);
-                int gender = jsonObject.optInt(genderTag);
+                String gender = jsonObject.optString(genderTag);
                 int age = jsonObject.optInt(ageTag);
                 double score = jsonObject.optDouble(scoreTag);
                 double longitude = jsonObject.optDouble(longitudeTag);
