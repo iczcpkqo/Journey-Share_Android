@@ -63,8 +63,8 @@
     <string name="invalid_max_age">Invalid maximum age</string>
     <string name="invalid_min_score">Invalid score</string>
 
-<!--    message use this-->
+    <!--    message use this-->
     <string name="message_title">ASE_Xiang-Testing</string>
 
-<!--  end  message use this-->
+    <!--  end  message use this-->
 </resources>

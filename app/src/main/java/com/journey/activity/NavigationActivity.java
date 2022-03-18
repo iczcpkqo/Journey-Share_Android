@@ -1,13 +1,27 @@
 package com.journey.activity;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.widget.Toast;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.journey.MainActivity;
 import com.journey.R;
 import com.journey.map.OrderUser;
 import com.journey.map.ParseUserGroups;
+import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -20,19 +34,28 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
-import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 import java.util.List;
-public class NavigationActivity   extends AppCompatActivity implements
+
+public class NavigationActivity extends AppCompatActivity implements
         OnMapReadyCallback, PermissionsListener {
 
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
     private MapView mapView;
     private static final String TAG = "Main";
-    private NavigationMapRoute  navigationMapRoute;
+    private NavigationMapRoute navigationMapRoute;
+    private LocationEngine locationEngine;
+    private LocationLayerPlugin locationLayerPlugin;
+    private Location originLocation;
     private List<OrderUser> orderlist;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    LocationRequest locationRequest;
+    Location currentLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +71,41 @@ public class NavigationActivity   extends AppCompatActivity implements
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         getUserList();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        setLocationUpdata(10000,5000);
+        setUpdateCallback();
+
+    }
+    private void setUpdateCallback()
+    {
+        //instantiating the LocationCallBack
+        LocationCallback locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult != null) {
+                    if (locationResult == null) {
+                        return;
+                    }
+                    //Showing the latitude, longitude and accuracy on the home screen.
+                    for (Location location : locationResult.getLocations()) {
+                        currentLocation = location;
+                    }
+                }
+            }
+        };
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+    }
+    private void setLocationUpdata(int updateMillisecond,int fastUpdateMillisecond)
+    {
+
+        //Instantiating the Location request and setting the priority and the interval I need to update the location.
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(updateMillisecond);
+        locationRequest.setFastestInterval(fastUpdateMillisecond);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
     private void getUserList()
@@ -94,8 +152,13 @@ public class NavigationActivity   extends AppCompatActivity implements
             // Set the component's camera mode
             locationComponent.setCameraMode(CameraMode.TRACKING);
 
+            if (locationComponent.getLastKnownLocation()!= null) {
+                Location lastKnownLocation = mapboxMap.getLocationComponent().getLastKnownLocation();
+                double lat = lastKnownLocation.getLatitude();
+                double longitude = lastKnownLocation.getLongitude();
+            }
             // Set the component's render mode
-            locationComponent.setRenderMode(RenderMode.NORMAL);
+            locationComponent.setRenderMode(RenderMode.COMPASS);
         } else {
             permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);

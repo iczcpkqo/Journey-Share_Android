@@ -10,6 +10,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -69,10 +70,13 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
     private MapboxMap mapboxMap;
     private Button selectLocationButton;
     private Button selectSaveButton;
+    private Button originButton;
     private PermissionsManager permissionsManager;
     private ImageView hoveringMarker;
     private Layer droppedMarkerLayer;
     private CarmenFeature SaveFeature;
+    private Location originLocation;
+    private Point originPoint;
     private static final int GET_PLACE_INFORMATION = 485;
     private String id;
     private static final String ID = "id";
@@ -174,7 +178,13 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
                         }
                     }
                 });
-
+                originButton = findViewById(R.id.origin_button);
+                originButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                       // originPoint = Point.fromLngLat(originLocation.ge)
+                    }
+                });
                 //Button for user to save address
                 selectSaveButton = findViewById(R.id.select_button);
                 // Activity finished ok, return the data
