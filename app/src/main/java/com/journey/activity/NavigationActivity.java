@@ -1,8 +1,10 @@
 package com.journey.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.Person;
 
 import android.Manifest;
 import android.content.Intent;
@@ -10,8 +12,13 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.JavaSerializer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -20,10 +27,18 @@ import com.google.android.gms.location.LocationServices;
 import com.journey.MainActivity;
 import com.journey.R;
 import com.journey.map.OrderUser;
+import com.journey.map.ParseRoutes;
 import com.journey.map.ParseUserGroups;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.api.directions.v5.DirectionsCriteria;
+import com.mapbox.api.directions.v5.MapboxDirections;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.api.directions.v5.models.RouteLeg;
+import com.mapbox.api.directions.v5.models.RouteOptions;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
@@ -35,9 +50,20 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NavigationActivity extends AppCompatActivity implements
         OnMapReadyCallback, PermissionsListener {
@@ -49,12 +75,14 @@ public class NavigationActivity extends AppCompatActivity implements
     private NavigationMapRoute navigationMapRoute;
     private LocationEngine locationEngine;
     private LocationLayerPlugin locationLayerPlugin;
-    private Location originLocation;
+    private Point originLocation;
+    private Point destinationLocation;
     private List<OrderUser> orderlist;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     Location currentLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +104,94 @@ public class NavigationActivity extends AppCompatActivity implements
         setUpdateCallback();
 
     }
+
+
+    private  byte[] testSerializable(DirectionsRoute object) {
+        byte[] data = SerializationUtils.serialize(object);
+        return data;
+    }
+
+    private  DirectionsRoute unSerializable(byte[] data) {
+        DirectionsRoute d2 = SerializationUtils.deserialize(data);
+        return d2;
+    }
+
+    private  void testNavigation()
+    {
+        //origin:53.3502, -6.2581
+        //waypoint :53.346016, -6.267914
+        //waypoint :53.343263, -6.275379
+        //waypoint :53.339132, -6.272588
+        //destination: 53.334602, -6.279871
+        originLocation = Point.fromLngLat(-6.2581,53.3502);
+        ArrayList<Point> UserWaypoints = new ArrayList<>();
+        UserWaypoints.add( Point.fromLngLat(-6.267914,53.346016));
+        UserWaypoints.add(  Point.fromLngLat(-6.279871,53.334602));
+        UserWaypoints.add( Point.fromLngLat(-6.272588,53.339132));
+
+        destinationLocation =Point.fromLngLat(-6.275379,53.343263);
+
+        ParseRoutes route = new ParseRoutes(
+                getString(R.string.access_token),
+                getApplicationContext(),
+                NavigationActivity.this,
+                navigationMapRoute,
+                mapboxMap,
+                mapView,
+                true,
+                originLocation,
+                destinationLocation,UserWaypoints);
+
+
+
+        //getRoute(originLocation,destinationLocation);
+
+
+    }
+    private void getRoute(Point origin,Point destination)
+    {
+
+        NavigationRoute.builder(getApplicationContext())
+                .accessToken( getString(R.string.access_token))
+                .origin(origin)
+                .destination(destination)
+                .build()
+                .getRoute(new Callback<DirectionsResponse>() {
+                    @Override
+                    public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
+
+                        if(response.body() == null)
+                        {
+                            Log.e("NavigationRoute","No routes found, check right user and access token");
+                            return;
+                        }else if(response.body().routes().size() == 0)
+                        {
+                            Log.e("NavigationRoute","No route found");
+                            return;
+                        }
+
+
+                        DirectionsRoute currentRoute = response.body().routes().get(0);
+                        if(navigationMapRoute != null)
+                        {
+                            navigationMapRoute.removeRoute();
+                        }else
+                        {
+                            navigationMapRoute = new NavigationMapRoute(null,mapView,mapboxMap);
+                        }
+                        navigationMapRoute.addRoute(currentRoute);
+                    }
+
+                    @Override
+                    public void onFailure(Call<DirectionsResponse> call, Throwable t) {
+
+                    }
+                });
+
+
+
+    }
+
     private void setUpdateCallback()
     {
         //instantiating the LocationCallBack
@@ -118,6 +234,7 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         NavigationActivity.this.mapboxMap = mapboxMap;
+        testNavigation();
         mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
