@@ -160,7 +160,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         }
     }
     private void sendMultiRequests(){
-        new CountDownTimer(10000,2000) {
+        new CountDownTimer(200000,5000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 createPostToPeerGroup(retrofit);

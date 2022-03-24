@@ -124,4 +124,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+    private void saveInfoToFirebase(){
+        //to do
+    }
 }
