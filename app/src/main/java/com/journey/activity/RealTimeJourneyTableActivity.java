@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,31 +69,29 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private Button findPeers;
 
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("http://10.150.13.185:8080/")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_real_time_journey_table);
         findPeers = findViewById(R.id.find_peers);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.137:8080/")
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
         getConInfo();
         setConInfo();
         getUserInfo();
-        postInfo(retrofit);
+//        sendMultiRequests();
+        postInfo();
+
     }
-    private void postInfo(Retrofit retrofit) {
+    private void postInfo() {
         findPeers.setOnClickListener(view -> {
-            try {
-                createPostToPeerGroup(retrofit);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            sendMultiRequests();
         });
     }
+
     private void getConInfo(){
         if(getIntent() != null && getIntent().getExtras() != null && getIntent().hasExtra(ConditionActivity.CONDITION_INFO)){
             //deserialization condition info
@@ -139,20 +141,16 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
                 Double.parseDouble(longitude), Double.parseDouble(latitude), Double.parseDouble(dLongitude),
                 Double.parseDouble(dLatitude),0L,0L,
                 123455,5,false);
-        final Intent[] intent = new Intent[1];
         final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
         try {
-            reqResApi[0].isLeader(peer).enqueue(new Callback<Peer>() {
+            reqResApi[0].createUser(peer).enqueue(new Callback<List<Peer>>() {
                 @Override
-                public void onResponse(Call<Peer> call, Response<Peer> response) {
-                    Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "success!!", Toast.LENGTH_SHORT).show();
-                    Peer peer1 = response.body();
-                    limit = peer1.getLimit();
-                    System.out.println(limit);
+                public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
+                    Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "Send data to the server successfully", Toast.LENGTH_SHORT).show();
                 }
                 @Override
-                public void onFailure(Call<Peer> call, Throwable t) {
-                    System.out.println(t.toString());
+                public void onFailure(Call<List<Peer>> call, Throwable t) {
+                    System.out.println("-------------------onfailure--------------"+ t.toString());
                     Toast.makeText(RealTimeJourneyTableActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -160,14 +158,18 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             System.out.println(e.toString());
             Toast.makeText(RealTimeJourneyTableActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
-        if(limit == 5){
-            intent[0] = new Intent(RealTimeJourneyTableActivity.this,LeaderPeerGroupActivity.class);
-            Toast.makeText(RealTimeJourneyTableActivity.this, "request to Leader peer group", Toast.LENGTH_SHORT).show();
-        }else {
-            intent[0] = new Intent(RealTimeJourneyTableActivity.this,FollowerPeerGroupActivity.class);
-            Toast.makeText(RealTimeJourneyTableActivity.this, "request to Follower peer group", Toast.LENGTH_SHORT).show();
-        }
-        intent[0].putExtra(PEER_KEY,peer);
-        startActivity(intent[0]);
+    }
+    private void sendMultiRequests(){
+        new CountDownTimer(10000,2000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                createPostToPeerGroup(retrofit);
+                System.out.println("-------------send-------------");
+            }
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
     }
 }
