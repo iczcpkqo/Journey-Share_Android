@@ -23,6 +23,8 @@ import com.journey.R;
 import com.journey.fragments.JourneyFragment;
 import com.journey.fragments.MessageFragment;
 import com.journey.fragments.RecordFragment;
+import com.journey.msg.message.Chat;
+
 
 import java.util.Map;
 
@@ -31,9 +33,9 @@ import java.util.Map;
  * @author: Congqin Yan
  * @Email: yancongqin@gmail.com
  * @date: 2022-01-17-11:00
- * @Modify date and time:
- * @Modified by:
- * @Modified remark:
+ * @Modify date and time: 12th March 2022
+ * @Modified by: Xiang Mao
+ * @Modified remark: Update Nav case of Message
  */
 public class JourneyActivity extends AppCompatActivity {
 
@@ -67,8 +69,17 @@ public class JourneyActivity extends AppCompatActivity {
                     selectedFragment = new JourneyFragment();
                     break;
                 case R.id.messageFragment:
-                    selectedFragment = new MessageFragment();
-                    break;
+//              布局页面, 默认跳转: R.id.messageFragment xml, 我改了,跳Chat.xml了
+//              功能页面, 默认应用: new MessageFragment(), 我改了暂时使用Chat了
+//                    selectedFragment = new MessageFragment();
+//                    selectedFragment = (Fragment)(new Chat());
+//                    Chat activityChat = new Chat();
+//                    activityChat.startActivity();
+
+                    Intent intent = new Intent(JourneyActivity.this, Chat.class);
+                    startActivity(intent);
+                    return true;
+//                    break;
                 case R.id.accountFragment:
                     selectedFragment = new AccountFragment();
                     break;

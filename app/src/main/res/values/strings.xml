@@ -32,10 +32,16 @@
     <string name="time">datetime</string>
     <string name="origin">originAddress</string>
     <string name="end">endAddress</string>
-    <string name="gen">gender</string>
+    <string name="preferGender">preferGender</string>
     <string name="minA">minAge</string>
     <string name="maxA">maxAge</string>
     <string name="score">score</string>
+
+    <string name="originLat">originLat</string>
+    <string name="originLon">originLon</string>
+    <string name="endLat">endLat</string>
+    <string name="endLon">endLon</string>
+
 
     <!-- Strings used for selectLocation -->
     <string name="confirm">Confirm</string>
@@ -43,6 +49,7 @@
     <string name="user_location_permission_explanation">This app needs location permissions to show its functionality.</string>
     <string name="user_location_permission_not_granted">You didn\'t grant location permissions.</string>
     <string name="move_map_instruction">Move map to place\nmarker at desired location</string>
+    <string name="current_location_not_found">Current location is null</string>
     <string name="location_picker_select_location_button_cancel">Cancel</string>
     <string name="location_picker_select_location_button_select">Select a location</string>
     <string name="location_picker_dropped_marker_snippet_no_results">No results</string>
@@ -63,8 +70,8 @@
     <string name="invalid_max_age">Invalid maximum age</string>
     <string name="invalid_min_score">Invalid score</string>
 
-<!--    message use this-->
+    <!--    message use this-->
     <string name="message_title">ASE_Xiang-Testing</string>
 
-<!--  end  message use this-->
+    <!--  end  message use this-->
 </resources>

@@ -22,6 +22,18 @@
         android:background="@color/colorPrimary"
         android:text="Select a location"
         android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/origin_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        android:background="@color/colorPrimary"
+        android:text="Origin"
+        android:textColor="@android:color/white"/>
+
+
     <Button
         android:id="@+id/select_button"
         android:layout_width="fill_parent"
@@ -31,6 +43,7 @@
         android:background="@color/colorPrimary"
         android:text="Save"
         android:textColor="@android:color/white"/>
+        />
 </TableLayout>
 
 

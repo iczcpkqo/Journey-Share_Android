@@ -10,7 +10,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:layout_marginStart="5dp"
-        android:background="@color/gray">
+        android:background="@drawable/real_time_table_round">
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"

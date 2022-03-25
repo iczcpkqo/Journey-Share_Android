@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.journey.R;
-import com.journey.adapter.JSONPlaceholder;
-import com.journey.adapter.PeerAdapter;
+import com.journey.adapter.FollowerPeerAdapter;
+import com.journey.adapter.LeaderPeerAdapter;
 import com.journey.adapter.ReqResApi;
 import com.journey.model.Peer;
 
@@ -22,29 +22,29 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 /**
  * @Description:
  * @author: Congqin Yan
  * @Email: yancongqin@gmail.com
- * @date: 2022-03-01-20:00
+ * @date: 2022-03-19-10:00
  * @Modify date and time:
  * @Modified by:
  * @Modified remark:
  */
-public class PeerGroupActivity extends AppCompatActivity {
-
-    JSONPlaceholder jsonPlaceholder;
+public class FollowerPeerGroupActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button cancel;
-
+    Button follow;
+    final private static String MATCHED_PEERS = "MATCHED_PEERS";
+    LoadingDialog loadingDialog = new LoadingDialog(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_peer_group);
+        setContentView(R.layout.activity_follower_peer_group);
 
-        cancel = findViewById(R.id.cancel_btn);
-        recyclerView = findViewById(R.id.recyclerview);
+        cancel = findViewById(R.id.follower_cancel_btn);
+        follow = findViewById(R.id.follower_confirm_btn);
+        recyclerView = findViewById(R.id.follower_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// create recyclerview in linear layout
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -52,12 +52,10 @@ public class PeerGroupActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-
-
         try {
+            loadingDialog.startLoadingDialog();
             createPost(retrofit);
-//            cancelJourney();
+            cancelJourney();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,26 +64,43 @@ public class PeerGroupActivity extends AppCompatActivity {
 
 
     private void createPost(Retrofit retrofit) {
-
-        Peer peer = new Peer("123@qq.com", 1, 20, 3, 23.443232, 45.4343334, 23.3324234, 46.434344, 43438, 5425425);
-
+        //  get the deserialized peer from RealTimeJourneyTableA
+        Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
         ReqResApi reqResApi = retrofit.create(ReqResApi.class);
         try {
             reqResApi.createUser(peer).enqueue(new Callback<List<Peer>>() {
                 @Override
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
-                    Toast.makeText(PeerGroupActivity.this, response.code() + " Response", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FollowerPeerGroupActivity.this, response.code() + " Response", Toast.LENGTH_SHORT).show();
+                    List<Peer> peerList = response.body();
+                    FollowerPeerAdapter followerPeerAdapter = new FollowerPeerAdapter(FollowerPeerGroupActivity.this , peerList);
+                    recyclerView.setAdapter(followerPeerAdapter);
+                    sendFollowerToNavigation(peerList);
                 }
                 @Override
                 public void onFailure(Call<List<Peer>> call, Throwable t) {
                     System.out.println(t.toString());
-                    Toast.makeText(PeerGroupActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FollowerPeerGroupActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
             System.out.println(e.toString());
-            Toast.makeText(PeerGroupActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(FollowerPeerGroupActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void sendFollowerToNavigation(List<Peer> peerList) {
+        follow.setOnClickListener(view -> {
+            List<Peer> peers = peerList;
+            Intent intent = new Intent(FollowerPeerGroupActivity.this, NavigationActivity.class);
+            intent.putExtra(MATCHED_PEERS, peers.get(0));
+            intent.putExtra(MATCHED_PEERS, peers.get(1));
+            startActivity(intent);
+            //get data
+//            List<Peer> peers = (List<Peer>) getIntent().getSerializableExtra(PeerGroupActivity.MATCHED_PEERS);
+//            Collections.shuffle(peers);
+//            Peer peer1 = peers.get(0);
+        });
     }
 
     private void cancelJourney() {

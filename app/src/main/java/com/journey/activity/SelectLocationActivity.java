@@ -8,8 +8,11 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -21,8 +24,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.journey.R;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
@@ -69,13 +76,16 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
     private MapboxMap mapboxMap;
     private Button selectLocationButton;
     private Button selectSaveButton;
+    private Button originButton;
+    private Location currentLocation;
     private PermissionsManager permissionsManager;
     private ImageView hoveringMarker;
     private Layer droppedMarkerLayer;
     private CarmenFeature SaveFeature;
-    private static final int GET_PLACE_INFORMATION = 485;
-    private String id;
-    private static final String ID = "id";
+    private Point originPoint;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +95,25 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        getCurrentLocation();
+    }
 
+    private void getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                            currentLocation = location;
+                        }
+                    }
+                });
     }
     private String getId()
     {
@@ -174,7 +202,23 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
                         }
                     }
                 });
+                originButton = findViewById(R.id.origin_button);
+                originButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        originPoint =  Point.fromLngLat(currentLocation.getLongitude(), currentLocation.getLatitude());
+                        if(originPoint != null)
+                        {
+                            reverseGeocode(originPoint);
+                        }
+                        else
+                        {
+                            Toast.makeText( SelectLocationActivity.this, getString(R.string.current_location_not_found), Toast.LENGTH_SHORT).show();
 
+                        }
+
+                    }
+                });
                 //Button for user to save address
                 selectSaveButton = findViewById(R.id.select_button);
                 // Activity finished ok, return the data
@@ -342,6 +386,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Permiss
                     Timber.e("Geocoding Failure: %s", throwable.getMessage());
                 }
             });
+
         } catch (ServicesException servicesException) {
             Timber.e("Error geocoding: %s", servicesException.toString());
             servicesException.printStackTrace();

@@ -12,6 +12,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,12 +25,17 @@ import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.google.android.material.textfield.TextInputEditText;
 import com.journey.R;
 import com.journey.adapter.JSONPlaceholder;
+import com.journey.model.ConditionInfo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @Description:
@@ -44,6 +50,7 @@ public class ConditionActivity extends AppCompatActivity {
     private TextInputEditText chooseDateTime;
     private TextInputEditText originPlace;
     private TextInputEditText endPlace;
+    private TextInputEditText preferGender;
     private TextInputEditText minAge;
     private TextInputEditText maxAge;
     private TextInputEditText score;
@@ -51,29 +58,41 @@ public class ConditionActivity extends AppCompatActivity {
     private static final int GET_PLACE_INFORMATION = 485;
     private Calendar calendar;
     private Button submit;
-    private AutoCompleteTextView autoCompleteGender;
     String[] conditionGenders;
     private ArrayAdapter<String> adapterItems;
     private static final String TAG ="postRequestActivity" ;
     private static final String ORIGIN_LOCATION = "0";
     private static final String END_LOCATION = "1";
+
     JSONPlaceholder jsonPlaceholder;
     AwesomeValidation awesomeValidation;
     //location contains latitude and longitude
     List<Double> location = new ArrayList<Double>();
+    //condition form key
+    public final static String CONDITION_INFO = "CONDITION_INFO";
+    private String choose_date;
+    private String origin_address;
+    private String end_address;
+    private String prefer_gender;
+    private String min_age;
+    private String max_age;
+    private String min_score;
+    private String origin_lon;
+    private String origin_lat;
+    private String end_lon;
+    private String end_lat;
 
-
-    public  void init(){
+    public void init(){
         chooseDateTime = (TextInputEditText)findViewById(R.id.choose_date_time_dt);
         originPlace = (TextInputEditText)findViewById(R.id.origin_address_dt);
         endPlace = (TextInputEditText)findViewById(R.id.end_address_dt);
+        preferGender = (TextInputEditText) findViewById(R.id.prefer_gender_dt);
         minAge = (TextInputEditText)findViewById(R.id.min_age_dt);
         maxAge = (TextInputEditText)findViewById(R.id.max_age_dt);
         score = (TextInputEditText)findViewById(R.id.score_dt);
 
         calendar = Calendar.getInstance();
         submit = findViewById(R.id.submit_btn);
-        autoCompleteGender = findViewById(R.id.auto_complete_gender);
         conditionGenders = getResources().getStringArray(R.array.condition_gender);
         adapterItems = new ArrayAdapter<>(ConditionActivity.this,
                 R.layout.gender_dropdown_item,
@@ -96,37 +115,82 @@ public class ConditionActivity extends AppCompatActivity {
         setOriginPlaceListener(originPlace);
         //end place picker
         setEndPlaceListener(endPlace);
-        //gender dropdown
-        setGenderDropDown();
         //submit listener
         submitConditionData();
     }
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
-            getConInfo();
+            sendConInfo();
         });
+    }
+
+    /**
+     *@className: TEST
+     *@desc:
+     *@author: Guowen Liu
+     *@date: 2022/3/12 14:45
+     */
+    private void testNavigationActivity(){
+        String testJson  = "[{\n" +
+                " \"email\": \"11@qq.com\",\n" +
+                " \"gender\": 1,\n" +
+                " \"age\": 29,\n" +
+                " \"score\": 4.1,\n" +
+                " \"longitude\": 53.13424,\n" +
+                " \"latitude\": -6.13929,\n" +
+                " \"dLongtitude\": 53.15922,\n" +
+                " \"dLatitude\": -6.1012,\n" +
+                " \"startTime\": 2193932002,\n" +
+                " \"endTime\": 2196662719,\n" +
+                " \"limit\": 5,\n" +
+                " \"isLeader\": true\n" +
+                "}, {\n" +
+                " \"email\": \"11@qq.com\",\n" +
+                " \"gender\": 1,\n" +
+                " \"age\": 29,\n" +
+                " \"score\": 4.1,\n" +
+                " \"longitude\": 53.13424,\n" +
+                " \"latitude\": -6.13929,\n" +
+                " \"dLongtitude\": 53.15922,\n" +
+                " \"dLatitude\": -6.1012,\n" +
+                " \"startTime\": 2193932002,\n" +
+                " \"endTime\": 2196662719,\n" +
+                " \"limit\": 5,\n" +
+                " \"isLeader\": false\n" +
+                "}]";
+
+        Intent conInfo = new Intent(this, NavigationActivity.class);
+        conInfo.putExtra("list", testJson);
+        startActivity(conInfo);
     }
     /**
      *@desc: send the information into realTimeJourneyTable
      *@author: Congqin yan
      *@date: 2022/3/7 19:05
      */
-    private void getConInfo(){
+    private void getText(){
+        choose_date = chooseDateTime.getText().toString().trim();
+        origin_address = originPlace.getText().toString().trim();
+        end_address = endPlace.getText().toString().trim();
+        prefer_gender = preferGender.getText().toString().trim();
+        min_age = minAge.getText().toString().trim();
+        max_age = maxAge.getText().toString().trim();
+        min_score = score.getText().toString().trim();
+        origin_lon = location.get(1).toString();
+        origin_lat = location.get(0).toString();
+        end_lon = location.get(3).toString();
+        end_lat = location.get(2).toString();
+    }
+    private void sendConInfo(){
         infoChecker();
         Intent conInfo = new Intent(this, RealTimeJourneyTableActivity.class);
         if(awesomeValidation.validate()){
-
-            conInfo.putExtra("datetime", chooseDateTime.getText().toString());
-            conInfo.putExtra("originAddress", originPlace.getText().toString());
-            conInfo.putExtra("endAddress", endPlace.getText().toString());
-            conInfo.putExtra("gender", autoCompleteGender.getText().toString());
-            conInfo.putExtra("minAge", minAge.getText().toString());
-            conInfo.putExtra("maxAge", maxAge.getText().toString());
-            conInfo.putExtra("score", score.getText().toString());
-            conInfo.putExtra("origin_lat",location.get(0).toString());
-            conInfo.putExtra("origin_lon",location.get(1).toString());
-            conInfo.putExtra("end_lat",location.get(2).toString());
-            conInfo.putExtra("end_lon",location.get(3).toString());
+            getText();
+            ConditionInfo conditionInfo = new ConditionInfo(choose_date,origin_address,
+                    end_address,prefer_gender,min_age,max_age,
+                    min_score,origin_lon,origin_lat,end_lon,end_lat);
+            //send serialized conditionInfo to real time activity
+            conInfo.putExtra(CONDITION_INFO,conditionInfo);
             startActivity(conInfo);
         }else{
             Toast.makeText(this, "Validation Failed, Please check your information!", Toast.LENGTH_SHORT).show();
@@ -148,7 +212,7 @@ public class ConditionActivity extends AppCompatActivity {
         awesomeValidation.addValidation(this,R.id.end_address_dt,
                 RegexTemplate.NOT_EMPTY,R.string.invalid_end_address);
         //add validation for gender
-        awesomeValidation.addValidation(this,R.id.auto_complete_gender,
+        awesomeValidation.addValidation(this,R.id.prefer_gender_dt,
                 RegexTemplate.NOT_EMPTY,R.string.invalid_gender);
         //add validation for min age
         awesomeValidation.addValidation(this,R.id.min_age_dt,
@@ -159,17 +223,6 @@ public class ConditionActivity extends AppCompatActivity {
         //add validation for score
         awesomeValidation.addValidation(this,R.id.score_dt,
                 RegexTemplate.NOT_EMPTY,R.string.invalid_min_score);
-    }
-
-    private void setGenderDropDown() {
-        autoCompleteGender.setAdapter(adapterItems);
-        autoCompleteGender.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String item = adapterView.getItemAtPosition(position).toString();
-                Toast.makeText(getApplicationContext(),"Gender " + item,Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     // set the style for condition actionBar
@@ -195,7 +248,7 @@ public class ConditionActivity extends AppCompatActivity {
 
     //show the current time
     private void setCurrentTime(Calendar calendar,EditText chooseDateTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         chooseDateTime.setText(simpleDateFormat.format(calendar.getTime()));
     }
 
@@ -213,7 +266,7 @@ public class ConditionActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE,minute);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         chooseDateTime.setText(simpleDateFormat.format(calendar.getTime()));
                     }
                 };
@@ -249,6 +302,8 @@ public class ConditionActivity extends AppCompatActivity {
 
         startActivityForResult(setLocationMarker(END_LOCATION), GET_PLACE_INFORMATION);
     }
+
+
 
     private Intent setLocationMarker(String locationMarker)
     {

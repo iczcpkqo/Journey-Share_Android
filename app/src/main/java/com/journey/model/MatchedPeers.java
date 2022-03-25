@@ -2,54 +2,33 @@ package com.journey.model;
 
 import java.io.Serializable;
 
-/**
- * @Description:
- * @author: Congqin Yan
- * @Email: yancongqin@gmail.com
- * @date: 2022-03-01-20:00
- * @Modify date and time:
- * @Modified by:
- * @Modified remark:
- */
-public class Peer implements Serializable {
+public class MatchedPeers implements Serializable {
+
+    //return peer info from response body
     String email;
-
     String gender;
-
     Integer age;
-
     Double score;
-
     Double longitude;
-
     Double latitude;
-
-    Double dLongtitude;
-
+    Double dLongitude;
     Double dLatitude;
-
     Long startTime;
-
     Long endTime;
-
-    Integer order;
-
     Integer limit;
-
     Boolean isLeader;
 
-    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean isLeader) {
+    public MatchedPeers(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongitude, Double dLatitude, Long startTime, Long endTime, Integer limit, Boolean isLeader) {
         this.email = email;
         this.gender = gender;
         this.age = age;
         this.score = score;
         this.longitude = longitude;
         this.latitude = latitude;
-        this.dLongtitude = dLongtitude;
+        this.dLongitude = dLongitude;
         this.dLatitude = dLatitude;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.order = order;
         this.limit = limit;
         this.isLeader = isLeader;
     }
@@ -102,12 +81,12 @@ public class Peer implements Serializable {
         this.latitude = latitude;
     }
 
-    public Double getdLongtitude() {
-        return dLongtitude;
+    public Double getdLongitude() {
+        return dLongitude;
     }
 
-    public void setdLongtitude(Double dLongtitude) {
-        this.dLongtitude = dLongtitude;
+    public void setdLongitude(Double dLongitude) {
+        this.dLongitude = dLongitude;
     }
 
     public Double getdLatitude() {
@@ -134,14 +113,6 @@ public class Peer implements Serializable {
         this.endTime = endTime;
     }
 
-    public Integer getOrder() {
-        return order;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
-    }
-
     public Integer getLimit() {
         return limit;
     }
@@ -157,32 +128,4 @@ public class Peer implements Serializable {
     public void setLeader(Boolean leader) {
         isLeader = leader;
     }
-    //user info
-//    String username;
-//    String birthday;
-//    String gender;
-//    String phone;
-//    String email;
-//    Double mark;
-//    Integer age;
-//    Integer order;
-
-
-    //condition info
-//    String dateTime;
-//    String originAddress;
-//    String endAddress;
-//    String preferGender;
-//    Integer minAge;
-//    Integer maxAge;
-//    Double score;
-//    Double originLon;
-//    Double originLat;
-//    Double endLon;
-//    Double endLat;
-//    Long startTime;
-//    Long endTime;
-//    Integer limit;
-//    Boolean isLeader;
-
 }
