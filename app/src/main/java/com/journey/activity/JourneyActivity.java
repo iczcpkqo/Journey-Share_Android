@@ -22,9 +22,7 @@ import com.journey.fragments.AccountFragment;
 import com.journey.R;
 import com.journey.fragments.DialogueFragment;
 import com.journey.fragments.JourneyFragment;
-import com.journey.fragments.MessageFragment;
 import com.journey.fragments.RecordFragment;
-import com.journey.msg.message.Chat;
 
 
 import java.util.Map;
