@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.JSONSerializer;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.R;
 import com.journey.adapter.LeaderPeerAdapter;
 import com.journey.adapter.ReqResApi;
@@ -35,7 +37,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,12 +64,14 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     Button cancel;
     Button confirm;
     CountDownTimer countDownTimer;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
     LoadingDialog loadingDialog = new LoadingDialog(this);
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,18 +93,21 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
         }
 
     }
-    private void sendMultiRequests(){
-        new CountDownTimer(20000,2000) {
+
+    private void sendMultiRequests() {
+        new CountDownTimer(20000, 2000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 createPost(retrofit);
             }
+
             @Override
             public void onFinish() {
 
             }
         }.start();
     }
+
     private void createPostToPeerGroup(Retrofit retrofit) {
         Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
         final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
@@ -105,9 +117,10 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
                     Toast.makeText(LeaderPeerGroupActivity.this, response.code() + "Send data to the server successfully", Toast.LENGTH_SHORT).show();
                 }
+
                 @Override
                 public void onFailure(Call<List<Peer>> call, Throwable t) {
-                    System.out.println("-------------------on-failure--------------"+ t.toString());
+                    System.out.println("-------------------on-failure--------------" + t.toString());
                     Toast.makeText(LeaderPeerGroupActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -116,6 +129,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             Toast.makeText(LeaderPeerGroupActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
+
     public void createPost(Retrofit retrofit) {
         //  get the deserialized peer from RealTimeJourneyTableA
         Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
@@ -127,14 +141,15 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
                     Toast.makeText(LeaderPeerGroupActivity.this, response.code() + " Response", Toast.LENGTH_SHORT).show();
                     List<Peer> peerList = response.body();
-                    LeaderPeerAdapter leaderPeerAdapter = new LeaderPeerAdapter(LeaderPeerGroupActivity.this , peerList);
+                    LeaderPeerAdapter leaderPeerAdapter = new LeaderPeerAdapter(LeaderPeerGroupActivity.this, peerList);
                     recyclerView.setAdapter(leaderPeerAdapter);
                     sendPeersToNavigation(peerList);
                     saveInfoToFirebase(peerList);
                 }
+
                 @Override
                 public void onFailure(Call<List<Peer>> call, Throwable t) {
-                    System.out.println("-------------------on-failure--------------"+ t.toString());
+                    System.out.println("-------------------on-failure--------------" + t.toString());
                     Toast.makeText(LeaderPeerGroupActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -198,13 +213,37 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
         }
 
     }
+
     private void cancelJourney() {
         cancel.setOnClickListener(view -> {
             Intent intent = new Intent(this, JourneyActivity.class);
             startActivity(intent);
         });
     }
-    private void saveInfoToFirebase(List<Peer> peerList){
+
+
+    @SuppressLint("NewApi")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void saveInfoToFirebase(List<Peer> peerList) {
         //to do
+        Map<String, Object> record = new HashMap<>();
+        Peer peer = peerList.stream().filter(o -> o.getLeader() == true).findAny().orElse(null);
+        List<String> collect = peerList.stream().map(Peer::getEmail).collect(Collectors.toList());
+        record.put("BelongTo", peer.getEmail());
+        record.put("date", new Date());
+        record.put("companion", String.join(",", collect));
+
+        String uuid = UUID.randomUUID().toString();
+
+        db.collection("record").document(uuid).set(record);
+        for (Peer peer1 : peerList) {
+            Map<String, Object> userRecord = new HashMap<>();
+            userRecord.put("record_id", uuid);
+            userRecord.put("email", peer1.getEmail());
+            String uuid2 = UUID.randomUUID().toString();
+            db.collection("user_record").document(uuid2).set(record);
+        }
+
     }
+
 }
