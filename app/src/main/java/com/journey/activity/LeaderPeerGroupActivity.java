@@ -224,7 +224,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void saveInfoToFirebase(List<Peer> peerList) {
+    public void saveInfoToFirebase(List<Peer> peerList) {
         //to do
         Map<String, Object> record = new HashMap<>();
         Peer peer = peerList.stream().filter(o -> o.getLeader() == true).findAny().orElse(null);
