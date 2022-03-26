@@ -13,6 +13,7 @@ import java.util.UUID;
  * @Modified remark:
  */
 public class Peer implements Serializable {
+
     String email;
 
     String gender;
@@ -37,41 +38,19 @@ public class Peer implements Serializable {
 
     Integer limit;
 
-    Boolean isLeader;
+    Boolean leader;
 
-    Boolean isFurthest;
+    Boolean furthest;
 
     String uuid;
 
-    Boolean isConfirmed;
+    Boolean confirmed;
 
     List<String> blacklist;
 
     String ip;
 
     String port;
-
-    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean isLeader, Boolean isFurthest, String uuid, Boolean isConfirmed, List<String> blacklist, String ip, String port) {
-        this.email = email;
-        this.gender = gender;
-        this.age = age;
-        this.score = score;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.dLongtitude = dLongtitude;
-        this.dLatitude = dLatitude;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.order = order;
-        this.limit = limit;
-        this.isLeader = isLeader;
-        this.isFurthest = isFurthest;
-        this.uuid = uuid;
-        this.isConfirmed = isConfirmed;
-        this.blacklist = blacklist;
-        this.ip = ip;
-        this.port = port;
-    }
 
     public String getEmail() {
         return email;
@@ -170,19 +149,19 @@ public class Peer implements Serializable {
     }
 
     public Boolean getLeader() {
-        return isLeader;
+        return leader;
     }
 
     public void setLeader(Boolean leader) {
-        isLeader = leader;
+        this.leader = leader;
     }
 
     public Boolean getFurthest() {
-        return isFurthest;
+        return furthest;
     }
 
     public void setFurthest(Boolean furthest) {
-        isFurthest = furthest;
+        this.furthest = furthest;
     }
 
     public String getUuid() {
@@ -194,11 +173,11 @@ public class Peer implements Serializable {
     }
 
     public Boolean getConfirmed() {
-        return isConfirmed;
+        return confirmed;
     }
 
     public void setConfirmed(Boolean confirmed) {
-        isConfirmed = confirmed;
+        this.confirmed = confirmed;
     }
 
     public List<String> getBlacklist() {
@@ -224,32 +203,27 @@ public class Peer implements Serializable {
     public void setPort(String port) {
         this.port = port;
     }
-    //user info
-//    String username;
-//    String birthday;
-//    String gender;
-//    String phone;
-//    String email;
-//    Double mark;
-//    Integer age;
-//    Integer order;
 
-
-    //condition info
-//    String dateTime;
-//    String originAddress;
-//    String endAddress;
-//    String preferGender;
-//    Integer minAge;
-//    Integer maxAge;
-//    Double score;
-//    Double originLon;
-//    Double originLat;
-//    Double endLon;
-//    Double endLat;
-//    Long startTime;
-//    Long endTime;
-//    Integer limit;
-//    Boolean isLeader;
+    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port) {
+        this.email = email;
+        this.gender = gender;
+        this.age = age;
+        this.score = score;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.dLongtitude = dLongtitude;
+        this.dLatitude = dLatitude;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.order = order;
+        this.limit = limit;
+        this.leader = leader;
+        this.furthest = furthest;
+        this.uuid = uuid;
+        this.confirmed = confirmed;
+        this.blacklist = blacklist;
+        this.ip = ip;
+        this.port = port;
+    }
 
 }
