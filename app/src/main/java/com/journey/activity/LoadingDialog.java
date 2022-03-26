@@ -38,8 +38,9 @@ public class LoadingDialog{
 
         startCounting();
     }
+
     private void startCounting(){
-        new CountDownTimer(10000,1000) {
+        new CountDownTimer(20000,1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 alertDialog.setMessage(" " + millisUntilFinished / 1000 + "s");

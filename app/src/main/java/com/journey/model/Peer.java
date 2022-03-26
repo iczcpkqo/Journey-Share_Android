@@ -1,7 +1,8 @@
 package com.journey.model;
 
 import java.io.Serializable;
-
+import java.util.List;
+import java.util.UUID;
 /**
  * @Description:
  * @author: Congqin Yan
@@ -38,7 +39,19 @@ public class Peer implements Serializable {
 
     Boolean isLeader;
 
-    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean isLeader) {
+    Boolean isFurthest;
+
+    String uuid;
+
+    Boolean isConfirmed;
+
+    List<String> blacklist;
+
+    String ip;
+
+    String port;
+
+    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean isLeader, Boolean isFurthest, String uuid, Boolean isConfirmed, List<String> blacklist, String ip, String port) {
         this.email = email;
         this.gender = gender;
         this.age = age;
@@ -52,6 +65,12 @@ public class Peer implements Serializable {
         this.order = order;
         this.limit = limit;
         this.isLeader = isLeader;
+        this.isFurthest = isFurthest;
+        this.uuid = uuid;
+        this.isConfirmed = isConfirmed;
+        this.blacklist = blacklist;
+        this.ip = ip;
+        this.port = port;
     }
 
     public String getEmail() {
@@ -156,6 +175,54 @@ public class Peer implements Serializable {
 
     public void setLeader(Boolean leader) {
         isLeader = leader;
+    }
+
+    public Boolean getFurthest() {
+        return isFurthest;
+    }
+
+    public void setFurthest(Boolean furthest) {
+        isFurthest = furthest;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public Boolean getConfirmed() {
+        return isConfirmed;
+    }
+
+    public void setConfirmed(Boolean confirmed) {
+        isConfirmed = confirmed;
+    }
+
+    public List<String> getBlacklist() {
+        return blacklist;
+    }
+
+    public void setBlacklist(List<String> blacklist) {
+        this.blacklist = blacklist;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getPort() {
+        return port;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
     }
     //user info
 //    String username;
