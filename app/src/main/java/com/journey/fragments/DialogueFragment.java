@@ -34,9 +34,6 @@ public class DialogueFragment extends Fragment {
     RecyclerView dialogueRecycler;
     DialogueAdapter adapter;
 
-    // test
-    List<diaTest> diattt = new ArrayList<>();
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
