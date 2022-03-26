@@ -70,7 +70,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     private Button findPeers;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.137:8080/")
+            .baseUrl("http://10.150.13.185:8080/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();

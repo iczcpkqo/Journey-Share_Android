@@ -68,7 +68,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
     LoadingDialog loadingDialog = new LoadingDialog(this);
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.137:8080/")
+            .baseUrl("http://10.150.13.185:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -95,7 +95,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     }
 
     private void sendMultiRequests() {
-        new CountDownTimer(20000, 2000) {
+        new CountDownTimer(20000, 20000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 createPost(retrofit);
