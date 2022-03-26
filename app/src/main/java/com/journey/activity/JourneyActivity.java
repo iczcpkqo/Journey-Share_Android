@@ -20,10 +20,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.entity.Record;
 import com.journey.fragments.AccountFragment;
 import com.journey.R;
+import com.journey.fragments.DialogueFragment;
 import com.journey.fragments.JourneyFragment;
-import com.journey.fragments.MessageFragment;
 import com.journey.fragments.RecordFragment;
-import com.journey.msg.message.Chat;
 
 
 import java.util.Map;
@@ -69,17 +68,8 @@ public class JourneyActivity extends AppCompatActivity {
                     selectedFragment = new JourneyFragment();
                     break;
                 case R.id.messageFragment:
-//              布局页面, 默认跳转: R.id.messageFragment xml, 我改了,跳Chat.xml了
-//              功能页面, 默认应用: new MessageFragment(), 我改了暂时使用Chat了
-//                    selectedFragment = new MessageFragment();
-//                    selectedFragment = (Fragment)(new Chat());
-//                    Chat activityChat = new Chat();
-//                    activityChat.startActivity();
-
-                    Intent intent = new Intent(JourneyActivity.this, Chat.class);
-                    startActivity(intent);
-                    return true;
-//                    break;
+                    selectedFragment = new DialogueFragment();
+                    break;
                 case R.id.accountFragment:
                     selectedFragment = new AccountFragment();
                     break;

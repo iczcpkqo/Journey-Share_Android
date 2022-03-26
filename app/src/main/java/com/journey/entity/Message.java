@@ -2,6 +2,11 @@ package com.journey.entity;
 import java.util.Date;
 
 public class Message {
+    public int MSG_RECIVE = 0;
+    public int MSG_SEND = 1;
+    public int msgType;
+
+
     private User sender;
     private User receiver;
 
@@ -11,6 +16,20 @@ public class Message {
     public Date time;
 
     public int type;
+
+
+    public Message(User sender, User receiver, String text, Date time, int type, int msgType){
+        this.sender = setSender(sender);
+        this.receiver = setReceiver(receiver);
+        this.text = text;
+        this.type = type;
+        this.time = time;
+        this.msgType = msgType;
+
+        this.senderName = this.sender.getUsername();
+        this.receiverName = this.receiver.getUsername();
+
+    }
 
 
     public Message(User sender, User receiver, String text, Date time, int type){
@@ -33,7 +52,7 @@ public class Message {
 
         this(new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
              new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
-             text, new Date(), type);
+             text, new Date(), type, 1);
     }
 
     public User getSender(){ return this.sender; }
