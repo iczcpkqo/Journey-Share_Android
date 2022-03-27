@@ -10,12 +10,18 @@ import java.util.List;
 
 import com.journey.entity.User;
 
+/**
+ * @author: Xiang Mao
+ * @date: 2022-03-26-04:00
+ * @tag: Dialogue
+ */
 public class Dialogue {
     private User sender;
     private ArrayList<User> receiver = new ArrayList<>() ;
     private Date lastTime;
 
     public String dialogueTitle;
+    // TODO: 增加最近消息, 会话类型
 
     public Dialogue(User sender, User receiver) throws ParseException {
         setSender(sender);
