@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 /**
  * @Description:
  * @author: Congqin Yan
@@ -35,7 +36,10 @@ public class Peer implements Serializable {
 
     Long endTime;
 
+    //total number of members
     Integer order;
+
+    String orderId;
 
     Integer limit;
 
@@ -57,9 +61,9 @@ public class Peer implements Serializable {
 
     String destination;
 
-    Map<String,String> otherFields;
+    Map<String, String> otherFields;
 
-    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination) {
+    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer orderId, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination, Map<String, String> otherFields) {
         this.email = email;
         this.gender = gender;
         this.age = age;
@@ -71,6 +75,7 @@ public class Peer implements Serializable {
         this.startTime = startTime;
         this.endTime = endTime;
         this.order = order;
+        this.orderId = orderId;
         this.limit = limit;
         this.leader = leader;
         this.furthest = furthest;
@@ -81,6 +86,7 @@ public class Peer implements Serializable {
         this.port = port;
         this.startAddress = startAddress;
         this.destination = destination;
+        this.otherFields = otherFields;
     }
 
     public String getEmail() {
@@ -249,5 +255,22 @@ public class Peer implements Serializable {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+
+    public Map<String, String> getOtherFields() {
+        return otherFields;
+    }
+
+    public void setOtherFields(Map<String, String> otherFields) {
+        this.otherFields = otherFields;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 }
