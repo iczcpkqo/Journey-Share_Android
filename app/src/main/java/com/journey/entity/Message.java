@@ -1,6 +1,9 @@
 package com.journey.entity;
 import java.util.Date;
 
+/**
+ * @author: Xiang Mao
+ */
 public class Message {
     public int MSG_RECIVE = 0;
     public int MSG_SEND = 1;

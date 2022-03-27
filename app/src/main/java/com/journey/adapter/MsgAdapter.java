@@ -15,6 +15,11 @@ import com.journey.entity.Msg;
 
 import java.util.List;
 
+/**
+ * @author: Xiang Mao
+ * @date: 2022-03-26-04:00
+ * @tag: Chat
+ */
 public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
     private List<Msg> msgList;
@@ -51,14 +56,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position){
         Msg msg = msgList.get(position);
 
-//        Toast.makeText(holder.theMsg.getContext(), msg.getContent(),Toast.LENGTH_SHORT).show();
-//        Toast.makeText(holder.theMsg.getContext(), "3333333333333" ,Toast.LENGTH_SHORT).show();
-
-
-//        System.out.println("##############################");
-//        System.out.println(msg.getContent());
-//        System.out.println("##############################");
-
+        // TODO: 依据消息类型判断左右
         if(position %2 == 0){
             holder.leftLayout.setVisibility(View.GONE);
             holder.rightLayout.setVisibility(View.VISIBLE);

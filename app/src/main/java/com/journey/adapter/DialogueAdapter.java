@@ -21,6 +21,11 @@ import com.journey.entity.Dialogue;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author: Xiang Mao
+ * @date: 2022-03-26-04:00
+ * @tag: Dialogue
+ */
 public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHolder> {
 
     private List<Dialogue> dialogueList;
@@ -37,6 +42,7 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
             this.theDialogue = view;
             this.img = (ImageView) view.findViewById(R.id.dialogue_item_img);
             this.title = (TextView) view.findViewById(R.id.dialogue_item_title);
+            // TODO: 做头像资源
             initHeadCupboard();
         }
 
@@ -60,15 +66,19 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getLayoutPosition();
                 Dialogue dia = dialogueList.get(position);
-                Toast.makeText(v.getContext(), dia.dialogueTitle, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(context, Chat.class);
+
+                // TODO: 移除测试数据
                 intent.putExtra("test", "oooossssooosss");
+                Toast.makeText(v.getContext(), dia.dialogueTitle, Toast.LENGTH_SHORT).show();
 
                 ChatDeliver deliver = new ChatDeliver();
-                deliver.setUsername(dia.getReceiver().get(0).getUsername());
-                intent.putExtra("deliver", deliver);
 
+                // TODO: 配置对谈参数
+                deliver.setUsername(dia.getReceiver().get(0).getUsername());
+
+                intent.putExtra("deliver", deliver);
                 context.startActivity(intent);
             }
         });
@@ -79,8 +89,11 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position){
         Dialogue dia = dialogueList.get(position);
+
+        // TODO: 根据用户情况设置会话标题
         holder.title.setText(dia.getTitle());
-//        holder.img.setImageResource(holder.headCupboard.get((int) Math.ceil(Math.random()*4)));
+
+        // TODO: 根据用户信息设置头像
         holder.img.setImageResource(holder.headCupboard.get((int) Math.floor(Math.random()*2)));
     }
 

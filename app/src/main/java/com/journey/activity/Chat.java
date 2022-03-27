@@ -23,6 +23,11 @@ import com.journey.entity.Msg;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author: Xiang Mao
+ * @date: 2022-03-26-04:00
+ * @tag: Chat
+ */
 public class Chat extends AppCompatActivity {
 
     List<Msg> msgList = new ArrayList<>();
@@ -35,23 +40,26 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        setDefaultChatBar();
 
-        // test data
+        // TODO: 移除test data
         initMsgTestData();
         Intent intent = getIntent();
         ChatDeliver deliver =(ChatDeliver) intent.getSerializableExtra("deliver");
-//        String testt = deliver.getUsername();
-//        setChatBar(testt);
 
-        // TODO: Recycler 刷新
+        // TODO: 参数接收
+        String testt = deliver.getUsername();
+        setChatBar(testt);
+
 
         msgRecycler = (RecyclerView) findViewById(R.id.msg_recycler_view);
         msgInput = (EditText) findViewById(R.id.msg_input_text);
         msgBtn = (Button) findViewById(R.id.msg_btn);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        msgRecycler.setLayoutManager(layoutManager);
         adapter = new MsgAdapter(msgList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        // TODO: Recycler 刷新
+        msgRefresh();
+        msgRecycler.setLayoutManager(layoutManager);
         msgRecycler.setAdapter(adapter);
         msgRecycler.scrollToPosition(msgList.size() -1);
         msgBtn.setOnClickListener(new View.OnClickListener(){
@@ -60,6 +68,7 @@ public class Chat extends AppCompatActivity {
                 String content = msgInput.getText().toString();
                 if(!"".equals(content)){
                     Msg msg = new Msg(content);
+
                     msgList.add(msg);
                     adapter.notifyItemInserted(msgList.size() - 1);
                     msgRecycler.scrollToPosition(msgList.size() -1);
@@ -71,12 +80,15 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b) {
-//                    msgRecycler.scrollToPosition(msgList.size() -1);
+                    // TODO: 调试初始滚动
+                    // TODO: 移除测试数据
                     Toast.makeText(Chat.this, "input click", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
+
+    private void msgRefresh(){ }
 
     private void initMsgTestData(){
         for(int i=0; i<15; i++){
