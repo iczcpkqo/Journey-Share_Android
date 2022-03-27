@@ -53,14 +53,34 @@ public class Peer implements Serializable {
 
     String port;
 
+    String startAddress;
+
+    String destination;
+
     Map<String,String> otherFields;
 
-    public Map<String, String> getOtherFields() {
-        return otherFields;
-    }
-
-    public void setOtherFields(Map<String, String> otherFields) {
-        this.otherFields = otherFields;
+    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination) {
+        this.email = email;
+        this.gender = gender;
+        this.age = age;
+        this.score = score;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.dLongtitude = dLongtitude;
+        this.dLatitude = dLatitude;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.order = order;
+        this.limit = limit;
+        this.leader = leader;
+        this.furthest = furthest;
+        this.uuid = uuid;
+        this.confirmed = confirmed;
+        this.blacklist = blacklist;
+        this.ip = ip;
+        this.port = port;
+        this.startAddress = startAddress;
+        this.destination = destination;
     }
 
     public String getEmail() {
@@ -215,26 +235,19 @@ public class Peer implements Serializable {
         this.port = port;
     }
 
-    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port) {
-        this.email = email;
-        this.gender = gender;
-        this.age = age;
-        this.score = score;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.dLongtitude = dLongtitude;
-        this.dLatitude = dLatitude;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.order = order;
-        this.limit = limit;
-        this.leader = leader;
-        this.furthest = furthest;
-        this.uuid = uuid;
-        this.confirmed = confirmed;
-        this.blacklist = blacklist;
-        this.ip = ip;
-        this.port = port;
+    public String getStartAddress() {
+        return startAddress;
     }
 
+    public void setStartAddress(String startAddress) {
+        this.startAddress = startAddress;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 }

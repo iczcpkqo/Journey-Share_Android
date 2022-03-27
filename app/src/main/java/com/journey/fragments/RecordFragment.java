@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -34,13 +36,19 @@ public class RecordFragment extends Fragment {
     ListView mlistView;
     ArrayList<Record> records;
     ListenerRegistration lg;
-
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        String email = null;
+        if (currentUser!=null){
+            email = currentUser.getEmail();
+        }
+        boolean emailVerified = currentUser.isEmailVerified();
 
+        Log.d("User",email);
         View v = inflater.inflate(R.layout.fragment_record,container,false);
         records = new ArrayList<>();
         mlistView = v.findViewById(R.id.listView);
@@ -63,7 +71,9 @@ public class RecordFragment extends Fragment {
 //            }
 //        });
 
-        lg = db.collection("record").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        lg = db.collection("record")
+                .whereEqualTo("BelongTo",email)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 Log.d("listener","detected change(s)");
@@ -76,7 +86,7 @@ public class RecordFragment extends Fragment {
                 adapter.clear();
                 for (QueryDocumentSnapshot doc: value){
                     Map<String, Object> data = doc.getData();
-                    Record tmp = new Record((String)doc.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate());
+                    Record tmp = new Record((String)doc.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate(),((Timestamp)data.get("arrivalDate")).toDate(),(String)data.get("companion"));
                     adapter.add(tmp);
                 }
                 Log.d("listener","current:"+record);

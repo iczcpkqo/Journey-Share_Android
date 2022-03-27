@@ -49,6 +49,8 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     String dLongitude;
     String dLatitude;
     Boolean isLeader;
+    String startAddress;
+    String destination;
 
     //user info
     String birthday;
@@ -104,6 +106,8 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             longitude = conditionInfo.getOrigin_lon();
             dLatitude = conditionInfo.getEnd_lat();
             dLongitude = conditionInfo.getEnd_lon();
+            startAddress = conditionInfo.getStartAddress();
+            destination = conditionInfo.getDestination();
         }
     }
     private void setConInfo(){
@@ -117,8 +121,8 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         s = findViewById(R.id.score_tv);
 
         dt.setText(dateTime);
-        origin.setText(originAddress);
-        end.setText(endAddress);
+        origin.setText(startAddress);
+        end.setText(destination);
         gen.setText(preferGender);
         min.setText(minAge);
         max.setText(maxAge);
@@ -137,7 +141,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         Peer peer = new Peer(email, gender, 20, Double.parseDouble(mark),
                 Double.parseDouble(longitude), Double.parseDouble(latitude), Double.parseDouble(dLongitude),
                 Double.parseDouble(dLatitude),0L,0L,
-                123455,5,false, null,null,false, null,null,null);
+                123455,5,false, null,null,false, null,null,null,startAddress,destination);
         final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
         try {
             reqResApi[0].createUser(peer).enqueue(new Callback<List<Peer>>() {

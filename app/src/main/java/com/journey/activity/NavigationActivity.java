@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -24,6 +25,8 @@ import com.journey.R;
 import com.journey.map.OrderUser;
 import com.journey.map.ParseRoutes;
 import com.journey.map.ParseUserGroups;
+import com.journey.map.network.PeerClient;
+import com.journey.map.network.PeerSever;
 import com.journey.model.Peer;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -47,7 +50,13 @@ import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 import org.apache.commons.lang3.SerializationUtils;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -67,6 +76,12 @@ public class NavigationActivity extends AppCompatActivity implements
     private Point originLocation;
     private Point destinationLocation;
     private List<OrderUser> orderlist;
+    private List<Peer> peersList;
+    private String currentUserID;
+    private Peer currentPeer;
+    private List<Peer> otherPeers = new ArrayList<Peer>();
+    private String serverIP = "";
+    private int serverPort ;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
@@ -79,16 +94,41 @@ public class NavigationActivity extends AppCompatActivity implements
 
         }
     };
+
+    public static String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && inetAddress instanceof Inet4Address) {
+                        return inetAddress.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
     private List<Peer> testPeerList()
     {
+        //53.3498, -6.2603
+        //origin:53.3496, -6.2600
+        //waypoint :53.3480, -6.2593
+        //waypoint :53.3457, -6.2573
+        //waypoint :53.339132, -6.272588
+        //destination: 53.3446, -6.2595
         List<Peer> peers = new ArrayList<Peer>();
+
+        String serverIP = getLocalIpAddress();
 
         Peer user1 = new Peer("user_1@user_1.com",
                 "Female",
                 12,
                 4.5,
-                53.3498,
-                53.3496,
+                53.3480,
+                -6.2593,
                 53.3446,
                 -6.2595,
                 0L,
@@ -100,9 +140,30 @@ public class NavigationActivity extends AppCompatActivity implements
                 "123",
                 true,
                 null,
-                "123",
-                "8080");
+                serverIP,
+                "8081",null,null);
 
+        Peer user2 = new Peer("user_2@user_2.com",
+                "Female",
+                12,
+                4.5,
+                53.3496,
+                -6.2600,
+                53.3457,
+                -6.2573,
+                0L,
+                0L,
+                1,
+                12,
+                false,
+                false,
+                "123",
+                true,
+                null,
+                "127.0.0.1",
+                "3030",null,null);
+        peers.add(user1);
+        peers.add(user2);
 
         return peers;
     }
@@ -123,12 +184,63 @@ public class NavigationActivity extends AppCompatActivity implements
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         getUserList();
+        peersList = testPeerList();
+        currentUserID = "user_1@user_1.com";
+        currentPeer = getCurrentPeer(currentUserID,peersList);
+        createCommunication(currentPeer);
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         setLocationUpdata(10000,5000);
         setUpdateCallback();
 
     }
+    private void createCommunication(Peer currentPeer)
+    {
+        if(currentPeer.getLeader())
+        {
+            PeerSever sever = new PeerSever(Integer.parseInt(currentPeer.getPort()),mHandler,peersList);
+            sever.startServer();
+        }
+        else
+        {
 
+            PeerClient client = new PeerClient(getServerPort(),getServerIP(),mHandler,peersList);
+            client.startClient();
+        }
+    }
+
+    private String getServerIP()
+    {
+        return serverIP;
+    }
+    private int getServerPort()
+    {
+        return serverPort;
+    }
+
+    private Peer getCurrentPeer(String mCurretnID,List<Peer> peersList)
+    {
+        Peer currentPeer = null;
+        Iterator<Peer> iter = peersList.iterator();
+        while (iter.hasNext())
+        {
+            Peer temporaryPeer = iter.next();
+            if(temporaryPeer.getLeader())
+            {
+                serverIP = temporaryPeer.getIp();
+                serverPort = Integer.parseInt(temporaryPeer.getPort());
+            }
+            if(temporaryPeer.getEmail() == mCurretnID)
+            {
+                currentPeer = temporaryPeer;
+            }
+            else
+            {
+                otherPeers.add(temporaryPeer);
+            }
+        }
+        return currentPeer;
+    }
 
     private  byte[] testSerializable(DirectionsRoute object) {
         byte[] data = SerializationUtils.serialize(object);

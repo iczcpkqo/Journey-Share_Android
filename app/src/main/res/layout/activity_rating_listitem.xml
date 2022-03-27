@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/targetTextView"
+        android:layout_width="360dp"
+        android:layout_height="52dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textSize="16sp"
+        />
+
+    <RatingBar
+        android:id="@+id/rateBar"
+        android:layout_width="240dp"
+        android:layout_height="57dp"
+        android:stepSize="0.5"
+        android:progressTint="#00BCD4"
+        tools:ignore="SpeakableTextPresentCheck" />
+</LinearLayout>

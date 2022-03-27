@@ -3,10 +3,13 @@ package com.journey.map.network;
 import android.os.Handler;
 import android.os.Message;
 
+import com.journey.model.Peer;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 
 public class PeerClient {
     private Thread clientThread;
@@ -15,12 +18,12 @@ public class PeerClient {
     Message message;
     Handler mainTheradHandler;
     Socket socket;
-
-    public PeerClient(int serverPort, String serverIp,Handler mainTheradHandler) {
+    List<Peer> peersList;
+    public PeerClient(int serverPort, String serverIp, Handler mainTheradHandler, List<Peer> peers) {
         this.serverPort = serverPort;
         this.serverIp = serverIp;
         this.mainTheradHandler = mainTheradHandler;
-
+        peersList = peers;
     }
 
     public void startClient()

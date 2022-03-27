@@ -72,11 +72,16 @@
 
     <!--    message use this-->
     <string name="message_title">ASE_Xiang-Testing</string>
+    
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Peer Key -->
     <string name="Route_1">route_2</string>
     <string name="Route_2">route_2</string>
+    <string name="rate_companion">Rate Companion</string>
+    <string name="you_are_rating_people_from_the_record">You are rating people from the record:</string>
+    <string name="string_you_are_rating_people_from_the_record" />
+
     <!--  end  message use this-->
 </resources>

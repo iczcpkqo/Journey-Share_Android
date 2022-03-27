@@ -17,15 +17,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.journey.R;
 
 public class LoadingDialog{
-    private Activity activity;
-    private AlertDialog alertDialog;
-    private CountDownTimer countDownTimer;
+    Activity activity;
+    AlertDialog alertDialog;
+    CountDownTimer countDownTimer;
+    private static Integer millFuture = 20000;
+    private static Integer countDownInterval = 2000;
+    String alertText;
 
-    //count down timer
-    private TextView timer;
-    LoadingDialog(Activity myActivity){
-        activity = myActivity;
+    public LoadingDialog(Activity activity, AlertDialog alertDialog, CountDownTimer countDownTimer, Integer millFuture, Integer countDownInterval, String alertText) {
+        this.activity = activity;
+        this.alertDialog = alertDialog;
+        this.countDownTimer = countDownTimer;
+        this.millFuture = millFuture;
+        this.countDownInterval = countDownInterval;
+        this.alertText = alertText;
     }
+
     public void startLoadingDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(activity,R.style.MyAlertDialogCustom);
         LayoutInflater inflater = activity.getLayoutInflater();
@@ -40,7 +47,7 @@ public class LoadingDialog{
     }
 
     private void startCounting(){
-        new CountDownTimer(20000,1000) {
+        new CountDownTimer(millFuture,countDownInterval) {
             @Override
             public void onTick(long millisUntilFinished) {
                 alertDialog.setMessage(" " + millisUntilFinished / 1000 + "s");
