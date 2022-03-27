@@ -81,6 +81,8 @@ public class ConditionActivity extends AppCompatActivity {
     private String origin_lat;
     private String end_lon;
     private String end_lat;
+    private String startAddress;
+    private String destination;
 
     public void init(){
         chooseDateTime = (TextInputEditText)findViewById(R.id.choose_date_time_dt);
@@ -120,8 +122,8 @@ public class ConditionActivity extends AppCompatActivity {
     }
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
-            //sendConInfo();
-            testNavigationActivity();
+            sendConInfo();
+//            testNavigationActivity();
         });
     }
 
@@ -189,7 +191,7 @@ public class ConditionActivity extends AppCompatActivity {
             getText();
             ConditionInfo conditionInfo = new ConditionInfo(choose_date,origin_address,
                     end_address,prefer_gender,min_age,max_age,
-                    min_score,origin_lon,origin_lat,end_lon,end_lat);
+                    min_score,origin_lon,origin_lat,end_lon,end_lat,startAddress,destination);
             //send serialized conditionInfo to real time activity
             conInfo.putExtra(CONDITION_INFO,conditionInfo);
             startActivity(conInfo);
@@ -329,11 +331,11 @@ public class ConditionActivity extends AppCompatActivity {
             String locationMarker = this.getString(R.string.locationMarker);
             //Get place name
             if (data.hasExtra(placeName)) {
-                String address = data.getExtras().getString(placeName);
 
                 if(data.getExtras().getString(locationMarker).equals(ORIGIN_LOCATION))
                 {
-                    originPlace.setText(address);
+                    startAddress = data.getExtras().getString(placeName);
+                    originPlace.setText(startAddress);
                     //Get place Longitude and latitude
                     if (data.hasExtra(latitude) && data.hasExtra(longitude)) {
                         double origin_lat = data.getExtras().getDouble(latitude);
@@ -344,7 +346,8 @@ public class ConditionActivity extends AppCompatActivity {
                 }
                 else if(data.getExtras().getString(locationMarker).equals(END_LOCATION))
                 {
-                    endPlace.setText(address);
+                    destination = data.getExtras().getString(placeName);
+                    endPlace.setText(destination);
                     //Get place Longitude and latitude
                     if (data.hasExtra(latitude) && data.hasExtra(longitude)) {
                         double end_lat = data.getExtras().getDouble(latitude);

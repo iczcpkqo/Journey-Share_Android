@@ -75,6 +75,7 @@ public class NavigationActivity extends AppCompatActivity implements
     private LocationLayerPlugin locationLayerPlugin;
     private Point originLocation;
     private Point destinationLocation;
+    private List<OrderUser> orderlist;
     private List<Peer> peersList;
     private String currentUserID;
     private Peer currentPeer;
@@ -140,7 +141,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 serverIP,
-                "8081");
+                "8081",null,null);
 
         Peer user2 = new Peer("user_2@user_2.com",
                 "Female",
@@ -160,7 +161,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 "127.0.0.1",
-                "3030");
+                "3030",null,null);
         peers.add(user1);
         peers.add(user2);
 
@@ -182,8 +183,7 @@ public class NavigationActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.navigationView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-
-
+        getUserList();
         peersList = testPeerList();
         currentUserID = "user_1@user_1.com";
         currentPeer = getCurrentPeer(currentUserID,peersList);
@@ -360,6 +360,12 @@ public class NavigationActivity extends AppCompatActivity implements
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
+    private void getUserList()
+    {
+        Intent parentIntent = getIntent();
+        Bundle bundle = parentIntent.getExtras();
+        orderlist = new ParseUserGroups(bundle.getString("list")).parseJsonArray();
+    }
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
