@@ -28,6 +28,7 @@ public class PeerSever {
     Message message;
     Handler mainTheradHandler;
     List<peerNetowrkInformation> clientList;
+    List<Peer> peersList;
 
     public static PeerNetworkData encodeNetworkData(String baseContent)
     {
@@ -51,11 +52,12 @@ public class PeerSever {
         return networkData;
     }
 
-    public PeerSever(int port,Handler handler)
+    public PeerSever(int port,Handler handler,List<Peer> peers)
     {
         mainTheradHandler = handler;
         serverPort = port;
         clientList = new ArrayList<peerNetowrkInformation>();
+        peersList = peers;
     }
     public void startServer()
     {
@@ -85,7 +87,7 @@ public class PeerSever {
 
             }
         };
-
+        this.serverThread.start();
     }
 
     class peerNetowrkInformation {
