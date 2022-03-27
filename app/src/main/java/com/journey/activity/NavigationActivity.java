@@ -183,7 +183,8 @@ public class NavigationActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.navigationView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-        getUserList();
+
+
         peersList = testPeerList();
         currentUserID = "user_1@user_1.com";
         currentPeer = getCurrentPeer(currentUserID,peersList);
@@ -358,13 +359,6 @@ public class NavigationActivity extends AppCompatActivity implements
         locationRequest.setInterval(updateMillisecond);
         locationRequest.setFastestInterval(fastUpdateMillisecond);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    private void getUserList()
-    {
-        Intent parentIntent = getIntent();
-        Bundle bundle = parentIntent.getExtras();
-        orderlist = new ParseUserGroups(bundle.getString("list")).parseJsonArray();
     }
 
     @Override
