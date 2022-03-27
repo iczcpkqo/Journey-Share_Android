@@ -120,7 +120,8 @@ public class ConditionActivity extends AppCompatActivity {
     }
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
-            sendConInfo();
+            //sendConInfo();
+            testNavigationActivity();
         });
     }
 

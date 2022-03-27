@@ -1,24 +1,19 @@
 package com.journey.activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.Person;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.esotericsoftware.kryo.Kryo;
-import com.esotericsoftware.kryo.io.Input;
-import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.serializers.JavaSerializer;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -29,15 +24,12 @@ import com.journey.R;
 import com.journey.map.OrderUser;
 import com.journey.map.ParseRoutes;
 import com.journey.map.ParseUserGroups;
+import com.journey.model.Peer;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.api.directions.v5.DirectionsCriteria;
-import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
-import com.mapbox.api.directions.v5.models.RouteLeg;
-import com.mapbox.api.directions.v5.models.RouteOptions;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;
@@ -50,14 +42,11 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 import org.apache.commons.lang3.SerializationUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +71,41 @@ public class NavigationActivity extends AppCompatActivity implements
     private FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     Location currentLocation;
+
+    Handler mHandler = new Handler(Looper.myLooper()){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+        }
+    };
+    private List<Peer> testPeerList()
+    {
+        List<Peer> peers = new ArrayList<Peer>();
+
+        Peer user1 = new Peer("user_1@user_1.com",
+                "Female",
+                12,
+                4.5,
+                53.3498,
+                53.3496,
+                53.3446,
+                -6.2595,
+                0L,
+                0L,
+                1,
+                12,
+                true,
+                true,
+                "123",
+                true,
+                null,
+                "123",
+                "8080");
+
+
+        return peers;
+    }
 
 
     @Override
@@ -118,18 +142,18 @@ public class NavigationActivity extends AppCompatActivity implements
 
     private  void testNavigation()
     {
-        //origin:53.3502, -6.2581
-        //waypoint :53.346016, -6.267914
-        //waypoint :53.343263, -6.275379
+        //53.3498, -6.2603
+        //origin:53.3496, -6.2600
+        //waypoint :53.3480, -6.2593
+        //waypoint :53.3457, -6.2573
         //waypoint :53.339132, -6.272588
-        //destination: 53.334602, -6.279871
-        originLocation = Point.fromLngLat(-6.2581,53.3502);
+        //destination: 53.3446, -6.2595
+        originLocation = Point.fromLngLat(-6.2600,53.3496);
         ArrayList<Point> UserWaypoints = new ArrayList<>();
-        UserWaypoints.add( Point.fromLngLat(-6.267914,53.346016));
-        UserWaypoints.add(  Point.fromLngLat(-6.279871,53.334602));
-        UserWaypoints.add( Point.fromLngLat(-6.272588,53.339132));
+        UserWaypoints.add( Point.fromLngLat(-6.2591,53.3480));
+        UserWaypoints.add(  Point.fromLngLat(-6.2573,53.3457));
 
-        destinationLocation =Point.fromLngLat(-6.275379,53.343263);
+        destinationLocation =Point.fromLngLat(-6.2595,53.3446);
 
         ParseRoutes route = new ParseRoutes(
                 getString(R.string.access_token),

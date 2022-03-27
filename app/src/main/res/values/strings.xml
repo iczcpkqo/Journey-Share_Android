@@ -75,5 +75,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- Peer Key -->
+    <string name="Route_1">route_2</string>
+    <string name="Route_2">route_2</string>
     <!--  end  message use this-->
 </resources>
