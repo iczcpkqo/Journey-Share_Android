@@ -63,32 +63,6 @@ public class Peer implements Serializable {
 
     Map<String, String> otherFields;
 
-    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, String orderId, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination, Map<String, String> otherFields) {
-        this.email = email;
-        this.gender = gender;
-        this.age = age;
-        this.score = score;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.dLongtitude = dLongtitude;
-        this.dLatitude = dLatitude;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.order = order;
-        this.orderId = orderId;
-        this.limit = limit;
-        this.leader = leader;
-        this.furthest = furthest;
-        this.uuid = uuid;
-        this.confirmed = confirmed;
-        this.blacklist = blacklist;
-        this.ip = ip;
-        this.port = port;
-        this.startAddress = startAddress;
-        this.destination = destination;
-        this.otherFields = otherFields;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -177,6 +151,14 @@ public class Peer implements Serializable {
         this.order = order;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     public Integer getLimit() {
         return limit;
     }
@@ -257,7 +239,6 @@ public class Peer implements Serializable {
         this.destination = destination;
     }
 
-
     public Map<String, String> getOtherFields() {
         return otherFields;
     }
@@ -266,11 +247,28 @@ public class Peer implements Serializable {
         this.otherFields = otherFields;
     }
 
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
+    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, String orderId, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination) {
+        this.email = email;
+        this.gender = gender;
+        this.age = age;
+        this.score = score;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.dLongtitude = dLongtitude;
+        this.dLatitude = dLatitude;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.order = order;
         this.orderId = orderId;
+        this.limit = limit;
+        this.leader = leader;
+        this.furthest = furthest;
+        this.uuid = uuid;
+        this.confirmed = confirmed;
+        this.blacklist = blacklist;
+        this.ip = ip;
+        this.port = port;
+        this.startAddress = startAddress;
+        this.destination = destination;
     }
 }
