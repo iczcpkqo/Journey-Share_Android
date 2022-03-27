@@ -141,7 +141,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         Peer peer = new Peer(email, gender, 20, Double.parseDouble(mark),
                 Double.parseDouble(longitude), Double.parseDouble(latitude), Double.parseDouble(dLongitude),
                 Double.parseDouble(dLatitude),0L,0L,
-                3,"12334",3, null,null,null, null,null,null,startAddress,destination,null,null);
+                3,"12334",3, null,null,null, null,null,null,startAddress,destination,null);
         final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
         try {
             reqResApi[0].createUser(peer).enqueue(new Callback<List<Peer>>() {
