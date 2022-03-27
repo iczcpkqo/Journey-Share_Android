@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Please check the email address and password.",
                                     Toast.LENGTH_SHORT).show();
 //                            updateUI(null);
                         }
@@ -150,6 +150,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         outputStream.close();
                                         Toast.makeText(getBaseContext(), "File created successfully", Toast.LENGTH_LONG).show();
                                     } catch (FileNotFoundException e) {
+                                        Toast.makeText(getBaseContext(), "Please turn on folder permissions for this application.", Toast.LENGTH_LONG).show();
                                         e.printStackTrace();
                                     } catch (IOException e) {
                                         e.printStackTrace();
