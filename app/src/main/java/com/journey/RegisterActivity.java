@@ -83,9 +83,16 @@ public class RegisterActivity extends AppCompatActivity {
                 String txt_gender = gender.getSelectedItem().toString();
                 String txt_phone = phone.getText().toString();
                 String txt_username = username.getText().toString();
+                String txt_confirm = confirm.getText().toString();
 
-                if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)){
+                if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)||TextUtils.isEmpty(txt_birthDate)||
+                        TextUtils.isEmpty(txt_gender)||TextUtils.isEmpty(txt_phone)||TextUtils.isEmpty(txt_username)||
+                        TextUtils.isEmpty(txt_confirm)){
                     Toast.makeText(RegisterActivity.this, "Empty credentials!", Toast.LENGTH_SHORT).show();
+                }else if(txt_password.length() < 6){
+                    Toast.makeText(RegisterActivity.this, "Password must be at least 6 characters.", Toast.LENGTH_SHORT).show();
+                }else if(!txt_password.equals(txt_confirm)){
+                    Toast.makeText(RegisterActivity.this, "Please enter the same password twice. ", Toast.LENGTH_SHORT).show();
                 }else{
                     createAccount(txt_username,txt_password,txt_birthDate,txt_gender,txt_phone,txt_email,  5.0, 0);
                 }
@@ -139,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                            Toast.makeText(RegisterActivity.this, "Authentication failed.(Change another email address)",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -176,6 +183,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         outputStream.close();
                                         Toast.makeText(getBaseContext(), "File created successfully", Toast.LENGTH_LONG).show();
                                     } catch (FileNotFoundException e) {
+                                        Toast.makeText(getBaseContext(), "Please turn on folder permissions for this application.", Toast.LENGTH_LONG).show();
                                         e.printStackTrace();
                                     } catch (IOException e) {
                                         e.printStackTrace();
