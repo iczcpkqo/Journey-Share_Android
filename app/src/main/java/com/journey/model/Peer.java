@@ -63,7 +63,7 @@ public class Peer implements Serializable {
 
     Map<String, String> otherFields;
 
-    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, Integer orderId, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination, Map<String, String> otherFields) {
+    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, String orderId, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination, Map<String, String> otherFields) {
         this.email = email;
         this.gender = gender;
         this.age = age;
