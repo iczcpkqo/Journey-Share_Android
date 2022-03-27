@@ -68,7 +68,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
     LoadingDialog loadingDialog = new LoadingDialog(this);
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.150.13.185:8080/")
+            .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -95,7 +95,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     }
 
     private void sendMultiRequests() {
-        new CountDownTimer(20000, 20000) {
+        new CountDownTimer(20000, 2000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 createPost(retrofit);
@@ -115,7 +115,9 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             reqResApi[0].createUser(peer).enqueue(new Callback<List<Peer>>() {
                 @Override
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
-                    Toast.makeText(LeaderPeerGroupActivity.this, response.code() + "Send data to the server successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LeaderPeerGroupActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
+                    List<Peer> peers = response.body();
+                    confirmToJoin(peers);
                 }
 
                 @Override
@@ -129,7 +131,9 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             Toast.makeText(LeaderPeerGroupActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
-
+    private Boolean confirmToJoin(List<Peer> peerList){
+        return peerList.get(0).getLeader();
+    }
     public void createPost(Retrofit retrofit) {
         //  get the deserialized peer from RealTimeJourneyTableA
         Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
@@ -163,10 +167,12 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     private void sendPeersToNavigation(List<Peer> peerList) {
         confirm.setOnClickListener(view -> {
             List<Peer> peers = peerList;
+//            createPostToPeerGroup(retrofit);
 //            if(name==l)
 //                startActivity();
 //            else
 //                loadd(false)
+
             Intent intent = new Intent(LeaderPeerGroupActivity.this, NavigationActivity.class);
 //            intent.putExtra(MATCHED_PEERS, peers.get(0));
 //            intent.putExtra(MATCHED_PEERS, peers.get(1));

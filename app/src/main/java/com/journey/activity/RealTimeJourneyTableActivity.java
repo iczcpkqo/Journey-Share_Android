@@ -66,7 +66,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     private Button findPeers;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.150.13.185:8080/")
+            .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
@@ -146,6 +146,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
                     Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
                     List<Peer> peers = response.body();
                     getIsLeader(peers);
+                    realTimeToGroup(peers,peer);
                 }
                 @Override
                 public void onFailure(Call<List<Peer>> call, Throwable t) {
@@ -157,17 +158,19 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             System.out.println(e.toString());
             Toast.makeText(RealTimeJourneyTableActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
-        Intent intent = new Intent(RealTimeJourneyTableActivity.this, LeaderPeerGroupActivity.class);
+    }
+    private Boolean getIsLeader(List<Peer> peerList){
+        return peerList.get(0).getLeader();
+    }
+    private void realTimeToGroup(List<Peer> peerList,Peer peer){
+        Intent intent;
+        if (getIsLeader(peerList)){
+            intent = new Intent(RealTimeJourneyTableActivity.this, FollowerPeerGroupActivity.class);
+        }else {
+            intent = new Intent(RealTimeJourneyTableActivity.this, FollowerPeerGroupActivity.class);
+        }
         intent.putExtra(PEER_KEY, peer);
         startActivity(intent);
     }
-    private Boolean getIsLeader(List<Peer> peerList){
-
-        return peerList.get(0).getLeader();
-    }
-//    private void realTimeToLeaderGroup(){
-//        Intent intent = new Intent(this,LeaderPeerGroupActivity.class);
-//        startActivity(intent);
-//    }
 
 }
