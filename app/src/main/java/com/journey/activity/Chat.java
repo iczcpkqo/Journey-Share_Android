@@ -41,8 +41,8 @@ public class Chat extends AppCompatActivity {
         initMsgTestData();
         Intent intent = getIntent();
         ChatDeliver deliver =(ChatDeliver) intent.getSerializableExtra("deliver");
-        String testt = deliver.getUsername();
-        setChatBar(testt);
+//        String testt = deliver.getUsername();
+//        setChatBar(testt);
 
         // TODO: Recycler 刷新
 
