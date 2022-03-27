@@ -66,7 +66,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     CountDownTimer countDownTimer;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
-    LoadingDialog loadingDialog = new LoadingDialog(this,null,null,null,null,null);
+    LoadingDialog loadingDialog = new LoadingDialog(this, null, null, null, null, null);
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://10.150.13.185:8080/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -147,8 +147,10 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
                     List<Peer> peerList = response.body();
                     LeaderPeerAdapter leaderPeerAdapter = new LeaderPeerAdapter(LeaderPeerGroupActivity.this, peerList);
                     recyclerView.setAdapter(leaderPeerAdapter);
+                    String orderID = saveInfoToFirebase(peerList);
+                    udpateOrderId(peerList,orderID);
                     sendPeersToNavigation(peerList);
-                    saveInfoToFirebase(peerList);
+
                 }
 
                 @Override
@@ -161,6 +163,13 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             System.out.println(e.toString());
             Toast.makeText(LeaderPeerGroupActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void udpateOrderId(List<Peer> peerList, String orderID) {
+        for (Peer peer : peerList) {
+            peer.setOrderId(orderID);
+        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -230,14 +239,14 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void saveInfoToFirebase(List<Peer> peerList) {
+    public String saveInfoToFirebase(List<Peer> peerList) {
         //to do
         Map<String, Object> record = new HashMap<>();
         Peer peer = peerList.stream().filter(o -> o.getLeader() == true).findAny().orElse(null);
         List<String> collect = peerList.stream().map(Peer::getEmail).collect(Collectors.toList());
         record.put("BelongTo", peer.getEmail());
         record.put("date", new Date());
-        record.put("companion", String.join(",", collect));
+        record.put("companion", collect);
 
         String uuid = UUID.randomUUID().toString();
 
@@ -249,7 +258,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             String uuid2 = UUID.randomUUID().toString();
             db.collection("user_record").document(uuid2).set(record);
         }
-
+        return uuid;
     }
 
 }
