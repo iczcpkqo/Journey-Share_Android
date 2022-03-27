@@ -100,7 +100,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
                             android:layout_marginTop="8dp"
-                            android:text="Arrive time:"
+                            android:text="Create time:"
                             android:textAppearance="?attr/textAppearanceHeadline4"
                             android:textStyle="bold"
                             />
