@@ -2,6 +2,7 @@ package com.journey.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 /**
  * @Description:
@@ -51,6 +52,16 @@ public class Peer implements Serializable {
     String ip;
 
     String port;
+
+    Map<String,String> otherFields;
+
+    public Map<String, String> getOtherFields() {
+        return otherFields;
+    }
+
+    public void setOtherFields(Map<String, String> otherFields) {
+        this.otherFields = otherFields;
+    }
 
     public String getEmail() {
         return email;
