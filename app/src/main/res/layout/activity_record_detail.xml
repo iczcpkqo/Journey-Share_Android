@@ -199,54 +199,38 @@
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/distance"
+<!--            <TextView-->
+<!--                android:id="@+id/distance"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:maxLines="1"-->
+<!--                android:paddingTop="16dp"-->
+<!--                android:paddingEnd="16dp"-->
+<!--                android:text="Distance:"-->
+<!--                android:textAppearance="?attr/textAppearanceSubtitle1"-->
+<!--                android:textSize="16dp"-->
+<!--                android:textStyle="bold" />-->
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/distance_detail"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/companion_list"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:maxLines="2"-->
+<!--                android:paddingEnd="16dp"-->
+<!--                android:text="1.6km"-->
+<!--                android:textAppearance="?attr/textAppearanceBody2"-->
+<!--                android:textSize="16dp" />-->
+
+
+            <Button
+                android:id="@+id/rateCompBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:text="Distance:"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:id="@+id/distance_detail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/companion_list"
-                android:layout_gravity="center_vertical"
-                android:maxLines="2"
-                android:paddingEnd="16dp"
-                android:text="1.6km"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textSize="16dp" />
-
-
-            <TextView
-                android:id="@+id/rate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:paddingTop="16dp"
-                android:paddingEnd="16dp"
-                android:text="Rate:"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-            <RatingBar
-                android:paddingVertical="16dp"
-                android:id="@+id/ratingBar"
-                android:numStars="5"
-                android:rating="3.5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="?android:attr/ratingBarStyle"
-                android:isIndicator="true"
-                android:layout_gravity="center_horizontal"
-                />
+                android:onClick="showRatingCompanion"
+                android:text="Rate Companion" />
 
 
         </LinearLayout>
