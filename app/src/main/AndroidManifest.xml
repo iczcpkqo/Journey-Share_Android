@@ -23,6 +23,8 @@
             android:theme="@style/Theme.AppCompat.Light.ActionBar"/>
         <activity
             android:name=".activity.FollowerPeerGroupActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.RateComActivity"
             android:exported="false" />
         <activity

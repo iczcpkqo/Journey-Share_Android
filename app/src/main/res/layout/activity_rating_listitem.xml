@@ -22,5 +22,6 @@
         android:layout_width="240dp"
         android:layout_height="57dp"
         android:stepSize="0.5"
+        android:progressTint="#00BCD4"
         tools:ignore="SpeakableTextPresentCheck" />
 </LinearLayout>
