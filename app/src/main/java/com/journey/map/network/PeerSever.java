@@ -73,7 +73,7 @@ public class PeerSever {
                         try {
                             Socket socket = serverSocket.accept();
 
-                            CommunicationThread comm = new CommunicationThread(socket);
+                            CommunicationThread comm = new CommunicationThread(socket,mainTheradHandler);
                             //start communication with the client
                             new Thread(comm).start();
                         } catch (IOException e) {
@@ -115,46 +115,6 @@ public class PeerSever {
 
 
 
-    class CommunicationThread implements Runnable{
-        private  Socket clientSocket;
-        private BufferedReader input;
-        private PrintWriter output;
-        public CommunicationThread(Socket socket)
-        {
-            this.clientSocket = socket;
 
-            try{
-                this.input = new BufferedReader(new InputStreamReader(
-                        this.clientSocket.getInputStream()));
-                this.output = new PrintWriter(new OutputStreamWriter(
-                        this.clientSocket.getOutputStream()));
-
-            }
-            catch (IOException e){
-
-            }
-        }
-
-        @Override
-        public void run() {
-            while(!Thread.currentThread().isInterrupted())
-            {
-
-                try {
-                    clientSocket.sendUrgentData(0xFF);
-                    String read = input.readLine();
-                    PeerNetworkData data = PeerSever.encodeNetworkData(read);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            try {
-                clientSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
 

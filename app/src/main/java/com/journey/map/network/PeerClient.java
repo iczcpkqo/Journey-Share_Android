@@ -37,6 +37,9 @@ public class PeerClient {
                         socket = new Socket(sever,serverPort);
                         if(socket != null)
                         {
+                            CommunicationThread comm = new CommunicationThread(socket,mainTheradHandler);
+                            //start communication with the client
+                            new Thread(comm).start();
                             break;
                         }
                     } catch (UnknownHostException e) {
