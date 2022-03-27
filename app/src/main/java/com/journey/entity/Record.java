@@ -10,12 +10,16 @@ public class Record implements Serializable {
     private String documentId;
     private String arrival;
     private Date createDate;
+    private Date ArrvialDate;
+    private String companion;
 
-    public Record(String documentId, String departure, String arrival, Date createDate) {
+    public Record(String documentId, String departure, String arrival, Date createDate, Date ArrvialDate, String companion) {
         this.documentId = documentId;
         this.departure = departure;
         this.arrival = arrival;
         this.createDate = createDate;
+        this.ArrvialDate = ArrvialDate;
+        this.companion = companion;
     }
     public String getDeparture() {
         return departure;
@@ -24,15 +28,19 @@ public class Record implements Serializable {
         return this.documentId;
     }
     public String getArrival() {return arrival;}
-
     public Date getCreateDate(){
         return this.createDate;
     }
-
+    public Date getArrvialDate() {return this.ArrvialDate;}
+    public String getcompanion() {return this.companion;}
     public String getCreateDateString() {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(createDate);
+    }
+    public String getArrivalDateString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(ArrvialDate);
     }
 
     public void setDeparture(String departure) {
@@ -54,14 +62,19 @@ public class Record implements Serializable {
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
-
+    
+    public void setArrvialDate(Date ArrvialDate) {this.ArrvialDate = ArrvialDate;}
+    
+    public void setcompanion(String companion) {this.companion = companion;}
     @Override
     public String toString() {
         return "Record{" +
                 "departure='" + departure + '\'' +
                 ", documentId='" + documentId + '\'' +
                 ", arrival='" + arrival + '\'' +
-                ", createDate=" + createDate +
+                ", createDate=" + createDate + '\''+
+                ", arrivalDate=" + ArrvialDate + '\''+
+                ", companion=" + companion + '\''+
                 '}';
     }
 }

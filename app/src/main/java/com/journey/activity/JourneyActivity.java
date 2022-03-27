@@ -103,7 +103,7 @@ public class JourneyActivity extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 Log.d("intent", String.valueOf(document.exists()));
                 Map<String, Object> data = document.getData();
-                Record tmp = new Record((String)document.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate());
+                Record tmp = new Record((String)document.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate(),((Timestamp)data.get("arrivalDate")).toDate(),(String)data.get("companion"));
                 intent.putExtra("DocObj",tmp);
                 startActivity(intent);
             }
