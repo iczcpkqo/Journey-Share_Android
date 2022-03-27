@@ -65,6 +65,7 @@ public class PeerClient {
 
             }
         };
+        this.clientThread.start();
     }
 
 }
