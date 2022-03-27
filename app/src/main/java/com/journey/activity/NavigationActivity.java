@@ -101,7 +101,9 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 "123",
-                "8080");
+                "8080",
+                null,
+                null);
 
 
         return peers;

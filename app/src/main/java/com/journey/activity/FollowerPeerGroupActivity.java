@@ -36,7 +36,7 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
     Button cancel;
     Button follow;
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
-    LoadingDialog loadingDialog = new LoadingDialog(this);
+    LoadingDialog loadingDialog = new LoadingDialog(this,null,null,null,null,null);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
