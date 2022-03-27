@@ -113,6 +113,12 @@ public class NavigationActivity extends AppCompatActivity implements
     }
     private List<Peer> testPeerList()
     {
+        //53.3498, -6.2603
+        //origin:53.3496, -6.2600
+        //waypoint :53.3480, -6.2593
+        //waypoint :53.3457, -6.2573
+        //waypoint :53.339132, -6.272588
+        //destination: 53.3446, -6.2595
         List<Peer> peers = new ArrayList<Peer>();
 
         String serverIP = getLocalIpAddress();
@@ -182,6 +188,7 @@ public class NavigationActivity extends AppCompatActivity implements
         currentUserID = "user_1@user_1.com";
         currentPeer = getCurrentPeer(currentUserID,peersList);
         createCommunication(currentPeer);
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         setLocationUpdata(10000,5000);
         setUpdateCallback();
