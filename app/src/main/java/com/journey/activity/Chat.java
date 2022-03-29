@@ -1,5 +1,7 @@
 package com.journey.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -15,13 +18,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.journey.R;
+import com.journey.adapter.DialogueAdapter;
 import com.journey.adapter.MsgAdapter;
 import com.journey.entity.ChatDeliver;
+import com.journey.entity.Dialogue;
 import com.journey.entity.Msg;
+import com.journey.entity.User;
+import com.journey.service.database.DialogueHelper;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: Xiang Mao
@@ -30,15 +51,19 @@ import java.util.List;
  */
 public class Chat extends AppCompatActivity {
 
+    private static final String TAG = "Chat";
     List<Msg> msgList = new ArrayList<>();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     RecyclerView msgRecycler;
     EditText msgInput;
     Button msgBtn;
     MsgAdapter adapter;
+    Dialogue dialogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_chat);
 
         // TODO: 移除test data
@@ -47,9 +72,21 @@ public class Chat extends AppCompatActivity {
         ChatDeliver deliver =(ChatDeliver) intent.getSerializableExtra("deliver");
 
         // TODO: 参数接收
-        String testt = deliver.getUsername();
-        setChatBar(testt);
+//        dialogue = deliver.getDialogue();
+//        String title = dialogue.getTitle();
 
+        try {
+            dialogue = new Dialogue();
+            dialogue.setTitle(deliver.getDialogueTitle());
+            dialogue.setDialogueId(deliver.getDialogueId());
+            dialogue.setType(deliver.getType());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        // 设置标题
+        setChatBar(dialogue.getTitle());
 
         msgRecycler = (RecyclerView) findViewById(R.id.msg_recycler_view);
         msgInput = (EditText) findViewById(R.id.msg_input_text);
@@ -58,22 +95,14 @@ public class Chat extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         // TODO: Recycler 刷新
-        msgRefresh();
+//        msgRefresh();
         msgRecycler.setLayoutManager(layoutManager);
         msgRecycler.setAdapter(adapter);
         msgRecycler.scrollToPosition(msgList.size() -1);
         msgBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                String content = msgInput.getText().toString();
-                if(!"".equals(content)){
-                    Msg msg = new Msg(content);
-
-                    msgList.add(msg);
-                    adapter.notifyItemInserted(msgList.size() - 1);
-                    msgRecycler.scrollToPosition(msgList.size() -1);
-                    msgInput.setText("");
-                }
+                msgSend(msgInput.getText().toString());
             }
         });
         msgInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -88,7 +117,86 @@ public class Chat extends AppCompatActivity {
         });
     }
 
-    private void msgRefresh(){ }
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("IMIMIMIMIMIMIMIMII ###################################################");
+        msgRefresh();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        System.out.println("IMIMIMIMIMIMIMIMII @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+//        dialogueList.clear();
+    }
+
+    private void msgSend(String content){
+        if(!"".equals(content)){
+            Msg msg = new Msg(content, dialogue.getDialogueId());
+            msgInput.setText("");
+//            msgList.add(msg);
+//            adapter.notifyItemInserted(msgList.size() - 1);
+//            msgRecycler.scrollToPosition(msgList.size() -1);
+            db.collection("message").add(msg);
+
+        }
+
+    }
+
+    private void msgRefresh(){
+
+//        db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(sender.getEmail()))
+
+        Log.d(TAG, "$$$$$$$$$$$$$$$" );
+        db.collection("message").orderBy("time")
+                .whereEqualTo("dialogueId", dialogue.getDialogueId())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        Log.d(TAG, "@@@@" + value);
+                        if (error == null) {
+                            for (QueryDocumentSnapshot document : value) {
+                                Map<String, Object> data = document.getData();
+                                String dialogueId = document.getId();
+                                Log.d(TAG, dialogueId + " => #####" + data);
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ");
+                        }
+
+
+//                List<Record> record = new ArrayList<Record>();
+//                adapter.clear();
+//                for (QueryDocumentSnapshot doc: value){
+//                    Map<String, Object> data = doc.getData();
+//                    Record tmp = new Record((String)doc.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate());
+//                    adapter.add(tmp);
+//                }
+//                Log.d("listener","current:"+record);
+
+                    }
+                });
+
+
+
+//
+//        db.collection("dialogue").document(dialogue.getOrderId()).collection("msg")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d(TAG, document.getId() + " ##$#$#$#$#$#=> " + document.getData());
+//                            }
+//                        } else {
+//                            Log.d(TAG, "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+    }
 
     private void initMsgTestData(){
         for(int i=0; i<15; i++){

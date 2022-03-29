@@ -12,13 +12,17 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.protobuf.DescriptorProtos;
 import com.journey.R;
 import com.journey.activity.Chat;
 import com.journey.activity.JourneyActivity;
 import com.journey.entity.ChatDeliver;
 import com.journey.entity.Dialogue;
+import com.journey.entity.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,14 +73,13 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
 
                 Intent intent = new Intent(context, Chat.class);
 
-                // TODO: 移除测试数据
-                intent.putExtra("test", "oooossssooosss");
-                Toast.makeText(v.getContext(), dia.dialogueTitle, Toast.LENGTH_SHORT).show();
-
                 ChatDeliver deliver = new ChatDeliver();
 
-                // TODO: 配置对谈参数
-                deliver.setUsername(dia.getReceiver().get(0).getUsername());
+                // DONE: 配置对谈参数
+
+                deliver.setDialogueTitle(dialogueList.get(position).getTitle());
+                deliver.setDialogueId(dialogueList.get(position).getDialogueId());
+                deliver.setType(dialogueList.get(position).getType());
 
                 intent.putExtra("deliver", deliver);
                 context.startActivity(intent);
@@ -91,7 +94,7 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
         Dialogue dia = dialogueList.get(position);
 
         // TODO: 根据用户情况设置会话标题
-        holder.title.setText(dia.getTitle());
+        holder.title.setText(dia.getTitle() + dia.getDialogueId());
 
         // TODO: 根据用户信息设置头像
         holder.img.setImageResource(holder.headCupboard.get((int) Math.floor(Math.random()*2)));
