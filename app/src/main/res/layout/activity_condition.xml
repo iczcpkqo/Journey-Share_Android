@@ -79,29 +79,31 @@
             android:background="@drawable/text_input_round"
             android:maxLength="20" />
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/textInputLayout"
-        android:id="@+id/gender_input_layout"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:focusable="false"
-        app:counterEnabled="true"
-        app:counterMaxLength="2"
-        app:endIconMode="clear_text"
-        app:helperTextTextColor="@color/red"
+    <RadioGroup
+        android:layout_height="wrap_content"
+        android:id="@+id/gender_group"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:checkedButton="@id/rb_option_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/end_address"
-        android:imeOptions="actionNext">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@id/prefer_gender_dt"
-            style="@style/textInput"
-            android:hint="@string/preferGender"
-            android:inputType="text"
-            android:background="@drawable/text_input_round"
-            android:maxLength="6" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/end_address">
+            <RadioButton android:text="Male"
+                android:layout_width="wrap_content"
+                android:id="@+id/male_radio"
+                android:layout_height="wrap_content">
+            </RadioButton>
+            <RadioButton android:text="Female"
+                android:layout_width="wrap_content"
+                android:id="@+id/female_radio"
+                android:layout_height="wrap_content">
+            </RadioButton>
+            <RadioButton android:text="Other"
+                android:layout_width="wrap_content"
+                android:id="@+id/other_radio"
+                android:layout_height="wrap_content">
+            </RadioButton>
+    </RadioGroup>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/min_age"
         style="@style/textInputLayout"
@@ -114,7 +116,7 @@
         app:helperTextTextColor="@color/red"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gender_input_layout"
+        app:layout_constraintTop_toBottomOf="@id/gender_group"
         android:imeOptions="actionNext">
 
         <com.google.android.material.textfield.TextInputEditText

@@ -20,14 +20,12 @@ public class LoadingDialog{
     Activity activity;
     AlertDialog alertDialog;
     CountDownTimer countDownTimer;
-    private static Integer millFuture = 20000;
-    private static Integer countDownInterval = 2000;
+    int millFuture;
+    int countDownInterval;
     String alertText;
 
-    public LoadingDialog(Activity activity, AlertDialog alertDialog, CountDownTimer countDownTimer, Integer millFuture, Integer countDownInterval, String alertText) {
+    public LoadingDialog(Activity activity, Integer millFuture, Integer countDownInterval, String alertText) {
         this.activity = activity;
-        this.alertDialog = alertDialog;
-        this.countDownTimer = countDownTimer;
         this.millFuture = millFuture;
         this.countDownInterval = countDownInterval;
         this.alertText = alertText;
@@ -50,6 +48,7 @@ public class LoadingDialog{
         new CountDownTimer(millFuture,countDownInterval) {
             @Override
             public void onTick(long millisUntilFinished) {
+                alertDialog.setTitle(alertText);
                 alertDialog.setMessage(" " + millisUntilFinished / 1000 + "s");
                 TextView message = alertDialog.findViewById(android.R.id.message);
                 message.setTextSize(40);

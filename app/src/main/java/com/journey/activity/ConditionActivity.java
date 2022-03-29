@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +13,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -63,8 +66,13 @@ public class ConditionActivity extends AppCompatActivity {
     private static final String TAG ="postRequestActivity" ;
     private static final String ORIGIN_LOCATION = "0";
     private static final String END_LOCATION = "1";
+    //gender radio group
+    private RadioGroup radioGroup;
+    private RadioButton male;
+    private RadioButton female;
+    private RadioButton other;
+    final String[] gender = new String[1];
 
-    JSONPlaceholder jsonPlaceholder;
     AwesomeValidation awesomeValidation;
     //location contains latitude and longitude
     List<Double> location = new ArrayList<Double>();
@@ -102,6 +110,11 @@ public class ConditionActivity extends AppCompatActivity {
 
         //initialize validation style
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        //preferGender radio group
+        radioGroup = (RadioGroup) findViewById(R.id.gender_group);
+        male = (RadioButton) findViewById(R.id.male_radio);
+        female = (RadioButton) findViewById(R.id.female_radio);
+        other = (RadioButton) findViewById(R.id.other_radio);
     }
 
     @Override
@@ -117,6 +130,8 @@ public class ConditionActivity extends AppCompatActivity {
         setOriginPlaceListener(originPlace);
         //end place picker
         setEndPlaceListener(endPlace);
+        //gender listener
+        genderListener();
         //submit listener
         submitConditionData();
     }
@@ -175,7 +190,7 @@ public class ConditionActivity extends AppCompatActivity {
         choose_date = chooseDateTime.getText().toString().trim();
         origin_address = originPlace.getText().toString().trim();
         end_address = endPlace.getText().toString().trim();
-        prefer_gender = preferGender.getText().toString().trim();
+        prefer_gender = gender[0];
         min_age = minAge.getText().toString().trim();
         max_age = maxAge.getText().toString().trim();
         min_score = score.getText().toString().trim();
@@ -195,8 +210,10 @@ public class ConditionActivity extends AppCompatActivity {
             //send serialized conditionInfo to real time activity
             conInfo.putExtra(CONDITION_INFO,conditionInfo);
             startActivity(conInfo);
+        }else if(!male.isChecked() && !female.isChecked() && !other.isChecked()){
+            Toast.makeText(ConditionActivity.this,"please select gender",Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this, "Validation Failed, Please check your information!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please complete your information!", Toast.LENGTH_SHORT).show();
         }
     }
     /**
@@ -214,9 +231,6 @@ public class ConditionActivity extends AppCompatActivity {
         //add validation for end address
         awesomeValidation.addValidation(this,R.id.end_address_dt,
                 RegexTemplate.NOT_EMPTY,R.string.invalid_end_address);
-        //add validation for gender
-        awesomeValidation.addValidation(this,R.id.prefer_gender_dt,
-                RegexTemplate.NOT_EMPTY,R.string.invalid_gender);
         //add validation for min age
         awesomeValidation.addValidation(this,R.id.min_age_dt,
                 RegexTemplate.NOT_EMPTY,R.string.invalid_min_age);
@@ -226,6 +240,16 @@ public class ConditionActivity extends AppCompatActivity {
         //add validation for score
         awesomeValidation.addValidation(this,R.id.score_dt,
                 RegexTemplate.NOT_EMPTY,R.string.invalid_min_score);
+    }
+    public boolean genderAgeScoreChecker(){
+        if(!male.isChecked() && !female.isChecked() && !other.isChecked()){
+            Toast.makeText(ConditionActivity.this,"please select gender",Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(Integer.valueOf(min_age) >= Integer.valueOf(max_age)){
+            Toast.makeText(ConditionActivity.this,"minimum age is bigger than maximum age",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     // set the style for condition actionBar
@@ -305,9 +329,7 @@ public class ConditionActivity extends AppCompatActivity {
 
         startActivityForResult(setLocationMarker(END_LOCATION), GET_PLACE_INFORMATION);
     }
-
-
-
+    //sent maker to select location activity to identify if it's a originAddress or endAddress
     private Intent setLocationMarker(String locationMarker)
     {
         Intent intent = new Intent(this, SelectLocationActivity.class);
@@ -315,6 +337,29 @@ public class ConditionActivity extends AppCompatActivity {
         bundle.putCharSequence(getString(R.string.locationMarker),locationMarker);
         intent.putExtras(bundle);
         return intent;
+    }
+    private String genderListener(){
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedButtonId) {
+                switch (checkedButtonId){
+                    case R.id.male_radio:
+                        Toast.makeText(ConditionActivity.this,"select male",Toast.LENGTH_SHORT).show();
+                        gender[0] = male.getText().toString();
+                        break;
+                    case R.id.female_radio:
+                        Toast.makeText(ConditionActivity.this,"select female",Toast.LENGTH_SHORT).show();
+                        gender[0] = female.getText().toString();
+                        break;
+                    case R.id.other_radio:
+                        Toast.makeText(ConditionActivity.this,"select other",Toast.LENGTH_SHORT).show();
+                        gender[0] = other.getText().toString();
+                        break;
+                }
+            }
+        });
+        radioGroup.clearCheck();
+        return gender[0];
     }
     /**
      *@desc:Get the location information in map

@@ -7,4 +7,10 @@
     <item name="min_age_dt" type="id"/>
     <item name="max_age_dt" type="id"/>
     <item name="score_dt" type="id"/>
+
+    <item name="gender_group" type="id"/>
+    <item name="male_radio" type="id"/>
+    <item name="female_radio" type="id"/>
+    <item name="other_radio" type="id"/>
+    <item name="rb_option_btn" type="id"/>
 </resources>

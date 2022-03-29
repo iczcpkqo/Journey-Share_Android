@@ -169,7 +169,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     private void realTimeToGroup(List<Peer> peerList,Peer peer){
         Intent intent;
         if (getIsLeader(peerList)){
-            intent = new Intent(RealTimeJourneyTableActivity.this, FollowerPeerGroupActivity.class);
+            intent = new Intent(RealTimeJourneyTableActivity.this, LeaderPeerGroupActivity.class);
         }else {
             intent = new Intent(RealTimeJourneyTableActivity.this, FollowerPeerGroupActivity.class);
         }
