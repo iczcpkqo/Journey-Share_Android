@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class DialogueHelper {
 
-    // TODO: 创建单聊Dialogue
-    // TODO: 创建群聊Dialogue
-    // TODO: 去单聊
-    // TODO: 去群聊
+    // DONE: 创建单聊Dialogue
+    // DONE: 创建群聊Dialogue
+    // DONE: 去单聊
+    // DONE: 去群聊
 
     // Done: 获取我是谁
     public static User getSender(){

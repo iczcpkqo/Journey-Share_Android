@@ -81,7 +81,7 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
         Dialogue dia = dialogueList.get(position);
 
         // 根据用户情况设置会话标题
-        holder.title.setText(dia.getTitle() + dia.getDialogueId());
+        holder.title.setText(dia.getTitle().replace(",", ", "));
 
         // 根据用户信息设置头像
         holder.img.setImageResource(holder.headCupboard.get((int) (dialogueList.get(position).getSender().getGender().equals("Female")?0:1) ));

@@ -131,9 +131,6 @@ public class Chat extends AppCompatActivity {
         if(!"".equals(content)){
             Msg msg = new Msg(content, dialogue.getDialogueId());
             msgInput.setText("");
-//            msgList.add(msg);
-//            adapter.notifyItemInserted(msgList.size() - 1);
-//            msgRecycler.scrollToPosition(msgList.size() -1);
             db.collection("message").add(msg);
 
         }
@@ -141,8 +138,6 @@ public class Chat extends AppCompatActivity {
     }
 
     private void msgRefresh(){
-
-//        db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(sender.getEmail()))
 
         msgList.clear();
         db.collection("message").orderBy("time")
@@ -175,21 +170,7 @@ public class Chat extends AppCompatActivity {
 
 
 
-//
-//        db.collection("dialogue").document(dialogue.getOrderId()).collection("msg")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot document : task.getResult()) {
-//                                Log.d(TAG, document.getId() + " ##$#$#$#$#$#=> " + document.getData());
-//                            }
-//                        } else {
-//                            Log.d(TAG, "Error getting documents: ", task.getException());
-//                        }
-//                    }
-//                });
+
     }
 
     private void initMsgTestData(){

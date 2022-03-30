@@ -66,8 +66,6 @@ public class Chating {
                                 String dialogueId = document.getId();
                                 Log.d(TAG, document.getId() + " => #####" + data);
                                 // DONE: 跳转
-
-
                                 db.collection("users").whereIn("email", DialogueHelper.convertStringToList(newDialogue.get("playerString").toString()))
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -97,13 +95,13 @@ public class Chating {
                                             }
                                         });
 
-
                                 break;
                             }
                             if (0 == task.getResult().size()) {
                                 System.out.println("#$$$$%%%%%%%%%%%%%%%%%%%$#%#%#$%");
                                 System.out.println(newDialogue.get("playerString"));
                                 insertDialogue(context, newDialogue);
+                                go(context,players);
 
                             }
                         } else {
@@ -154,9 +152,9 @@ public class Chating {
                                             }
                                             try {
                                                 Dialogue dialogue = new Dialogue();
-                                                dialogue.setType(newDialogue.get("type").toString());
-                                                dialogue.setDialogueId(dialogueId);
-                                                go(context, dialogue);
+//                                                dialogue.setType(newDialogue.get("type").toString());
+//                                                dialogue.setDialogueId(dialogueId);
+//                                                go(context, dialogue);
 
                                             } catch (ParseException e) {
                                                 e.printStackTrace();

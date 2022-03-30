@@ -65,7 +65,8 @@ public class DialogueFragment extends Fragment {
         this.container = container;
         this.sender = DialogueHelper.getSender();
 
-        Chating.go(getActivity(), Arrays.asList("yan123@qq.com", "liu@qq.com","liuguowen@qq.com"));
+        // DONE: 传参启动
+        // Chating.go(getActivity(), Arrays.asList("Lucy@qq.com", "liu@qq.com","race@123.com"));
         //iris@123.com
 
         return diaFrame;

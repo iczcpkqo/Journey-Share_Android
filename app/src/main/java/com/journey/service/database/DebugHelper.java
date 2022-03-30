@@ -78,6 +78,4 @@ public class DebugHelper {
         arr.add(receiver);
         return arr;
     }
-        // add test Dialogue
-//    public static void ()
 }
