@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.R;
@@ -39,6 +40,10 @@ import java.util.Map;
  * @date: 2022-03-26-04:00
  * @tag: Dialogue
  */
+// TODO: 传参增加会话不启动
+// TODO: 聊天列表时间索引排序
+// TODO: 头像判断
+
 public class DialogueFragment extends Fragment {
 
     private static final String TAG = "DialogueFragment";
@@ -61,6 +66,7 @@ public class DialogueFragment extends Fragment {
         this.adapter = new DialogueAdapter(dialogueList, getActivity());
         this.layoutManager = new LinearLayoutManager(getContext());
         this.dialogueRecycler.setLayoutManager(layoutManager);
+        this.dialogueRecycler.setAdapter(adapter);
         this.inflater = inflater;
         this.container = container;
         this.sender = DialogueHelper.getSender();
@@ -75,6 +81,7 @@ public class DialogueFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        dialogueList.clear();
         reFreshDialogue();
     }
 
@@ -85,7 +92,8 @@ public class DialogueFragment extends Fragment {
     }
 
     private void reFreshDialogue() {
-        db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(sender.getEmail()))
+        //Direction.DESCENDING
+        db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(sender.getEmail())).orderBy("lastTime", Query.Direction.DESCENDING).orderBy("createTime", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
