@@ -132,7 +132,7 @@ public class Chat extends AppCompatActivity {
             Msg msg = new Msg(content, dialogue.getDialogueId());
             msgInput.setText("");
             db.collection("message").add(msg);
-
+            db.collection("dialogue").document(dialogue.getDialogueId()).update("lastTime", System.currentTimeMillis());
         }
 
     }

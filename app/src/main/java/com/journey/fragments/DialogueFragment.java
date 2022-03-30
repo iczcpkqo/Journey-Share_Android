@@ -39,6 +39,10 @@ import java.util.Map;
  * @date: 2022-03-26-04:00
  * @tag: Dialogue
  */
+// TODO: 传参增加会话不启动
+// TODO: 聊天列表时间索引排序
+// TODO: 头像判断
+
 public class DialogueFragment extends Fragment {
 
     private static final String TAG = "DialogueFragment";
@@ -61,6 +65,7 @@ public class DialogueFragment extends Fragment {
         this.adapter = new DialogueAdapter(dialogueList, getActivity());
         this.layoutManager = new LinearLayoutManager(getContext());
         this.dialogueRecycler.setLayoutManager(layoutManager);
+        this.dialogueRecycler.setAdapter(adapter);
         this.inflater = inflater;
         this.container = container;
         this.sender = DialogueHelper.getSender();
@@ -75,6 +80,7 @@ public class DialogueFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        dialogueList.clear();
         reFreshDialogue();
     }
 
