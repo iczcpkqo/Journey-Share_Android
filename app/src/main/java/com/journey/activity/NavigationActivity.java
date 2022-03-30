@@ -120,7 +120,7 @@ public class NavigationActivity extends AppCompatActivity implements
         //waypoint :53.339132, -6.272588
         //destination: 53.3446, -6.2595
         List<Peer> peers = new ArrayList<Peer>();
-
+//10.0.2.16
         String serverIP = getLocalIpAddress();
 
         Peer user1 = new Peer("user_1@user_1.com",
@@ -142,7 +142,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 serverIP,
-                "8081",null,null);
+                "3344",null,null);
 
         Peer user2 = new Peer("user_2@user_2.com",
                 "Female",
@@ -207,7 +207,7 @@ public class NavigationActivity extends AppCompatActivity implements
         else
         {
 
-            PeerClient client = new PeerClient(getServerPort(),getServerIP(),mHandler,peersList);
+            PeerClient client = new PeerClient(getServerPort(),getServerIP(),mHandler,currentPeer);
             client.startClient();
         }
     }

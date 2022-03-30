@@ -30,27 +30,7 @@ public class PeerSever {
     List<peerNetowrkInformation> clientList;
     List<Peer> peersList;
 
-    public static PeerNetworkData encodeNetworkData(String baseContent)
-    {
-        byte[] decodedBytes = Base64.getDecoder().decode(baseContent);
-        ByteArrayInputStream bis = new ByteArrayInputStream(decodedBytes);
-        ObjectInput in = null;
-        PeerNetworkData networkData = null;
-        try {
-            in = new ObjectInputStream(bis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            networkData = (PeerNetworkData) in.readObject();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return networkData;
-    }
 
     public PeerSever(int port,Handler handler,List<Peer> peers)
     {
@@ -75,7 +55,7 @@ public class PeerSever {
                         try {
                             Socket socket = serverSocket.accept();
 
-                            CommunicationThread comm = new CommunicationThread(socket,mainTheradHandler);
+                            CommunicationThread comm = new CommunicationThread(socket,mainTheradHandler,true);
                             //start communication with the client
                             new Thread(comm).start();
                         } catch (IOException e) {
