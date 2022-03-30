@@ -51,6 +51,7 @@ public class Chating {
         newDialogue.put("playerString", players.toString());
         newDialogue.put("playerList", players);
         newDialogue.put("createTime", FieldValue.serverTimestamp());
+        newDialogue.put("lastTime", System.currentTimeMillis());
         newDialogue.put("orderID", "testOrderId-123");
 
         db.collection("dialogue").whereEqualTo("playerString", players.toString())

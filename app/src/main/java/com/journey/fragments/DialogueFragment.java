@@ -27,6 +27,7 @@ import com.journey.adapter.Chating;
 import com.journey.adapter.DialogueAdapter;
 import com.journey.entity.Dialogue;
 import com.journey.entity.User;
+import com.journey.service.database.DebugHelper;
 import com.journey.service.database.DialogueHelper;
 
 import java.text.ParseException;
@@ -41,8 +42,8 @@ import java.util.Map;
  * @tag: Dialogue
  */
 // TODO: 传参增加会话不启动
-// TODO: 聊天列表时间索引排序
 // TODO: 头像判断
+// FIXME: 聊天列表时间索引排序
 
 public class DialogueFragment extends Fragment {
 
@@ -72,7 +73,10 @@ public class DialogueFragment extends Fragment {
         this.sender = DialogueHelper.getSender();
 
         // DONE: 传参启动
-        // Chating.go(getActivity(), Arrays.asList("Lucy@qq.com", "liu@qq.com","race@123.com"));
+//         Chating.go(getActivity(), Arrays.asList("Lucy@qq.com", "liu@qq.com","race@123.com"));
+//        for (int i =0; i<10; i++)
+//            Chating.go(getActivity(), DebugHelper.getNRandomEmail((int) Math.ceil((Math.random()*1)+1)));
+//        Chating.go(getActivity(), DebugHelper.getNRandomEmail((int) Math.ceil((Math.random()*1)+1)));
         //iris@123.com
 
         return diaFrame;

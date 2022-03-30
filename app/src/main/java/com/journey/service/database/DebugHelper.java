@@ -13,6 +13,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class DebugHelper {
@@ -29,6 +30,39 @@ public class DebugHelper {
             "Rachel@12.com",
             "Tommama@123.com",
             "iris@123.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
+            "liu@qq.com",
             "liu@qq.com",
             "liuguowen@qq.com",
             "pengb@tcd.ie",
@@ -65,17 +99,16 @@ public class DebugHelper {
 
 
     public static String getOneRandomEmail(){
-        return emailList.get((int) Math.floor(Math.random()*emailList.size()));
+        return DialogueHelper.cleanDialogueString(getNRandomEmail(1).toString());
     }
 
     public static List<String> getTwoRandomEmail(){
-        String sender = getOneRandomEmail();
-        String receiver = getOneRandomEmail();
-        for (int i=0; i<10 && sender.equals(receiver); i++)
-            receiver = getOneRandomEmail();
-        List<String> arr = new ArrayList<>();
-        arr.add(sender);
-        arr.add(receiver);
-        return arr;
+        return getNRandomEmail(2);
+    }
+
+    public static List<String> getNRandomEmail(int n){
+        HashSet<String> players = new HashSet<>();
+        for (; n>players.size(); players.add(getOneRandomEmail()));
+        return (List<String>) new ArrayList<String>(players);
     }
 }
