@@ -70,12 +70,8 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
             public void onClick(View v) {
                 int position = holder.getLayoutPosition();
                 Dialogue dia = dialogueList.get(position);
-
                 Intent intent = new Intent(context, Chat.class);
-
                 ChatDeliver deliver = new ChatDeliver();
-
-                // DONE: 配置对谈参数
 
                 deliver.setDialogueTitle(dialogueList.get(position).getTitle());
                 deliver.setDialogueId(dialogueList.get(position).getDialogueId());
@@ -93,11 +89,11 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position){
         Dialogue dia = dialogueList.get(position);
 
-        // TODO: 根据用户情况设置会话标题
+        // 根据用户情况设置会话标题
         holder.title.setText(dia.getTitle() + dia.getDialogueId());
 
-        // TODO: 根据用户信息设置头像
-        holder.img.setImageResource(holder.headCupboard.get((int) Math.floor(Math.random()*2)));
+        // 根据用户信息设置头像
+        holder.img.setImageResource(holder.headCupboard.get((int) (dialogueList.get(position).getSender().getGender().equals("Female")?0:1) ));
     }
 
     @Override

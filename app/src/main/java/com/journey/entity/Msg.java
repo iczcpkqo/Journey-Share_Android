@@ -45,6 +45,13 @@ public class Msg {
         this.dialogueId = dialogueId;
     }
 
+    public Msg(User sender, String content, long time, String dialogueId){
+        this.sender = new Sender(sender.getEmail(), sender.getUsername(), sender.getGender());
+        this.content = content;
+        this.time = time;
+        this.dialogueId = dialogueId;
+    }
+
 
 
     public Sender getSender() {

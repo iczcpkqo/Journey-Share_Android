@@ -41,6 +41,7 @@ import com.journey.service.database.DialogueHelper;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,22 +59,26 @@ public class Chat extends AppCompatActivity {
     EditText msgInput;
     Button msgBtn;
     MsgAdapter adapter;
+    LinearLayoutManager layoutManager;
     Dialogue dialogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_chat);
+        this.msgRecycler = (RecyclerView) findViewById(R.id.msg_recycler_view);
+        this.msgInput = (EditText) findViewById(R.id.msg_input_text);
+        this.msgBtn = (Button) findViewById(R.id.msg_btn);
+        this.adapter = new MsgAdapter(msgList);
+        this.layoutManager = new LinearLayoutManager(this);
 
-        // TODO: 移除test data
-        initMsgTestData();
+        // 移除test data
+//        initMsgTestData();
+        //
+
+        // 参数接收
         Intent intent = getIntent();
         ChatDeliver deliver =(ChatDeliver) intent.getSerializableExtra("deliver");
-
-        // TODO: 参数接收
-//        dialogue = deliver.getDialogue();
-//        String title = dialogue.getTitle();
 
         try {
             dialogue = new Dialogue();
@@ -85,20 +90,13 @@ public class Chat extends AppCompatActivity {
         }
 
 
-        // 设置标题
+        // 设置
         setChatBar(dialogue.getTitle());
-
-        msgRecycler = (RecyclerView) findViewById(R.id.msg_recycler_view);
-        msgInput = (EditText) findViewById(R.id.msg_input_text);
-        msgBtn = (Button) findViewById(R.id.msg_btn);
-        adapter = new MsgAdapter(msgList);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
-        // TODO: Recycler 刷新
-//        msgRefresh();
         msgRecycler.setLayoutManager(layoutManager);
+
         msgRecycler.setAdapter(adapter);
         msgRecycler.scrollToPosition(msgList.size() -1);
+
         msgBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
@@ -158,9 +156,16 @@ public class Chat extends AppCompatActivity {
                         if (error == null) {
                             for (QueryDocumentSnapshot document : value) {
                                 Map<String, Object> data = document.getData();
+                                HashMap<String, String> sender = (HashMap<String, String>) data.get("sender");
                                 String dialogueId = document.getId();
                                 Log.d(TAG, dialogueId + " => #####" + data);
+                                Log.d(TAG, data.get("sender").getClass().toString());
 
+                                Msg msg = new Msg(new User(sender.get("email"), sender.get("username"), sender.get("gender")),
+                                        data.get("content").toString(),
+                                        (long)data.get("time"),
+                                        data.get("dialogueId").toString());
+                                msgList.add(msg);
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ");
