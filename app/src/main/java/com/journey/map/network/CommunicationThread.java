@@ -22,6 +22,10 @@ public class CommunicationThread implements Runnable{
     private Handler handler;
     private boolean isServer;
 
+    static final int REQUEST_ROUTES = 0;
+    static final int UPDATE_POINT = 1;
+    static final int ROUTES = 2;
+
     public static PeerNetworkData encodeNetworkData(String baseContent)
     {
         byte[] decodedBytes = Base64.getDecoder().decode(baseContent);

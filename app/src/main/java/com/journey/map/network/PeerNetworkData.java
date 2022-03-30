@@ -12,6 +12,7 @@ public class PeerNetworkData implements Serializable {
     private Point  currentPoint;
     private boolean isArrived;
     private boolean isServer;
+    private int COMMAND_ID;
 
     public List<String> getCommand() {
         return command;
@@ -23,13 +24,14 @@ public class PeerNetworkData implements Serializable {
 
     private List<String> command;
 
-    public  PeerNetworkData(Peer p,Point point,boolean arrived,boolean served)
+    public  PeerNetworkData(Peer p,Point point,boolean arrived,boolean served,int commandId)
     {
         peer = p;
         currentPoint = point;
         isArrived = arrived;
         isServer = served;
         command = new ArrayList<String>();
+        COMMAND_ID = commandId;
     }
 
 
