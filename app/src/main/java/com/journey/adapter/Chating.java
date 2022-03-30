@@ -144,42 +144,22 @@ public class Chating {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
-                                            Map<String, Object> data = new HashMap<>();
                                             StringBuffer dialogTitle = new StringBuffer();
+                                            // TODO: 无法插入, 可以插入, 但是没有标题, 考虑分离 Chat 和 Dialogue
                                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                                int i=0;
                                                 Map<String, Object> item = document.getData();
-//                                                data.put(document.getId(), item);
                                                 dialogTitle.append(item.get("email").equals(sender.getEmail()) ? "" : (dialogTitle.toString().equals("") ? item.get("username") : "," + item.get("username")));
-                                                Log.d(TAG, document.getId() + " => #####" + data);
-// TODO: 这个循环中, 无法插入多条用户
-                                            db.collection("dialogue").document(dialogueId).collection("players")
-                                                    .add(data)
-                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                        @Override
-                                                        public void onSuccess(DocumentReference documentReference) {
-                                                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                                                            Dialogue dialogue = null;
-                                                            try {
-                                                                if(task.getResult().size()>=i-1) {
-                                                                    dialogue = new Dialogue();
-                                                                    dialogue.setTitle(dialogTitle.toString());
-                                                                    dialogue.setType(newDialogue.get("type").toString());
-                                                                    dialogue.setDialogueId(dialogueId);
-                                                                    go(context, dialogue);
-                                                                }
-                                                            } catch (ParseException e) {
-                                                                e.printStackTrace();
-                                                            }
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Log.w(TAG, "Error adding document", e);
-                                                        }
-                                                    });
+                                                Log.d(TAG, document.getId() + " => #####" + item);
+                                                db.collection("dialogue").document(dialogueId).collection("players").add(item);
+                                            }
+                                            try {
+                                                Dialogue dialogue = new Dialogue();
+                                                dialogue.setType(newDialogue.get("type").toString());
+                                                dialogue.setDialogueId(dialogueId);
+                                                go(context, dialogue);
 
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
                                             }
                                         } else {
                                             Log.d(TAG, "Error getting documents: ", task.getException());
