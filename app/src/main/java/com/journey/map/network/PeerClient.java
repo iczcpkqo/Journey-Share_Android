@@ -4,8 +4,11 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.journey.model.Peer;
+import com.mapbox.geojson.Point;
 
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -18,14 +21,19 @@ public class PeerClient {
     Message message;
     Handler mainTheradHandler;
     Socket socket;
-    List<Peer> peersList;
-    public PeerClient(int serverPort, String serverIp, Handler mainTheradHandler, List<Peer> peers) {
+    Peer currentPeer;
+    OutputStreamWriter output;
+    CommunicationThread comm;
+    public PeerClient(int serverPort, String serverIp, Handler mainTheradHandler, Peer peer) {
         this.serverPort = serverPort;
         this.serverIp = serverIp;
         this.mainTheradHandler = mainTheradHandler;
-        peersList = peers;
+        currentPeer = peer;
     }
+    private void sendData()
+    {
 
+    }
     public void startClient()
     {
         this.clientThread = new Thread(){
@@ -40,9 +48,11 @@ public class PeerClient {
                         socket = new Socket(sever,serverPort);
                         if(socket != null)
                         {
-                            CommunicationThread comm = new CommunicationThread(socket,mainTheradHandler);
+                            comm = new CommunicationThread(socket,mainTheradHandler,false);
                             //start communication with the client
                             new Thread(comm).start();
+                            PeerNetworkData data = new PeerNetworkData(currentPeer, Point.fromLngLat(currentPeer.getLongitude(),currentPeer.getLatitude()),false,false);
+                            comm.sendData(data);
                             break;
                         }
                     } catch (UnknownHostException e) {

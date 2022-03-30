@@ -4,17 +4,32 @@ import com.journey.model.Peer;
 import com.mapbox.geojson.Point;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PeerNetworkData implements Serializable {
     private Peer peer;
     private Point  currentPoint;
     private boolean isArrived;
+    private boolean isServer;
 
-    public  PeerNetworkData(Peer p,Point point,boolean arrived)
+    public List<String> getCommand() {
+        return command;
+    }
+
+    public void setCommand(List<String> command) {
+        this.command = command;
+    }
+
+    private List<String> command;
+
+    public  PeerNetworkData(Peer p,Point point,boolean arrived,boolean served)
     {
         peer = p;
         currentPoint = point;
         isArrived = arrived;
+        isServer = served;
+        command = new ArrayList<String>();
     }
 
 
