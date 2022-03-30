@@ -69,16 +69,7 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 int position = holder.getLayoutPosition();
-                Dialogue dia = dialogueList.get(position);
-                Intent intent = new Intent(context, Chat.class);
-                ChatDeliver deliver = new ChatDeliver();
-
-                deliver.setDialogueTitle(dialogueList.get(position).getTitle());
-                deliver.setDialogueId(dialogueList.get(position).getDialogueId());
-                deliver.setType(dialogueList.get(position).getType());
-
-                intent.putExtra("deliver", deliver);
-                context.startActivity(intent);
+                Chating.go(context, dialogueList.get(position));
             }
         });
         return holder;

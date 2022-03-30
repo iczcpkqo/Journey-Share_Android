@@ -2,7 +2,7 @@ package com.journey.entity;
 
 import java.util.Date;
 
-public class User {
+public class User implements Comparable<User>{
 
     private String username;
 
@@ -94,4 +94,7 @@ public class User {
     public void setUuid(String uuid) { this.uuid = uuid; }
 
     public String getUuid() { return uuid; }
+
+    @Override
+    public int compareTo(User user) { return this.email.compareTo(user.getEmail()); }
 }

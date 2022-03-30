@@ -29,8 +29,6 @@ public class Dialogue {
     private StringBuffer type = new StringBuffer();
     private StringBuffer orderId = new StringBuffer();
 
-    // TODO: 增加最近消息, 会话类型
-
     public Dialogue() throws ParseException {
         this.sender = DialogueHelper.getSender();
         this.playerList.add(this.sender);
@@ -85,9 +83,15 @@ public class Dialogue {
         if(this.sender.getEmail().equals(player.getEmail()))
             return;
         this.receiver.add(player);
+        Collections.sort(this.receiver);
         this.playerList.add(player);
-        this.playerString.append(",").append(player.getUsername());
-        this.dialogueTitle.append(this.dialogueTitle.length()==0?"":",").append(player.getUsername());
+        Collections.sort(this.playerList);
+        String s = this.playerString.append(",").append(player.getUsername()).toString();
+        this.playerString.setLength(0);
+        this.playerString.append(DialogueHelper.cleanDialogueString(DialogueHelper.sortString(s)));
+//        this.dialogueTitle.append(this.dialogueTitle.length()==0?"":",").append(player.getUsername());
+        this.dialogueTitle.setLength(0);
+        this.dialogueTitle.append(DialogueHelper.userListToUserString(this.receiver));
         this.type = new StringBuffer(this.receiver.size() < 1? "single":"group");
     }
 

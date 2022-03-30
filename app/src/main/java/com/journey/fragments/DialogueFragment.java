@@ -1,5 +1,6 @@
 package com.journey.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,45 +13,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.common.collect.Lists;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Transaction;
 import com.journey.R;
-import com.journey.adapter.Chat;
+import com.journey.adapter.Chating;
 import com.journey.adapter.DialogueAdapter;
-import com.journey.adapter.ReadUserInfoFile;
 import com.journey.entity.Dialogue;
-import com.journey.entity.Message;
-import com.journey.entity.Msg;
-import com.journey.entity.Record;
 import com.journey.entity.User;
-import com.journey.service.database.DebugHelper;
 import com.journey.service.database.DialogueHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author: Xiang Mao
@@ -82,6 +64,9 @@ public class DialogueFragment extends Fragment {
         this.inflater = inflater;
         this.container = container;
         this.sender = DialogueHelper.getSender();
+
+        Chating.go(getActivity(), Arrays.asList("yan123@qq.com", "liu@qq.com","liuguowen@qq.com"));
+        //iris@123.com
 
         return diaFrame;
     }

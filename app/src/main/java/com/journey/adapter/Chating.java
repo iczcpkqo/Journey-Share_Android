@@ -1,0 +1,198 @@
+package com.journey.adapter;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.icu.text.SymbolTable;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Transaction;
+import com.journey.activity.Chat;
+import com.journey.entity.ChatDeliver;
+import com.journey.entity.Dialogue;
+import com.journey.entity.User;
+import com.journey.service.database.DialogueHelper;
+
+import org.objenesis.instantiator.sun.SunReflectionFactoryInstantiator;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class Chating {
+
+    @SuppressLint("StaticFieldLeak")
+    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static final String TAG = "DialogueFragment";
+
+    public static void go(Context context,List<String> players) {
+        Collections.sort(players);
+        User sender = DialogueHelper.getSender();
+        Map<String, Object> newDialogue = new HashMap<>();
+        newDialogue.put("type", players.size() > 2 ? "group" : "single");
+        newDialogue.put("playerString", players.toString());
+        newDialogue.put("playerList", players);
+        newDialogue.put("createTime", FieldValue.serverTimestamp());
+        newDialogue.put("orderID", "testOrderId-123");
+
+        db.collection("dialogue").whereEqualTo("playerString", players.toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d(TAG, "@@@@" + task.getResult());
+//                        List<QueryDocumentSnapshot> dotest = (List<QueryDocumentSnapshot>) task.getResult();
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> data = document.getData();
+                                String dialogueId = document.getId();
+                                Log.d(TAG, document.getId() + " => #####" + data);
+                                // DONE: 跳转
+
+
+                                db.collection("users").whereIn("email", DialogueHelper.convertStringToList(newDialogue.get("playerString").toString()))
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    Map<String, Object> data = new HashMap<>();
+                                                    StringBuffer dialogTitle = new StringBuffer();
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        Map<String, Object> item = document.getData();
+                                                        data.put(document.getId(), item);
+                                                        dialogTitle.append(item.get("email").equals(sender.getEmail()) ? "" : (dialogTitle.toString().equals("") ? item.get("username") : "," + item.get("username")));
+                                                        Log.d(TAG, document.getId() + " => #####" + data);
+                                                    }
+                                                    try {
+                                                        Dialogue dialogue = new Dialogue();
+                                                        dialogue.setTitle(dialogTitle.toString());
+                                                        dialogue.setType(newDialogue.get("type").toString());
+                                                        dialogue.setDialogueId(dialogueId);
+                                                        go(context, dialogue);
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                } else {
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                }
+                                            }
+                                        });
+
+
+                                break;
+                            }
+                            if (0 == task.getResult().size()) {
+                                System.out.println("#$$$$%%%%%%%%%%%%%%%%%%%$#%#%#$%");
+                                System.out.println(newDialogue.get("playerString"));
+                                insertDialogue(context, newDialogue);
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public static void go(Context context, Dialogue dialogue) {
+        Intent intent = new Intent(context, Chat.class);
+        ChatDeliver deliver = new ChatDeliver();
+
+        deliver.setDialogueTitle(dialogue.getTitle());
+        deliver.setDialogueId(dialogue.getDialogueId());
+        deliver.setType(dialogue.getType());
+
+        intent.putExtra("deliver", deliver);
+        context.startActivity(intent);
+    }
+
+    private static void insertDialogue(Context context, Map<String, Object> newDialogue) {
+        User sender = DialogueHelper.getSender();
+        db.collection("dialogue")
+                .add(newDialogue)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        String dialogueId = documentReference.getId();
+//                                Arrays.asList(dialogue.get("playerString").toString().split(","));
+//                        db.collection("users").whereArrayContainsAny("email", arrPlayers)
+//                        db.collection("users").whereEqualTo("email", "liuguowen@qq.com")
+//
+                        db.collection("users").whereIn("email", (List<? extends Object>) newDialogue.get("playerList"))
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            Map<String, Object> data = new HashMap<>();
+                                            StringBuffer dialogTitle = new StringBuffer();
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                int i=0;
+                                                Map<String, Object> item = document.getData();
+//                                                data.put(document.getId(), item);
+                                                dialogTitle.append(item.get("email").equals(sender.getEmail()) ? "" : (dialogTitle.toString().equals("") ? item.get("username") : "," + item.get("username")));
+                                                Log.d(TAG, document.getId() + " => #####" + data);
+// TODO: 这个循环中, 无法插入多条用户
+                                            db.collection("dialogue").document(dialogueId).collection("players")
+                                                    .add(data)
+                                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentReference documentReference) {
+                                                            Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                                            Dialogue dialogue = null;
+                                                            try {
+                                                                if(task.getResult().size()>=i-1) {
+                                                                    dialogue = new Dialogue();
+                                                                    dialogue.setTitle(dialogTitle.toString());
+                                                                    dialogue.setType(newDialogue.get("type").toString());
+                                                                    dialogue.setDialogueId(dialogueId);
+                                                                    go(context, dialogue);
+                                                                }
+                                                            } catch (ParseException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w(TAG, "Error adding document", e);
+                                                        }
+                                                    });
+
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                        }
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
+}

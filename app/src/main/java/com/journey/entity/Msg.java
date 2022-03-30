@@ -57,6 +57,9 @@ public class Msg {
     public Sender getSender() {
         return sender;
     }
+    public String getSenderEmail() {
+        return this.sender.getEmail();
+    }
 
     public void setContent(String content) {
         this.content = content;

@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.journey.R;
 import com.journey.entity.Msg;
+import com.journey.entity.User;
+import com.journey.service.database.DialogueHelper;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ import java.util.List;
 public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
     private List<Msg> msgList;
+    private User sender;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout leftLayout;
@@ -43,6 +46,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
     public MsgAdapter(List<Msg> data){
         this.msgList = data;
+        this.sender = DialogueHelper.getSender();
     }
 
     @Override
@@ -57,7 +61,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
         Msg msg = msgList.get(position);
 
         // TODO: 依据消息类型判断左右
-        if(position %2 == 0){
+        if(msgList.get(position).getSenderEmail().equals(sender.getEmail())) {
             holder.leftLayout.setVisibility(View.GONE);
             holder.rightLayout.setVisibility(View.VISIBLE);
             holder.rightMsg.setText(msg.getContent());

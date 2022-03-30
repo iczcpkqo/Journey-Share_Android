@@ -18,9 +18,6 @@ public class ChatDeliver implements Serializable {
     private String dialogueId;
     private String type;
 
-    // TODO: 增加聊天需要的东西
-
-
     public void setType(String type) {
         this.type = type;
     }

@@ -118,15 +118,13 @@ public class Chat extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("IMIMIMIMIMIMIMIMII ###################################################");
         msgRefresh();
     }
 
     @Override
     public void onPause(){
         super.onPause();
-        System.out.println("IMIMIMIMIMIMIMIMII @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-//        dialogueList.clear();
+        msgList.clear();
     }
 
     private void msgSend(String content){
@@ -146,13 +144,14 @@ public class Chat extends AppCompatActivity {
 
 //        db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(sender.getEmail()))
 
-        Log.d(TAG, "$$$$$$$$$$$$$$$" );
+        msgList.clear();
         db.collection("message").orderBy("time")
                 .whereEqualTo("dialogueId", dialogue.getDialogueId())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         Log.d(TAG, "@@@@" + value);
+                        msgList.clear();
                         if (error == null) {
                             for (QueryDocumentSnapshot document : value) {
                                 Map<String, Object> data = document.getData();
@@ -167,20 +166,10 @@ public class Chat extends AppCompatActivity {
                                         data.get("dialogueId").toString());
                                 msgList.add(msg);
                             }
+                            msgRecycler.scrollToPosition(msgList.size() - 1);
                         } else {
                             Log.d(TAG, "Error getting documents: ");
                         }
-
-
-//                List<Record> record = new ArrayList<Record>();
-//                adapter.clear();
-//                for (QueryDocumentSnapshot doc: value){
-//                    Map<String, Object> data = doc.getData();
-//                    Record tmp = new Record((String)doc.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate());
-//                    adapter.add(tmp);
-//                }
-//                Log.d("listener","current:"+record);
-
                     }
                 });
 
