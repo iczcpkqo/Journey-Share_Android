@@ -2,7 +2,7 @@ package com.journey.entity;
 
 import java.util.Date;
 
-public class User {
+public class User implements Comparable<User>{
 
     private String username;
 
@@ -22,6 +22,8 @@ public class User {
 
     private Integer order;
 
+    private String uuid;
+
     public User(String username, String password, Date createDate, String birthDate, String gender, String phone, String email, Double mark, Integer order) {
         this.username = username;
         this.password = password;
@@ -33,6 +35,13 @@ public class User {
         this.mark = mark;
         this.order = order;
     }
+
+    public User(String email, String username, String gender){
+        this.email = email;
+        this.username = username;
+        this.gender = gender;
+    }
+    public User(){}
 
     public String getUsername() {
         return username;
@@ -82,4 +91,10 @@ public class User {
 
     public void setOrder(Integer order) { this.order = order; }
 
+    public void setUuid(String uuid) { this.uuid = uuid; }
+
+    public String getUuid() { return uuid; }
+
+    @Override
+    public int compareTo(User user) { return this.email.compareTo(user.getEmail()); }
 }

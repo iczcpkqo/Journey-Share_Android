@@ -1,26 +1,38 @@
 package com.journey.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.R;
+import com.journey.adapter.Chating;
 import com.journey.adapter.DialogueAdapter;
 import com.journey.entity.Dialogue;
 import com.journey.entity.User;
-import com.journey.entity.diaTest;
+import com.journey.service.database.DialogueHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: Xiang Mao
@@ -29,44 +41,120 @@ import java.util.List;
  */
 public class DialogueFragment extends Fragment {
 
-    List<Dialogue> dialogueList = new ArrayList<>();
-    RecyclerView dialogueRecycler;
-    DialogueAdapter adapter;
+    private static final String TAG = "DialogueFragment";
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private View diaFrame;
+    private LayoutInflater inflater;
+    private ViewGroup container;
+    private List<Dialogue> dialogueList = new ArrayList<>();
+    private RecyclerView dialogueRecycler;
+    private DialogueAdapter adapter;
+    private LinearLayoutManager layoutManager;
+    private User sender;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View diaFrame = inflater.inflate(R.layout.fragment_dialogue, container, false);
-        // TODO: 获取当前用户信息
-        // TODO: 系统消息
-        // TODO: 移除测试数据
-        try {
-            initDialogueTestData();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        this.diaFrame = inflater.inflate(R.layout.fragment_dialogue, container, false);
+        this.dialogueRecycler = (RecyclerView) diaFrame.findViewById(R.id.dialogue_recycler_view);
+        this.adapter = new DialogueAdapter(dialogueList, getActivity());
+        this.layoutManager = new LinearLayoutManager(getContext());
+        this.dialogueRecycler.setLayoutManager(layoutManager);
+        this.inflater = inflater;
+        this.container = container;
+        this.sender = DialogueHelper.getSender();
 
-        // TODO: 刷新会话列表
-        // TODO: 新消息标记
-
-        dialogueRecycler = (RecyclerView) diaFrame.findViewById(R.id.dialogue_recycler_view);
-        adapter = new DialogueAdapter(dialogueList, getActivity());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-
-        dialogueRecycler.setLayoutManager(layoutManager);
-        dialogueRecycler.setAdapter(adapter);
+        // DONE: 传参启动
+        // Chating.go(getActivity(), Arrays.asList("Lucy@qq.com", "liu@qq.com","race@123.com"));
+        //iris@123.com
 
         return diaFrame;
     }
 
-    public void initDialogueTestData() throws ParseException {
-        for (int i=0; i<10; i++) {
-            dialogueList.add(new Dialogue(
-                    new User("test_Sender" + i, "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
-                    new User("test_Receiver" + i, "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0)
-            ));
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        reFreshDialogue();
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        dialogueList.clear();
+    }
+
+    private void reFreshDialogue() {
+        db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(sender.getEmail()))
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                Log.d(TAG, "@@@@" + value);
+                dialogueList.clear();
+                if (error == null) {
+                    for (QueryDocumentSnapshot document : value) {
+                        Map<String, Object> data = document.getData();
+                        String dialogueId = document.getId();
+                        Log.d(TAG, dialogueId + " => #####" + data);
+
+                        db.collection("dialogue").document(dialogueId).collection("players")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        Log.d(TAG, "@@@@" + task.getResult());
+                                        try {
+                                            Dialogue oneDialogue = new Dialogue();
+                                            oneDialogue.setDialogueId(dialogueId);
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    Map<String, Object> data = document.getData();
+                                                    Log.d(TAG, document.getId() + " => #user#user#user#user" + data);
+
+                                                    User player = new User();
+                                                    player.setUuid(document.getId());
+                                                    player.setEmail(data.get("email").toString());
+                                                    player.setUsername(data.get("username").toString());
+                                                    player.setGender(data.get("gender").toString());
+                                                    oneDialogue.addPlayer(player);
+                                                    oneDialogue.setDialogueId(dialogueId);
+                                                }
+                                                dialogueList.add(oneDialogue);
+                                                dialogueRecycler.setAdapter(adapter);
+
+                                            } else {
+                                                Log.d(TAG, "Error getting documents: ", task.getException());
+                                            }
+
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ");
+                }
+
+            }
+        });
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
