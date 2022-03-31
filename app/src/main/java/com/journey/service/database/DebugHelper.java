@@ -10,16 +10,19 @@ import com.google.common.collect.Lists;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.journey.adapter.Chating;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class DebugHelper {
 
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "DebugHelper";
-    private static final ArrayList<String> emailList = Lists.newArrayList( "123456@qq.com",
+    private static ArrayList<String> emailList = Lists.newArrayList( "123456@qq.com",
             "1234@qq.com",
             "123@11.com",
             "12@234.com",
@@ -40,6 +43,7 @@ public class DebugHelper {
             "ya@qq.com",
             "yan123@qq.com",
             "zizz@qq.com");
+
     /**
      * 打印所有用户的邮箱
      */
@@ -69,13 +73,27 @@ public class DebugHelper {
     }
 
     public static List<String> getTwoRandomEmail(){
-        String sender = getOneRandomEmail();
-        String receiver = getOneRandomEmail();
-        for (int i=0; i<10 && sender.equals(receiver); i++)
-            receiver = getOneRandomEmail();
-        List<String> arr = new ArrayList<>();
-        arr.add(sender);
-        arr.add(receiver);
-        return arr;
+        return getNRandomEmail(2);
     }
+
+    public static List<String> getNRandomEmail(int n){
+        HashSet<String> players = new HashSet<>();
+        for (; n>players.size(); players.add(getOneRandomEmail()));
+        return (List<String>) new ArrayList<String>(players);
+    }
+
+    public static void addNRandomDialogue(int n, int t){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HashSet<ArrayList<String>> dialogues = new HashSet<>();
+
+                for (; n>dialogues.size(); dialogues.add((ArrayList<String>) getNRandomEmail(t)));
+
+                for(ArrayList<String> players : dialogues)
+                    Chating.add(players);
+            }
+        }).start();
+    }
+
 }
