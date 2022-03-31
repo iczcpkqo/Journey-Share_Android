@@ -102,7 +102,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else if(msg.what == FirebaseOperation.FILE_NOT_FOUND)
             {
-                currentFirebase.startListnere("MAP","UID","ROUTE");
+                //currentFirebase.startListnere("MAP","UID","ROUTE");
                 toast("Waiting for the leader to assign the navigation routes.");
             }
             else if(msg.what == FirebaseOperation.GET_SINGLE_ROUTE)
@@ -114,6 +114,7 @@ public class NavigationActivity extends AppCompatActivity implements
             {
                 toast("Multiple anchor point routes have been got.");
                 currentRoute_2 =(DirectionsRoute) msg.obj;
+                setToNavigationRoute(currentRoute_2);
             }
         }
     };
@@ -262,29 +263,16 @@ public class NavigationActivity extends AppCompatActivity implements
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
 
-        InitiaHasMap(peersList);
-
-
-
-
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         setLocationUpdata(10000,5000);
         setUpdateCallback();
 
     }
-    private void InitiaHasMap(List<Peer> peersList)
-    {
-        Iterator<Peer> iter = peersList.iterator();
-        while (iter.hasNext()) {
-            Peer peer = iter.next();
-            Map<String,String> otherFields = new HashMap<String,String>();
-            peer.setOtherFields(otherFields);
-        }
-    }
+
     private void getSingleRoute(Peer peer,Peer LeaderPeer)
     {
-        Point destinationPoint = Point.fromLngLat( LeaderPeer.getLongitude(), LeaderPeer.getLatitude());
-        Point originPoint = Point.fromLngLat( peer.getLongitude(), peer.getLatitude());
+        Point destinationPoint = Point.fromLngLat(LeaderPeer.getLatitude(),LeaderPeer.getLongitude());
+        Point originPoint = Point.fromLngLat(peer.getLatitude(),peer.getLongitude());
         ParseRoutes route = new ParseRoutes(peer,
                 mHandler,
                 getString(R.string.access_token),
@@ -304,18 +292,16 @@ public class NavigationActivity extends AppCompatActivity implements
         Point destinationPoint = null;
         Point originPoint = null;
         Iterator<Peer> iter = peers.iterator();
-        Peer leaderPeer = null;
         while (iter.hasNext()) {
             Peer peer = iter.next();
             //change furthest
             if(peer.getLeader())
             {
-                leaderPeer = peer;
-                destinationPoint = Point.fromLngLat(peer.getLongitude(), peer.getLatitude());
-                originPoint = Point.fromLngLat( peer.getLongitude(), peer.getLatitude());
+                originPoint = Point.fromLngLat( peer.getLatitude(),peer.getLongitude());
+                destinationPoint = Point.fromLngLat(peer.getdLatitude(),peer.getdLongtitude());
                 continue;
             }
-            UserWaypoints.add(Point.fromLngLat( peer.getdLongtitude(), peer.getdLatitude()));
+            UserWaypoints.add(Point.fromLngLat(peer.getdLatitude(), peer.getdLongtitude()));
         }
 
         ParseRoutes route = new ParseRoutes(peers,
@@ -337,6 +323,10 @@ public class NavigationActivity extends AppCompatActivity implements
     {
         if(currentPeer.getLeader())
         {
+            getMultipleRoute(listPeer);
+        }
+        else
+        {
             Iterator<Peer> iter = listPeer.iterator();
             Peer LeaderPeer = null;
             while (iter.hasNext()) {
@@ -344,21 +334,14 @@ public class NavigationActivity extends AppCompatActivity implements
                 if(peer.getLeader())
                 {
                     LeaderPeer = peer;
-                    getMultipleRoute(listPeer);
-                    continue;
-                }
-                Map<String, String> otherFields = peer.getOtherFields();
-
-                if( otherFields.get(FirebaseOperation.ROUTE_1) == null)
-                {
-                    getSingleRoute(peer,LeaderPeer);
+                    getSingleRoute(currentPeer,LeaderPeer);
+                    break;
                 }
             }
+
         }
-        else
-        {
-            currentFirebase.startListnere("MAP",currentPeer.getUuid(),"ROUTE");
-        }
+
+
 
     }
     
