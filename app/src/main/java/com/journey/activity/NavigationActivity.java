@@ -89,6 +89,8 @@ public class NavigationActivity extends AppCompatActivity implements
     LocationRequest locationRequest;
     Location currentLocation;
     boolean routeTag = false;
+    DirectionsRoute currentRoute_1;
+    DirectionsRoute currentRoute_2;
 
     Handler mHandler = new Handler(Looper.myLooper()){
         @Override
@@ -96,8 +98,6 @@ public class NavigationActivity extends AppCompatActivity implements
             super.handleMessage(msg);
             if(msg.what == FirebaseOperation.FILE_EXISTS)
             {
-                FirebaseNetworkData data = (FirebaseNetworkData) msg.obj;
-                setToLeaderNavigationRoute(data);
                 toast("Loading routes.");
             }
             else if(msg.what == FirebaseOperation.FILE_NOT_FOUND)
@@ -107,44 +107,22 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else if(msg.what == FirebaseOperation.GET_SINGLE_ROUTE)
             {
-                if(routeTag)
-                {
-                    return;
-                }
-                Iterator<Peer> iter = peersList.iterator();
-                int i = 0;
-                while (iter.hasNext()) {
-                    Peer temporaryPeer = iter.next();
-                    if(temporaryPeer.getOtherFields().get(FirebaseOperation.ROUTE_1) != null &&
-                            temporaryPeer.getOtherFields().get(FirebaseOperation.ROUTE_2) != null)
-                    {
-                        i++;
-                    }
-                    if(i == peersList.size()-1)
-                    {
-                        FirebaseNetworkData firebasedata = new FirebaseNetworkData(peersList,null,false,true);
-
-                        Map<String,Object> data = new HashMap<String ,Object>();
-                        data.put("ROUTE",FirebaseOperation.getRouteString(firebasedata));
-                        currentFirebase.saveDocData(data);
-                        routeTag=true;
-                    }
-
-                }
-                toast("Multiple anchor point routes have been sent.");
+                currentRoute_1 = (DirectionsRoute) msg.obj;
+                setToNavigationRoute(msg.obj);
             }
             else if(msg.what == FirebaseOperation.GET_MULTIPLE_ROUTE)
             {
-                toast("Multiple anchor point routes have been sent.");
+                toast("Multiple anchor point routes have been got.");
+                currentRoute_2 =(DirectionsRoute) msg.obj;
             }
         }
     };
 
-    private void setToLeaderNavigationRoute(FirebaseNetworkData data)
+    private void setToNavigationRoute(Object data)
     {
-       Peer peer =  getCurrentPeer(currentUserID,peersList);
-       String routeStr = peer.getOtherFields().get(FirebaseOperation.ROUTE_1);
-        DirectionsRoute currentRoute = (DirectionsRoute) FirebaseOperation.encodeNetworkData(routeStr);
+
+        DirectionsRoute currentRoute = (DirectionsRoute) data;
+
         if(navigationMapRoute != null)
         {
             navigationMapRoute.removeRoute();
@@ -153,6 +131,11 @@ public class NavigationActivity extends AppCompatActivity implements
             navigationMapRoute = new NavigationMapRoute(null,mapView,mapboxMap);
         }
         navigationMapRoute.addRoute(currentRoute);
+        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+                .directionsRoute(currentRoute)
+                .shouldSimulateRoute(true)
+                .build();
+        NavigationLauncher.startNavigation(NavigationActivity.this,options);
     }
 
 

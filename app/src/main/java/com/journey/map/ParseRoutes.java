@@ -126,29 +126,10 @@ public class ParseRoutes {
                             return;
                         }
                         currentRoute = response.body().routes().get(0);
-                        Map<String,String>cmap = currentPeer.getOtherFields();
-                        cmap.put(FirebaseOperation.ROUTE_1,FirebaseOperation.getRouteString(currentRoute));
                         Message message = new Message();
                         message.what = FirebaseOperation.GET_SINGLE_ROUTE;
                         message.obj = currentRoute;
                         mainHandler.sendMessage(message);
-
-//                        if(navigationMapRoute != null)
-//                        {
-//                            navigationMapRoute.removeRoute();
-//                        }else
-//                        {
-//                            navigationMapRoute = new NavigationMapRoute(null,mapview,mapboxMap);
-//                        }
-//                        navigationMapRoute.addRoute(currentRoute);
-//                        if(navigationFlg)
-//                        {
-////                            NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-////                                    .directionsRoute(currentRoute)
-////                                    .shouldSimulateRoute(true)
-////                                    .build();
-////                            NavigationLauncher.startNavigation(mapActivity,options);
-//                        }
                     }
 
                     @Override
@@ -180,16 +161,6 @@ public class ParseRoutes {
                     return;
                 }
                 currentRoute = response.body().routes().get(0);
-
-                Iterator<Peer> iter = currentPeers.iterator();
-                while (iter.hasNext()) {
-                    Peer peer = iter.next();
-                    Map<String,String> cmap = peer.getOtherFields();
-                    cmap.put(FirebaseOperation.ROUTE_2,FirebaseOperation.getRouteString(currentRoute));
-                }
-
-
-
                 Message message = new Message();
                 message.what = FirebaseOperation.GET_MULTIPLE_ROUTE;
                 message.obj = currentRoute;
