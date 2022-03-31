@@ -51,7 +51,8 @@ public class PeerClient {
                             comm = new CommunicationThread(socket,mainTheradHandler,false);
                             //start communication with the client
                             new Thread(comm).start();
-                            PeerNetworkData data = new PeerNetworkData(currentPeer, Point.fromLngLat(currentPeer.getLongitude(),currentPeer.getLatitude()),false,false);
+                            //request routes
+                            PeerNetworkData data = new PeerNetworkData(currentPeer, Point.fromLngLat(currentPeer.getLongitude(),currentPeer.getLatitude()),false,false,CommunicationThread.REQUEST_ROUTES);
                             comm.sendData(data);
                             break;
                         }

@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -25,6 +23,8 @@ import com.journey.R;
 import com.journey.map.OrderUser;
 import com.journey.map.ParseRoutes;
 import com.journey.map.ParseUserGroups;
+import com.journey.map.network.FirebaseNetworkData;
+import com.journey.map.network.FirebaseOperation;
 import com.journey.map.network.PeerClient;
 import com.journey.map.network.PeerSever;
 import com.journey.model.Peer;
@@ -45,6 +45,8 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
+import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
@@ -56,8 +58,10 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,17 +75,15 @@ public class NavigationActivity extends AppCompatActivity implements
     private MapView mapView;
     private static final String TAG = "Main";
     private NavigationMapRoute navigationMapRoute;
-    private LocationEngine locationEngine;
-    private LocationLayerPlugin locationLayerPlugin;
-    private Point originLocation;
-    private Point destinationLocation;
-    private List<OrderUser> orderlist;
+
     private List<Peer> peersList;
     private String currentUserID;
     private Peer currentPeer;
     private List<Peer> otherPeers = new ArrayList<Peer>();
     private String serverIP = "";
     private int serverPort ;
+    FirebaseOperation currentFirebase ;
+    private String mapDatabase = "map";
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
@@ -91,9 +93,30 @@ public class NavigationActivity extends AppCompatActivity implements
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-
+            if(msg.what == FirebaseOperation.FILE_EXISTS)
+            {
+                FirebaseNetworkData data = (FirebaseNetworkData) msg.obj;
+                toast("Loading routes.");
+            }
+            else if(msg.what == FirebaseOperation.FILE_NOT_FOUND)
+            {
+                currentFirebase.startListnere("MAP","UID","ROUTE");
+                toast("Waiting for the leader to assign the navigation routes.");
+            }
+            else if(msg.what == FirebaseOperation.GET_SINGLE_ROUTE)
+            {
+                toast("Multiple anchor point routes have been sent.");
+            }
+            else if(msg.what == FirebaseOperation.GET_MULTIPLE_ROUTE)
+            {
+                toast("Multiple anchor point routes have been sent.");
+            }
         }
     };
+    private void toast(String text)
+    {
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+    }
 
     public static String getLocalIpAddress() {
         try {
@@ -120,17 +143,17 @@ public class NavigationActivity extends AppCompatActivity implements
         //waypoint :53.339132, -6.272588
         //destination: 53.3446, -6.2595
         List<Peer> peers = new ArrayList<Peer>();
-//10.0.2.16
+        //10.0.2.16
         String serverIP = getLocalIpAddress();
 
         Peer user1 = new Peer("user_1@user_1.com",
                 "Female",
                 12,
                 4.5,
-                53.3480,
-                -6.2593,
-                53.3446,
-                -6.2595,
+                53.3481,
+                -6.2594,
+                53.3481,
+                -6.2483,
                 0L,
                 0L,
                 1,
@@ -138,7 +161,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 12,
                 true,
                 true,
-                "123",
+                "123456789",
                 true,
                 null,
                 serverIP,
@@ -148,10 +171,10 @@ public class NavigationActivity extends AppCompatActivity implements
                 "Female",
                 12,
                 4.5,
-                53.3496,
-                -6.2600,
-                53.3457,
-                -6.2573,
+                53.3479,
+                -6.2576,
+                53.3483,
+                -6.2551,
                 0L,
                 0L,
                 1,
@@ -159,14 +182,34 @@ public class NavigationActivity extends AppCompatActivity implements
                 12,
                 false,
                 false,
-                "123",
+                "123456789",
+                true,
+                null,
+                "127.0.0.1",
+                "3030",null,null);
+        Peer user3 = new Peer("user_3@user_3.com",
+                "Female",
+                12,
+                4.5,
+                53.3490,
+                -6.2588,
+                53.3483,
+                -6.2515,
+                0L,
+                0L,
+                1,
+                "12",
+                12,
+                false,
+                false,
+                "123456789",
                 true,
                 null,
                 "127.0.0.1",
                 "3030",null,null);
         peers.add(user1);
         peers.add(user2);
-
+        peers.add(user3);
         return peers;
     }
 
@@ -177,6 +220,7 @@ public class NavigationActivity extends AppCompatActivity implements
 
         // Mapbox access token is configured here. This needs to be called either in your application
         // object or in the same activity which contains the mapview.
+
         Mapbox.getInstance(this, getString(R.string.access_token));
 
         // This contains the MapView in XML and needs to be called after the access token is configured.
@@ -190,26 +234,111 @@ public class NavigationActivity extends AppCompatActivity implements
         peersList = testPeerList();
         currentUserID = "user_1@user_1.com";
         currentPeer = getCurrentPeer(currentUserID,peersList);
-        createCommunication(currentPeer);
+        currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
+
+        InitiaHasMap(peersList);
+
+
+
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         setLocationUpdata(10000,5000);
         setUpdateCallback();
 
     }
-    private void createCommunication(Peer currentPeer)
+    private void InitiaHasMap(List<Peer> peersList)
+    {
+        Iterator<Peer> iter = peersList.iterator();
+        while (iter.hasNext()) {
+            Peer peer = iter.next();
+            Map<String,String> otherFields = new HashMap<String,String>();
+            peer.setOtherFields(otherFields);
+        }
+    }
+    private void getSingleRoute(Peer peer,Peer LeaderPeer)
+    {
+        Point destinationPoint = Point.fromLngLat( LeaderPeer.getLongitude(), LeaderPeer.getLatitude());
+        Point originPoint = Point.fromLngLat( peer.getLongitude(), peer.getLatitude());
+        ParseRoutes route = new ParseRoutes(peer,
+                mHandler,
+                getString(R.string.access_token),
+                getApplicationContext(),
+                NavigationActivity.this,
+                navigationMapRoute,
+                mapboxMap,
+                mapView,
+                true,
+                originPoint,
+                destinationPoint);
+    }
+
+    private void getMultipleRoute(List<Peer> peers)
+    {
+        ArrayList<Point> UserWaypoints = new ArrayList<>();
+        Point destinationPoint = null;
+        Point originPoint = null;
+        Iterator<Peer> iter = peers.iterator();
+        Peer leaderPeer = null;
+        while (iter.hasNext()) {
+            Peer peer = iter.next();
+            //change furthest
+            if(peer.getLeader())
+            {
+                leaderPeer = peer;
+                destinationPoint = Point.fromLngLat(peer.getLongitude(), peer.getLatitude());
+                originPoint = Point.fromLngLat( peer.getLongitude(), peer.getLatitude());
+                continue;
+            }
+            UserWaypoints.add(Point.fromLngLat( peer.getdLongtitude(), peer.getdLatitude()));
+        }
+
+        ParseRoutes route = new ParseRoutes(peers,
+                mHandler,
+                getString(R.string.access_token),
+                getApplicationContext(),
+                NavigationActivity.this,
+                navigationMapRoute,
+                mapboxMap,
+                mapView,
+                true,
+                originPoint,
+                destinationPoint,
+                UserWaypoints);
+    }
+
+    
+    private void checkRoutes(List<Peer> listPeer)
     {
         if(currentPeer.getLeader())
         {
-            PeerSever sever = new PeerSever(Integer.parseInt(currentPeer.getPort()),mHandler,peersList);
-            sever.startServer();
+            Iterator<Peer> iter = listPeer.iterator();
+            Peer LeaderPeer = null;
+            while (iter.hasNext()) {
+                Peer peer = iter.next();
+                if(peer.getLeader())
+                {
+                    LeaderPeer = peer;
+                    getMultipleRoute(listPeer);
+                    continue;
+                }
+                Map<String, String> otherFields = peer.getOtherFields();
+
+                if( otherFields.get(FirebaseOperation.ROUTE_1) == null)
+                {
+                    getSingleRoute(peer,LeaderPeer);
+                }
+            }
         }
         else
         {
-
-            PeerClient client = new PeerClient(getServerPort(),getServerIP(),mHandler,currentPeer);
-            client.startClient();
+            currentFirebase.startListnere("MAP",currentPeer.getUuid(),"ROUTE");
         }
+
+    }
+    
+    private void createCommunication(Peer currentPeer)
+    {
+        checkRoutes(peersList);
     }
 
     private String getServerIP()
@@ -255,38 +384,6 @@ public class NavigationActivity extends AppCompatActivity implements
         return d2;
     }
 
-    private  void testNavigation()
-    {
-        //53.3498, -6.2603
-        //origin:53.3496, -6.2600
-        //waypoint :53.3480, -6.2593
-        //waypoint :53.3457, -6.2573
-        //waypoint :53.339132, -6.272588
-        //destination: 53.3446, -6.2595
-        originLocation = Point.fromLngLat(-6.2600,53.3496);
-        ArrayList<Point> UserWaypoints = new ArrayList<>();
-        UserWaypoints.add( Point.fromLngLat(-6.2591,53.3480));
-        UserWaypoints.add(  Point.fromLngLat(-6.2573,53.3457));
-
-        destinationLocation =Point.fromLngLat(-6.2595,53.3446);
-
-        ParseRoutes route = new ParseRoutes(
-                getString(R.string.access_token),
-                getApplicationContext(),
-                NavigationActivity.this,
-                navigationMapRoute,
-                mapboxMap,
-                mapView,
-                true,
-                originLocation,
-                destinationLocation,UserWaypoints);
-
-
-
-        //getRoute(originLocation,destinationLocation);
-
-
-    }
     private void getRoute(Point origin,Point destination)
     {
 
@@ -366,7 +463,7 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         NavigationActivity.this.mapboxMap = mapboxMap;
-        testNavigation();
+        createCommunication(currentPeer);
         mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {

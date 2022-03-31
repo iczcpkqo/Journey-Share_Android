@@ -2,8 +2,12 @@ package com.journey.map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
+import com.journey.map.network.FirebaseOperation;
+import com.journey.model.Peer;
 import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
@@ -16,6 +20,11 @@ import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,7 +43,13 @@ public class ParseRoutes {
     private MapView mapview;
     boolean navigationFlg;
     Activity mapActivity;
-    public ParseRoutes(String accessToken,
+    Handler mainHandler;
+    Peer currentPeer;
+    List<Peer> currentPeers;
+
+    public ParseRoutes(List<Peer> peers,
+                       Handler handler,
+                       String accessToken,
                        Context currentContext,
                        Activity activity,
                        NavigationMapRoute mapRoute,
@@ -46,6 +61,8 @@ public class ParseRoutes {
                        ArrayList<Point> UserWaypoints
     )
     {
+        currentPeers = peers;
+        mainHandler = handler;
         navigationFlg =  isNavigation;
         mapActivity = activity;
         mapboxMap = map;
@@ -59,7 +76,9 @@ public class ParseRoutes {
         navigationMapRoute = mapRoute;
     }
 
-    public ParseRoutes(String accessToken,
+    public ParseRoutes(Peer  peer,
+                       Handler handler,
+                       String accessToken,
                        Context currentContext,
                        Activity activity,
                        NavigationMapRoute mapRoute,
@@ -69,6 +88,8 @@ public class ParseRoutes {
                        Point or,
                        Point de)
     {
+        currentPeer = peer;
+        mainHandler = handler;
         navigationFlg =  isNavigation;
         mapActivity = activity;
         token = accessToken;
@@ -105,22 +126,29 @@ public class ParseRoutes {
                             return;
                         }
                         currentRoute = response.body().routes().get(0);
-                        if(navigationMapRoute != null)
-                        {
-                            navigationMapRoute.removeRoute();
-                        }else
-                        {
-                            navigationMapRoute = new NavigationMapRoute(null,mapview,mapboxMap);
-                        }
-                        navigationMapRoute.addRoute(currentRoute);
-                        if(navigationFlg)
-                        {
-                            NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                                    .directionsRoute(currentRoute)
-                                    .shouldSimulateRoute(true)
-                                    .build();
-                            NavigationLauncher.startNavigation(mapActivity,options);
-                        }
+                        Map<String,String>cmap = currentPeer.getOtherFields();
+                        cmap.put(FirebaseOperation.ROUTE_1,FirebaseOperation.getRouteString(currentRoute));
+                        Message message = new Message();
+                        message.what = FirebaseOperation.GET_SINGLE_ROUTE;
+                        message.obj = currentRoute;
+                        mainHandler.sendMessage(message);
+
+//                        if(navigationMapRoute != null)
+//                        {
+//                            navigationMapRoute.removeRoute();
+//                        }else
+//                        {
+//                            navigationMapRoute = new NavigationMapRoute(null,mapview,mapboxMap);
+//                        }
+//                        navigationMapRoute.addRoute(currentRoute);
+//                        if(navigationFlg)
+//                        {
+////                            NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+////                                    .directionsRoute(currentRoute)
+////                                    .shouldSimulateRoute(true)
+////                                    .build();
+////                            NavigationLauncher.startNavigation(mapActivity,options);
+//                        }
                     }
 
                     @Override
@@ -152,22 +180,36 @@ public class ParseRoutes {
                     return;
                 }
                 currentRoute = response.body().routes().get(0);
-                if(navigationMapRoute != null)
-                {
-                    navigationMapRoute.removeRoute();
-                }else
-                {
-                    navigationMapRoute = new NavigationMapRoute(null,mapview,mapboxMap);
+
+                Iterator<Peer> iter = currentPeers.iterator();
+                while (iter.hasNext()) {
+                    Peer peer = iter.next();
+                    Map<String,String> cmap = peer.getOtherFields();
+                    cmap.put(FirebaseOperation.ROUTE_2,FirebaseOperation.getRouteString(currentRoute));
                 }
-                navigationMapRoute.addRoute(currentRoute);
-                if(navigationFlg)
-                {
-                    NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                            .directionsRoute(currentRoute)
-                            .shouldSimulateRoute(true)
-                            .build();
-                    NavigationLauncher.startNavigation(mapActivity,options);
-                }
+
+
+
+                Message message = new Message();
+                message.what = FirebaseOperation.GET_MULTIPLE_ROUTE;
+                message.obj = currentRoute;
+                mainHandler.sendMessage(message);
+//                if(navigationMapRoute != null)
+//                {
+//                    navigationMapRoute.removeRoute();
+//                }else
+//                {
+//                    navigationMapRoute = new NavigationMapRoute(null,mapview,mapboxMap);
+//                }
+//                navigationMapRoute.addRoute(currentRoute);
+//                if(navigationFlg)
+//                {
+//                    NavigationLauncherOptions options = NavigationLauncherOptions.builder()
+//                            .directionsRoute(currentRoute)
+//                            .shouldSimulateRoute(true)
+//                            .build();
+//                    NavigationLauncher.startNavigation(mapActivity,options);
+//                }
             }
 
             @Override
