@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +46,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author: Xiang Mao
@@ -53,14 +56,28 @@ import java.util.Map;
 public class Chat extends AppCompatActivity {
 
     private static final String TAG = "Chat";
-    List<Msg> msgList = new ArrayList<>();
+    private List<Msg> msgList = new ArrayList<>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    RecyclerView msgRecycler;
-    EditText msgInput;
-    Button msgBtn;
-    MsgAdapter adapter;
-    LinearLayoutManager layoutManager;
-    Dialogue dialogue;
+    private RecyclerView msgRecycler;
+    private EditText msgInput;
+    private Button msgBtn;
+    private MsgAdapter adapter;
+    private LinearLayoutManager layoutManager;
+    private Dialogue dialogue;
+//    private static final int SCROLL_TO_BOTTOM = 1;
+//    private Handler handler = new Handler(){
+//        @Override
+//        public void handleMessage(@NonNull Message msg) {
+//            super.handleMessage(msg);
+//            switch(msg.what){
+//                case SCROLL_TO_BOTTOM:
+//                    msgRecycler.scrollToPosition(msgList.size() - 1);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +135,13 @@ public class Chat extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                msgRefresh();
+//            }
+//        }).start();
+
         msgRefresh();
     }
 
@@ -139,7 +163,6 @@ public class Chat extends AppCompatActivity {
 
     private void msgRefresh(){
 
-        msgList.clear();
         db.collection("message").orderBy("time")
                 .whereEqualTo("dialogueId", dialogue.getDialogueId())
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -152,7 +175,7 @@ public class Chat extends AppCompatActivity {
                                 Map<String, Object> data = document.getData();
                                 HashMap<String, String> sender = (HashMap<String, String>) data.get("sender");
                                 String dialogueId = document.getId();
-                                Log.d(TAG, dialogueId + " => #####" + data);
+                                Log.d(TAG, dialogueId + " => onEvent msg #####" + data);
                                 Log.d(TAG, data.get("sender").getClass().toString());
 
                                 Msg msg = new Msg(new User(sender.get("email"), sender.get("username"), sender.get("gender")),
@@ -161,6 +184,7 @@ public class Chat extends AppCompatActivity {
                                         data.get("dialogueId").toString());
                                 msgList.add(msg);
                             }
+                            msgRecycler.setAdapter(adapter);
                             msgRecycler.scrollToPosition(msgList.size() - 1);
                         } else {
                             Log.d(TAG, "Error getting documents: ");
@@ -169,6 +193,12 @@ public class Chat extends AppCompatActivity {
                 });
 
 
+//        try {
+//            TimeUnit.SECONDS.sleep(3);
+//            msgRefresh();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
 
     }

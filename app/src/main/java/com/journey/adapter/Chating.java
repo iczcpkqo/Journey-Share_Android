@@ -101,9 +101,8 @@ public class Chating {
                             if (0 == task.getResult().size()) {
                                 System.out.println("#$$$$%%%%%%%%%%%%%%%%%%%$#%#%#$%");
                                 System.out.println(newDialogue.get("playerString"));
-                                insertDialogue(context, newDialogue);
+                                insertDialogue(newDialogue);
                                 go(context,players);
-
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -124,7 +123,21 @@ public class Chating {
         context.startActivity(intent);
     }
 
-    private static void insertDialogue(Context context, Map<String, Object> newDialogue) {
+    public static void add(List<String> players) {
+        Collections.sort(players);
+        User sender = DialogueHelper.getSender();
+        Map<String, Object> newDialogue = new HashMap<>();
+        newDialogue.put("type", players.size() > 2 ? "group" : "single");
+        newDialogue.put("playerString", players.toString());
+        newDialogue.put("playerList", players);
+        newDialogue.put("createTime", FieldValue.serverTimestamp());
+        newDialogue.put("lastTime", System.currentTimeMillis());
+        newDialogue.put("orderID", "testOrderId-123");
+
+        insertDialogue(newDialogue);
+    }
+
+    private static void insertDialogue(Map<String, Object> newDialogue) {
         User sender = DialogueHelper.getSender();
         db.collection("dialogue")
                 .add(newDialogue)
