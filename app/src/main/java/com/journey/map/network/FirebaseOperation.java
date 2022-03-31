@@ -78,7 +78,7 @@ public class FirebaseOperation {
                                     String  dataString = documentSnapshot.getString(field);
                                     if(dataString != null)
                                     {
-                                        FirebaseNetworkData data =  encodeNetworkData(dataString);
+                                        FirebaseNetworkData data = (FirebaseNetworkData) encodeNetworkData(dataString);
                                         message.obj = data;
                                         message.what = FILE_EXISTS;
 
@@ -148,19 +148,19 @@ public class FirebaseOperation {
                     }
                 });
     }
-    public static FirebaseNetworkData encodeNetworkData(String baseContent)
+    public static Object encodeNetworkData(String baseContent)
     {
         byte[] decodedBytes = Base64.getDecoder().decode(baseContent);
         ByteArrayInputStream bis = new ByteArrayInputStream(decodedBytes);
         ObjectInput in = null;
-        FirebaseNetworkData networkData = null;
+        Object networkData = null;
         try {
             in = new ObjectInputStream(bis);
         } catch (IOException e) {
             e.printStackTrace();
         }
         try {
-            networkData = (FirebaseNetworkData) in.readObject();
+            networkData =  in.readObject();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -215,7 +215,7 @@ public class FirebaseOperation {
                         if(documentSnapshot.exists()) {
 
                            String dataString = documentSnapshot.getString(Field);
-                           FirebaseNetworkData data =  encodeNetworkData(dataString);
+                           FirebaseNetworkData data = (FirebaseNetworkData) encodeNetworkData(dataString);
 
                         }
                         else {
