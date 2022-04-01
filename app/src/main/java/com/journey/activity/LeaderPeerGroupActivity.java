@@ -70,7 +70,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     CountDownTimer countDownTimer;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
-    LoadingDialog loadingDialog = new LoadingDialog(this,  20000, 2000, "");
+    LoadingDialog loadingDialog = new LoadingDialog(this,  10000, 2000, "");
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(GsonConverterFactory.create())

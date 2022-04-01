@@ -372,9 +372,18 @@ public class NavigationActivity extends AppCompatActivity implements
 
     }
 
-    private void getSingleRoute(Peer peer,Peer LeaderPeer)
+    private void getSingleRoute(Peer peer,Peer LeaderPeer,boolean isLeader)
     {
-        Point destinationPoint = Point.fromLngLat(LeaderPeer.getLatitude(),LeaderPeer.getLongitude());
+        Point destinationPoint;
+        if(!isLeader)
+        {
+            destinationPoint = Point.fromLngLat(LeaderPeer.getLatitude(),LeaderPeer.getLongitude());
+        }
+        else
+        {
+            destinationPoint = Point.fromLngLat(LeaderPeer.getdLatitude(),LeaderPeer.getdLongtitude());
+
+        }
         Point originPoint = Point.fromLngLat(peer.getLatitude(),peer.getLongitude());
         ParseRoutes route = new ParseRoutes(peer,
                 mHandler,
@@ -432,7 +441,12 @@ public class NavigationActivity extends AppCompatActivity implements
     {
         if(currentPeer.getLeader())
         {
-            getMultipleRoute(listPeer,true);
+            if(listPeer.size() == 1)
+            {
+                getSingleRoute(currentPeer, currentPeer,true);
+            }
+            else
+                getMultipleRoute(listPeer,true);
         }
         else
         {
@@ -444,7 +458,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 {
                     //to leader
                     LeaderPeer = peer;
-                    getSingleRoute(currentPeer,LeaderPeer);
+                    getSingleRoute(currentPeer,LeaderPeer,false);
                     continue;
                 }
                 if(peer.getEmail().equals(currentPeer.getEmail()))
