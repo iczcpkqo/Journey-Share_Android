@@ -42,9 +42,9 @@ import java.util.Map;
 
 public class AccountFragment extends Fragment {
     private Button modify;
-    private TextView username;
+    private EditText username;
     private TextView email;
-    private TextView phone;
+    private EditText phone;
     private TextView mark;
     private TextView gender;
     private TextView age;
@@ -85,6 +85,7 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String txt_username = username.getText().toString();
+                String txt_Phone = phone.getText().toString();
                 FirebaseUser currentUser = mAuth.getCurrentUser();
                 if(currentUser != null){
                     String userEmail = currentUser.getEmail();
@@ -98,7 +99,8 @@ public class AccountFragment extends Fragment {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             db.collection("users").document(document.getId())
                                                     .update(
-                                                            "username", txt_username
+                                                            "username", txt_username,
+                                                            "phone",txt_Phone
                                                     );
                                             // After change the information of user, save them in file
                                             DocumentReference documentReference = db.collection("users").document(document.getId());
