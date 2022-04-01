@@ -1,5 +1,6 @@
 package com.journey.activity;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -75,6 +76,15 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Intent inte = new Intent();
+        LeaderPeerGroupActivity.this.setResult(RESULT_OK, inte);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +193,8 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
                     Intent intent = new Intent(LeaderPeerGroupActivity.this, NavigationActivity.class);
                     intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(peerList));
                     intent.putExtra(getString(R.string.CURRENT_PEER_EMAIL), peer.getEmail());
-                    startActivity(intent);
+                    //startActivity(intent);
+                    startActivityForResult(intent,1);
                 }
             }
             try {

@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,6 +75,15 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Intent inte = new Intent();
+        RealTimeJourneyTableActivity.this.setResult(-2, inte);
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,7 +227,8 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             intent = new Intent(RealTimeJourneyTableActivity.this, FollowerPeerGroupActivity.class);
         }
         intent.putExtra(PEER_KEY, peer);
-        startActivity(intent);
+        startActivityForResult(intent,1);
+        //startActivity(intent);
     }
 
 }

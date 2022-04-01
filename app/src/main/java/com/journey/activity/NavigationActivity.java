@@ -91,7 +91,7 @@ public class NavigationActivity extends AppCompatActivity implements
             boolean network = data.getExtras().getBoolean("network");
             boolean isSingle = data.getExtras().getBoolean("IS_SINGLE");
 
-            if( network == true && isSingle == true)
+            if( network == true && isSingle == true && peersList.size() != 1)
             {
 
 
@@ -108,6 +108,12 @@ public class NavigationActivity extends AppCompatActivity implements
             {
                 Chating.add( getUserNames(peersList));
                 toast("You have arrived at your destination.");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                finish();
             }
 
         }
@@ -239,7 +245,7 @@ public class NavigationActivity extends AppCompatActivity implements
         //10.0.2.16
         String serverIP = getLocalIpAddress();
 
-        Peer user1 = new Peer("user_1@user_1.com",
+        Peer user1 = new Peer("liu@tcd.com",
                 "Female",
                 12,
                 4.5,
@@ -377,14 +383,14 @@ public class NavigationActivity extends AppCompatActivity implements
         Point destinationPoint;
         if(!isLeader)
         {
-            destinationPoint = Point.fromLngLat(LeaderPeer.getLatitude(),LeaderPeer.getLongitude());
+            destinationPoint = Point.fromLngLat(LeaderPeer.getLongitude(),LeaderPeer.getLatitude());
         }
         else
         {
-            destinationPoint = Point.fromLngLat(LeaderPeer.getdLatitude(),LeaderPeer.getdLongtitude());
+            destinationPoint = Point.fromLngLat(LeaderPeer.getdLongtitude(),LeaderPeer.getdLatitude());
 
         }
-        Point originPoint = Point.fromLngLat(peer.getLatitude(),peer.getLongitude());
+        Point originPoint = Point.fromLngLat(peer.getLongitude(),peer.getLatitude());
         ParseRoutes route = new ParseRoutes(peer,
                 mHandler,
                 getString(R.string.access_token),
@@ -411,8 +417,8 @@ public class NavigationActivity extends AppCompatActivity implements
             //change furthest
             if(peer.getLeader())
             {
-                originPoint = Point.fromLngLat( peer.getLatitude(),peer.getLongitude());
-                destinationPoint = Point.fromLngLat(peer.getdLatitude(),peer.getdLongtitude());
+                originPoint = Point.fromLngLat(peer.getLongitude(), peer.getLatitude());
+                destinationPoint = Point.fromLngLat(peer.getdLongtitude(),peer.getdLatitude());
                 destinationName = peer.getEmail();
                 continue;
             }
@@ -707,6 +713,9 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent inte = new Intent();
+        NavigationActivity.this.setResult(RESULT_OK, inte);
+        finish();
         mapView.onDestroy();
     }
 

@@ -134,6 +134,7 @@ public class ConditionActivity extends AppCompatActivity {
         other = (RadioButton) findViewById(R.id.other_radio);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -257,7 +258,8 @@ public class ConditionActivity extends AppCompatActivity {
                     min_score,origin_lon,origin_lat,end_lon,end_lat,startAddress,destination);
             //send serialized conditionInfo to real time activity
             conInfo.putExtra(CONDITION_INFO,conditionInfo);
-            startActivity(conInfo);
+            startActivityForResult(conInfo,1);
+            //startActivity(conInfo);
         }else if(!male.isChecked() && !female.isChecked() && !other.isChecked()){
             Toast.makeText(ConditionActivity.this,"please select gender",Toast.LENGTH_SHORT).show();
         }else{
@@ -417,6 +419,10 @@ public class ConditionActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -2)
+        {
+            finish();
+        }
         if (resultCode == RESULT_OK && requestCode == GET_PLACE_INFORMATION) {
             String placeName = this.getString(R.string.placeName);
             String latitude = this.getString(R.string.latitude);
