@@ -29,6 +29,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.R;
+import com.journey.activity.Chat;
+import com.journey.activity.JourneyActivity;
 import com.journey.adapter.Chating;
 import com.journey.adapter.DialogueAdapter;
 import com.journey.entity.Dialogue;
@@ -52,8 +54,6 @@ import java.util.logging.Level;
  * @date: 2022-03-26-04:00
  * @tag: Dialogue
  */
-// TODO: 头像判断
-// FIXME: 聊天列表时间索引排序
 public class DialogueFragment extends Fragment {
 
     private static final String TAG = "DialogueFragment";
@@ -83,39 +83,28 @@ public class DialogueFragment extends Fragment {
         this.inflater = inflater;
         this.container = container;
         this.sender = DialogueHelper.getSender();
-        this.sortDialogue = new HashMap<>();
+//        this.sortDialogue = new HashMap<>();
         dialogueList.clear();
-
-//        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-//                .setPersistenceEnabled(false)
-//                .build();
-//        db.setFirestoreSettings(settings);
 
         // DONE: 传参启动
 //        Chating.go(getActivity(), Arrays.asList("liu@qq.com", "race@123.com"));
-//        Chating.go(getActivity(), Arrays.asList("liu@qq.com", "tomous@123.com"));
-//        Chating.go(getActivity(), Arrays.asList("liu@qq.com", "liuguowen@qq.com"));
-//        Chating.go(getActivity(), Arrays.asList("race@123.com", "yan123@qq.com"));
-//        Chating.go(getActivity(), Arrays.asList("iris@123.com", "yan123@qq.com"));
 //        for (int i =0; i<3; i++)
 //            Chating.go(getActivity(), DebugHelper.getNRandomEmail((int) Math.ceil((Math.random()*1)+1)));
 //        Chating.go(getActivity(), DebugHelper.getNRandomEmail((int) Math.ceil((Math.random()*1)+1)));
-        //iris@123.com
 
         // DONE: 增加会话
 //        Chating.add(Arrays.asList("123456@qq.com", "liu@qq.com"));
 
-//        try {
-//            uu.setBirthDate("1995-6-2");
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        String ss = "dsfs";
-//        try {
-//            uu.setBirthDate(ss);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
+//        DebugHelper.printAllUserEmail();
+//        Chating.add(DebugHelper.getTwoRandomEmail());
+//        Chating.add(Arrays.asList("mao@tcd.com","iris@123.com"));
+//        Chating.go(getActivity(),Arrays.asList("mao@tcd.com","iris@123.com"));
+//        Chating.go(getActivity(),Arrays.asList("yan@tcd.com", "mao@tcd.com"));
+
+         // DONE: API
+//        Chating.go(JourneyActivity.this,Arrays.asList("mao@tcd.com", "liu@tcd.com", "yan@tcd.com", "iris@123.com"));
+//        Chating.go(getActivity(),Arrays.asList("yan@tcd.com", "mao@tcd.com"));
+//        Chating.add(Arrays.asList("mao@tcd.com", "liu@tcd.com", "yan@tcd.com", "iris@123.com"));
 
 
         return diaFrame;
@@ -124,7 +113,7 @@ public class DialogueFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        this.sortDialogue.clear();
+//        this.sortDialogue.clear();
         dialogueList.clear();
         reFreshDialogue();
     }
@@ -132,7 +121,7 @@ public class DialogueFragment extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
-        this.sortDialogue.clear();
+//        this.sortDialogue.clear();
         dialogueList.clear();
         this.registration.remove();
     }
@@ -144,30 +133,21 @@ public class DialogueFragment extends Fragment {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                Log.d(TAG, "@@@@ number of dialogue: " + value);
-//                Log.d(TAG, "@@@@ I'm " + DialogueHelper.getSender().getEmail());
                 if (error == null) {
-                    // TODO: 异步排序不能同步
-//                    dialogueList = new ArrayList<>(value.size());
                     for (QueryDocumentSnapshot document : value) {
                         Map<String, Object> data = document.getData();
                         String dialogueId = document.getId();
-//                        Log.d(TAG, dialogueId + " => #####" + data);
-//                        sortDialogue.put(dialogueId, dialogueList.size());
                         db.collection("dialogue").document(dialogueId).collection("players")
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                        Log.d(TAG, "@@@@" + task.getResult());
                                         try {
                                             Dialogue oneDialogue = new Dialogue();
                                             oneDialogue.setDialogueId(dialogueId);
                                             if (task.isSuccessful()) {
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     Map<String, Object> data = document.getData();
-//                                                    Log.d(TAG, document.getId() + " => #user#user#user#user" + data);
-
                                                     User player = new User();
                                                     player.setUuid(document.getId());
                                                     player.setEmail(data.get("email").toString());
@@ -177,7 +157,7 @@ public class DialogueFragment extends Fragment {
                                                     oneDialogue.setDialogueId(dialogueId);
                                                 }
 //                                                dialogueList.add(sortDialogue.get(oneDialogue.getDialogueId()),oneDialogue);
-//                                                dialogueList.add(oneDialogue);
+                                                dialogueList.add(oneDialogue);
                                                 dialogueRecycler.setAdapter(adapter);
 
 
