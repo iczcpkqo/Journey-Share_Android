@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -77,7 +79,7 @@ public class NavigationActivity extends AppCompatActivity implements
     boolean routeTag = false;
     DirectionsRoute currentRoute_1;
     DirectionsRoute currentRoute_2;
-
+    Button navigationButton;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -98,6 +100,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else if(network == false && isSingle == false)
             {
+
                 toast("Journey record is saved in the cache !");
             }
             else
@@ -125,8 +128,6 @@ public class NavigationActivity extends AppCompatActivity implements
             {
                 //currentFirebase.startListnere("MAP","UID","ROUTE");
                 toast((String) msg.obj);
-                FirebaseOperation fir = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
-                fir.startListnere("map",currentPeer.getUuid(),"START");
             }
             else if(msg.what == FirebaseOperation.GET_SINGLE_ROUTE)
             {
@@ -142,7 +143,6 @@ public class NavigationActivity extends AppCompatActivity implements
             else if(msg.what == FirebaseOperation.ARRIVED_LEADER)
             {
 
-
             }
             else if(msg.what == FirebaseOperation.FILE_NOT_FOUND_RECORD)
             {
@@ -155,6 +155,12 @@ public class NavigationActivity extends AppCompatActivity implements
             else if(msg.what == FirebaseOperation.SAVE_ROUTE)
             {
                 currentRoute_2 = (DirectionsRoute) msg.obj;
+            }
+            else if(msg.what == FirebaseOperation.FIELD_NOT_FOUND)
+            {
+                toast((String) msg.obj);
+                FirebaseOperation fir = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
+                fir.startListnere("map",currentPeer.getUuid(),"START");
             }
         }
     };
@@ -287,6 +293,31 @@ public class NavigationActivity extends AppCompatActivity implements
         peers.add(user3);
         return peers;
     }
+    private boolean isLeader(List<Peer>peers,Peer peer)
+    {
+        boolean isLeader = false;
+
+        Iterator<Peer> iter = peers.iterator();
+        while (iter.hasNext())
+        {
+            Peer iterPeer = iter.next();
+            if(iterPeer.getLeader() && peer.getEmail().equals(iterPeer.getEmail()))
+            {
+                isLeader = true;
+                break;
+            }
+            else
+            {
+                isLeader = false;
+                break;
+            }
+
+        }
+
+
+
+        return isLeader;
+    }
 
 
     @Override
@@ -304,13 +335,23 @@ public class NavigationActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.navigationView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        navigationButton = findViewById(R.id.select_navigation_button);
+        navigationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                setToNavigationRoute(currentRoute_2,false);
+            }
+        });
 
         peersList = testPeerList();
-        currentUserID = "user_1@user_1.com";
+        currentUserID = "user_3@user_3.com";
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
-
+        if(isLeader(peersList,currentPeer))
+        {
+            navigationButton.setVisibility(View.INVISIBLE);
+        }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         setLocationUpdata(10000,5000);
         setUpdateCallback();

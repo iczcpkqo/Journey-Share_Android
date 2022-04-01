@@ -48,6 +48,7 @@ public class FirebaseOperation {
     public static final int ARRIVED_LEADER = 10;
     public static final int SAVE_ROUTE = 11;
     public static final int NAVIGATION_ACTIVITY_VIEW = 12;
+    public static final int FIELD_NOT_FOUND = 13;
     public static final String ROUTE_2 = "ROUTE_2";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Handler mainHandler;
@@ -90,18 +91,30 @@ public class FirebaseOperation {
                         .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
-
+                                Message message = new Message();
 
                                 try {
                                     Thread.sleep(sleepTime);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
+                                if(documentSnapshot.exists())
+                                {
+                                    String datas = documentSnapshot.getString(field);
+                                    if(datas != null)
+                                    {
+                                        message.obj = null;
+                                        message.what = FILE_EXISTS;
+                                    }
+                                    else
+                                    {
+                                        message.obj = null;
+                                        message.what = FIELD_NOT_FOUND;
+                                    }
+                                }
 
-                                Message message = new Message();
 
-                                message.obj = null;
-                                message.what = FILE_EXISTS;
+
                                 mainHandler.sendMessage(message);
                             }
                         })
