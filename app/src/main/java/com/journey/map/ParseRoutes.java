@@ -148,7 +148,7 @@ public class ParseRoutes {
             .origin(origin)
             .destination(destination)
             .profile(DirectionsCriteria.PROFILE_DRIVING);
-        if(waypoints != null)
+        if(waypoints.size() != 0 )
         {
             for (Point waypoint : waypoints) {
                 builder.addWaypoint(waypoint);
