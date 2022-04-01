@@ -55,6 +55,8 @@ public class AccountFragment extends Fragment {
 
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    String[] month_list = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -145,7 +147,9 @@ public class AccountFragment extends Fragment {
                 phone.setText(mp.get("phone").toString());
                 gender.setText(mp.get("gender").toString());
                 age.setText(mp.get("age").toString());
-                birthday.setText(mp.get("birthDate").toString());
+                String original_birthday = mp.get("birthDate").toString();
+                Integer index = Integer.valueOf(original_birthday.substring(0, original_birthday.indexOf("-")));
+                birthday.setText(month_list[index - 1] + " " + original_birthday.substring(original_birthday.indexOf("-") + 1));
                 mark.setText(mp.get("mark").toString());
             } catch (Exception e) {
                 e.printStackTrace();
