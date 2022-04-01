@@ -76,7 +76,6 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_peer_group);
-
         cancel = findViewById(R.id.cancel_btn);
         confirm = findViewById(R.id.confirm_btn);
         recyclerView = findViewById(R.id.leader_recyclerview);
@@ -100,7 +99,6 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 createPost(retrofit);
             }
-
             @Override
             public void onFinish() {
 

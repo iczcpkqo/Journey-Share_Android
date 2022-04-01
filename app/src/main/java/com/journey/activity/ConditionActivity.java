@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.BoringLayout;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +29,10 @@ import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.google.android.material.textfield.TextInputEditText;
 import com.journey.R;
 import com.journey.adapter.JSONPlaceholder;
+import com.journey.adapter.ReqResApi;
 import com.journey.model.ConditionInfo;
+import com.journey.model.Peer;
+import com.journey.service.database.DialogueHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +43,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * @Description:
@@ -92,6 +103,12 @@ public class ConditionActivity extends AppCompatActivity {
     private String startAddress;
     private String destination;
 
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("http://192.168.0.137:8080/")
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+
     public void init(){
         chooseDateTime = (TextInputEditText)findViewById(R.id.choose_date_time_dt);
         originPlace = (TextInputEditText)findViewById(R.id.origin_address_dt);
@@ -138,8 +155,38 @@ public class ConditionActivity extends AppCompatActivity {
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
             sendConInfo();
-            //testNavigationActivity();
+//            leaderSelection();
+//            testNavigationActivity();
         });
+    }
+
+    private void leaderSelection() {
+        String email = DialogueHelper.getSender().getEmail();
+        String userGender = DialogueHelper.getSender().getGender();
+        Double mark = DialogueHelper.getSender().getMark();
+        Peer peer = new Peer(email, prefer_gender, 20, mark,
+                Double.parseDouble(origin_lon), Double.parseDouble(origin_lat),
+                Double.parseDouble(end_lon), Double.parseDouble(end_lat),
+                0L,0L, 3,"12334",3, null,
+                null,null, null,null,null,startAddress,destination,null);
+        final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
+        try {
+            reqResApi[0].createUser(peer).enqueue(new Callback<List<Peer>>() {
+                @Override
+                public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
+                    Toast.makeText(ConditionActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
+                    List<Peer> peers = response.body();
+                }
+                @Override
+                public void onFailure(Call<List<Peer>> call, Throwable t) {
+                    System.out.println("-------------------on-failure--------------"+ t.toString());
+                    Toast.makeText(ConditionActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            Toast.makeText(ConditionActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**

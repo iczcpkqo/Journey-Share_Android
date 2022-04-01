@@ -13,4 +13,8 @@
     <item name="female_radio" type="id"/>
     <item name="other_radio" type="id"/>
     <item name="rb_option_btn" type="id"/>
+
+    <!--real time journey table-->
+    <item name="create_journey_btn" type="id"/>
+    <item name="join_journey_btn" type="id"/>
 </resources>

@@ -20,5 +20,5 @@ public interface ReqResApi{
     @POST("matchLeader")
     Call<List<Peer>> createUser(@Body Peer peer);
     @POST("matchMember")
-    Call<List<Peer>> matchMember(@Body Peer peer);
+    Call<List<Peer>> matchUser(@Body Peer peer);
 }
