@@ -1,10 +1,11 @@
 package com.journey.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,17 +19,10 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.journey.MainActivity;
 import com.journey.R;
-import com.journey.map.OrderUser;
 import com.journey.map.ParseRoutes;
-import com.journey.map.ParseUserGroups;
-import com.journey.map.network.FirebaseNetworkData;
 import com.journey.map.network.FirebaseOperation;
-import com.journey.map.network.PeerClient;
-import com.journey.map.network.PeerSever;
 import com.journey.model.Peer;
-import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -44,25 +38,17 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-
 import org.apache.commons.lang3.SerializationUtils;
-
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -75,7 +61,6 @@ public class NavigationActivity extends AppCompatActivity implements
     private MapView mapView;
     private static final String TAG = "Main";
     private NavigationMapRoute navigationMapRoute;
-
     private List<Peer> peersList;
     private String currentUserID;
     private Peer currentPeer;
@@ -85,12 +70,47 @@ public class NavigationActivity extends AppCompatActivity implements
     FirebaseOperation currentFirebase ;
     private String mapDatabase = "map";
 
+
     private FusedLocationProviderClient fusedLocationProviderClient;
     LocationRequest locationRequest;
     Location currentLocation;
     boolean routeTag = false;
     DirectionsRoute currentRoute_1;
     DirectionsRoute currentRoute_2;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityReenter(resultCode, data);
+        if (resultCode == RESULT_OK) {
+            boolean network = data.getExtras().getBoolean("network");
+            boolean isSingle = data.getExtras().getBoolean("IS_SINGLE");
+
+            if( network == true && isSingle == true)
+            {
+
+
+                toast("Waiting for the leader to start the journey.");
+                FirebaseOperation fir = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
+                fir.startListnere("map",currentPeer.getUuid(),"START");
+            }
+            else if(network == false && isSingle == false)
+            {
+                toast("Journey record is saved in the cache !");
+            }
+            else
+            {
+                toast("You have arrived at your destination.");
+            }
+
+        }
+    }
+
+
+
+
 
     Handler mHandler = new Handler(Looper.myLooper()){
         @Override
@@ -99,27 +119,47 @@ public class NavigationActivity extends AppCompatActivity implements
             if(msg.what == FirebaseOperation.FILE_EXISTS)
             {
                 toast("Loading routes.");
+                setToNavigationRoute(currentRoute_2,false);
             }
             else if(msg.what == FirebaseOperation.FILE_NOT_FOUND)
             {
                 //currentFirebase.startListnere("MAP","UID","ROUTE");
-                toast("Waiting for the leader to assign the navigation routes.");
+                toast((String) msg.obj);
+                FirebaseOperation fir = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
+                fir.startListnere("map",currentPeer.getUuid(),"START");
             }
             else if(msg.what == FirebaseOperation.GET_SINGLE_ROUTE)
             {
                 currentRoute_1 = (DirectionsRoute) msg.obj;
-                setToNavigationRoute(msg.obj);
+                setToNavigationRoute(msg.obj,true);
             }
             else if(msg.what == FirebaseOperation.GET_MULTIPLE_ROUTE)
             {
                 toast("Multiple anchor point routes have been got.");
                 currentRoute_2 =(DirectionsRoute) msg.obj;
-                setToNavigationRoute(currentRoute_2);
+                setToNavigationRoute(currentRoute_2,false);
+            }
+            else if(msg.what == FirebaseOperation.ARRIVED_LEADER)
+            {
+
+
+            }
+            else if(msg.what == FirebaseOperation.FILE_NOT_FOUND_RECORD)
+            {
+                toast((String) msg.obj);
+            }
+            else if(msg.what == FirebaseOperation.FILE_EXISTS_RECORD)
+            {
+                toast((String) msg.obj);
+            }
+            else if(msg.what == FirebaseOperation.SAVE_ROUTE)
+            {
+                currentRoute_2 = (DirectionsRoute) msg.obj;
             }
         }
     };
 
-    private void setToNavigationRoute(Object data)
+    private void setToNavigationRoute(Object data,boolean isSingle)
     {
 
         DirectionsRoute currentRoute = (DirectionsRoute) data;
@@ -132,11 +172,19 @@ public class NavigationActivity extends AppCompatActivity implements
             navigationMapRoute = new NavigationMapRoute(null,mapView,mapboxMap);
         }
         navigationMapRoute.addRoute(currentRoute);
-        NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-                .directionsRoute(currentRoute)
-                .shouldSimulateRoute(true)
-                .build();
-        NavigationLauncher.startNavigation(NavigationActivity.this,options);
+
+        if (currentRoute != null) {
+            Intent intent = new Intent(NavigationActivity.this, NavigationViewActivity.class);
+            intent.putExtra("EXTRA_SELECTED_ROUTE", currentRoute);
+            intent.putExtra("CURRENT_PEER",currentPeer);
+            intent.putExtra("IS_SINGLE",isSingle);
+            intent.putExtra("CURRENT_LIST_PEER",FirebaseOperation.getObjectString(peersList) );
+
+            //startActivity(intent);
+            startActivityForResult(intent,1);
+
+        }
+
     }
 
 
@@ -286,12 +334,14 @@ public class NavigationActivity extends AppCompatActivity implements
                 destinationPoint);
     }
 
-    private void getMultipleRoute(List<Peer> peers)
+    private void getMultipleRoute(List<Peer> peers,Boolean isNavigation)
     {
         ArrayList<Point> UserWaypoints = new ArrayList<>();
         Point destinationPoint = null;
         Point originPoint = null;
         Iterator<Peer> iter = peers.iterator();
+        String destinationName = "";
+        String wayPointsName = "Start;";
         while (iter.hasNext()) {
             Peer peer = iter.next();
             //change furthest
@@ -299,11 +349,13 @@ public class NavigationActivity extends AppCompatActivity implements
             {
                 originPoint = Point.fromLngLat( peer.getLatitude(),peer.getLongitude());
                 destinationPoint = Point.fromLngLat(peer.getdLatitude(),peer.getdLongtitude());
+                destinationName = peer.getEmail();
                 continue;
             }
             UserWaypoints.add(Point.fromLngLat(peer.getdLatitude(), peer.getdLongtitude()));
+            wayPointsName += peer.getEmail()+getString(R.string.way_point_arrived);
         }
-
+        wayPointsName+= destinationName;
         ParseRoutes route = new ParseRoutes(peers,
                 mHandler,
                 getString(R.string.access_token),
@@ -312,10 +364,12 @@ public class NavigationActivity extends AppCompatActivity implements
                 navigationMapRoute,
                 mapboxMap,
                 mapView,
-                true,
+                isNavigation,
                 originPoint,
                 destinationPoint,
-                UserWaypoints);
+                UserWaypoints,wayPointsName);
+
+
     }
 
     
@@ -323,7 +377,7 @@ public class NavigationActivity extends AppCompatActivity implements
     {
         if(currentPeer.getLeader())
         {
-            getMultipleRoute(listPeer);
+            getMultipleRoute(listPeer,true);
         }
         else
         {
@@ -333,9 +387,14 @@ public class NavigationActivity extends AppCompatActivity implements
                 Peer peer = iter.next();
                 if(peer.getLeader())
                 {
+                    //to leader
                     LeaderPeer = peer;
                     getSingleRoute(currentPeer,LeaderPeer);
-                    break;
+                    continue;
+                }
+                if(peer.getEmail().equals(currentPeer.getEmail()))
+                {
+                    getMultipleRoute(listPeer,false);
                 }
             }
 
@@ -472,6 +531,10 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
         NavigationActivity.this.mapboxMap = mapboxMap;
+
+
+
+
         createCommunication(currentPeer);
         mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
             @Override

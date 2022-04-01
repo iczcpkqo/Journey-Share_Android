@@ -46,7 +46,7 @@ public class ParseRoutes {
     Handler mainHandler;
     Peer currentPeer;
     List<Peer> currentPeers;
-
+    String wayPointsName;
     public ParseRoutes(List<Peer> peers,
                        Handler handler,
                        String accessToken,
@@ -58,7 +58,8 @@ public class ParseRoutes {
                        boolean isNavigation,
                        Point or,
                        Point de,
-                       ArrayList<Point> UserWaypoints
+                       ArrayList<Point> UserWaypoints,
+                       String mWayPointsName
     )
     {
         currentPeers = peers;
@@ -72,8 +73,9 @@ public class ParseRoutes {
         destination = de;
         context = currentContext;
         waypoints = UserWaypoints;
-        getMultipleWaypointRoute();
         navigationMapRoute = mapRoute;
+        wayPointsName = mWayPointsName;
+        getMultipleWaypointRoute();
     }
 
     public ParseRoutes(Peer  peer,
@@ -98,8 +100,8 @@ public class ParseRoutes {
         origin = or;
         destination = de;
         context = currentContext;
-        getSingleRoute();
         navigationMapRoute = mapRoute;
+        getSingleRoute();
     }
 
     public  DirectionsRoute getRoute() {
@@ -114,6 +116,7 @@ public class ParseRoutes {
                 .accessToken(token)
                 .origin(origin)
                 .destination(destination)
+                .addWaypointNames("Start;"+currentPeer.getEmail())
                 .build()
                 .getRoute(new Callback<DirectionsResponse>() {
                     @Override
@@ -148,11 +151,12 @@ public class ParseRoutes {
         for (Point waypoint : waypoints) {
             builder.addWaypoint(waypoint);
         }
+        builder.addWaypointNames(wayPointsName);
+
         builder.build().getRoute(new Callback<DirectionsResponse>() {
             @Override
             public void onResponse(Call<DirectionsResponse> call, Response<DirectionsResponse> response) {
 
-                assert response.body() != null;
                 if(response.body().routes().size() == 0)
                 {
 
@@ -162,7 +166,14 @@ public class ParseRoutes {
                 }
                 currentRoute = response.body().routes().get(0);
                 Message message = new Message();
-                message.what = FirebaseOperation.GET_MULTIPLE_ROUTE;
+                if(navigationFlg)
+                {
+                    message.what = FirebaseOperation.GET_MULTIPLE_ROUTE;
+                }
+                else
+                {
+                    message.what = FirebaseOperation.SAVE_ROUTE;
+                }
                 message.obj = currentRoute;
                 mainHandler.sendMessage(message);
 //                if(navigationMapRoute != null)

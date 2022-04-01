@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.journey.R;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -42,13 +43,44 @@ public class FirebaseOperation {
     public static final String ROUTE_1 = "ROUTE_1";
     public static final int GET_SINGLE_ROUTE = 6;
     public static final int GET_MULTIPLE_ROUTE = 7;
+    public static final int FILE_EXISTS_RECORD = 8;
+    public static final int FILE_NOT_FOUND_RECORD = 9;
+    public static final int ARRIVED_LEADER = 10;
+    public static final int SAVE_ROUTE = 11;
+    public static final int NAVIGATION_ACTIVITY_VIEW = 12;
     public static final String ROUTE_2 = "ROUTE_2";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Handler mainHandler;
     private DocumentReference noteRef;
-    private int checkFirebaseFileNumber = 10;
-    private int sleepTime = 2;
+    private int sleepTime = 2000;
 
+    static public void isExist(String collectionPath,String documentPath,Handler currentHandler)
+    {
+
+        FirebaseFirestore sdb = FirebaseFirestore.getInstance();
+
+        DocumentReference  noteRef = sdb.collection(collectionPath).document(documentPath);
+        noteRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Message message = new Message();
+                        message.what = FILE_EXISTS_RECORD;
+                        message.obj = "Your network is working, the record is uploaded successfully !";
+                        currentHandler.sendMessage(message);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Message message = new Message();
+                        message.what = FILE_NOT_FOUND_RECORD;
+                        message.obj = "Your Recorded upload failure, saved in local cache !";
+                        currentHandler.sendMessage(message);
+                    }
+                });
+
+    }
     public void  startListnere(String collectionPath,String documentPath,String field)
     {
         new Thread(){
@@ -59,60 +91,31 @@ public class FirebaseOperation {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                                if(checkFirebaseFileNumber != 0)
-                                {
-                                    try {
-                                        Thread.sleep(sleepTime);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
+
+                                try {
+                                    Thread.sleep(sleepTime);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                                 }
-                                else
-                                {
-                                    return;
-                                }
+
                                 Message message = new Message();
 
-                                if(documentSnapshot.exists()) {
-
-                                    String  dataString = documentSnapshot.getString(field);
-                                    if(dataString != null)
-                                    {
-                                        FirebaseNetworkData data = (FirebaseNetworkData) encodeNetworkData(dataString);
-                                        message.obj = data;
-                                        message.what = FILE_EXISTS;
-
-                                    }
-                                    else
-                                    {
-                                        message.what = FILE_NOT_FOUND;
-                                        checkFirebaseFileNumber--;
-                                        message.obj = null;}
-                                }
-                                else {
-                                    message.what = FILE_NOT_FOUND;
-                                    checkFirebaseFileNumber--;
-                                    message.obj = null;
-                                }
+                                message.obj = null;
+                                message.what = FILE_EXISTS;
                                 mainHandler.sendMessage(message);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Log.w("firebaseFailure", "Error writing document", e);
-                                if(checkFirebaseFileNumber != 0)
-                                {
-                                    try {
-                                        Thread.sleep(sleepTime);
-                                    } catch (InterruptedException d) {
-                                        d.printStackTrace();
-                                    }
+                                try {
+                                    Thread.sleep(sleepTime);
+                                } catch (InterruptedException d) {
+                                    d.printStackTrace();
                                 }
-                                checkFirebaseFileNumber--;
                                 Message message = new Message();
                                 message.what = FILE_NOT_FOUND;
-                                message.obj = null;
+                                message.obj = "Network is down";
                                 mainHandler.sendMessage(message);
                             }
                         });
@@ -169,7 +172,7 @@ public class FirebaseOperation {
 
         return networkData;
     }
-    static public String getRouteString(Object route)
+    static public String getObjectString(Object route)
     {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream out = null;
@@ -196,13 +199,19 @@ public class FirebaseOperation {
 
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("firebaseSuccess", "DocumentSnapshot successfully written!");
+                        Message message = new Message();
+                        message.what = FILE_EXISTS_RECORD;
+                        message.obj = "Your network is working, the record is uploaded successfully !";
+                        mainHandler.sendMessage(message);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("firebaseFailure", "Error writing document", e);
+                        Message message = new Message();
+                        message.what = FILE_NOT_FOUND_RECORD;
+                        message.obj = "Your Recorded upload failure, saved in local cache !";
+                        mainHandler.sendMessage(message);
                     }
                 });
     }
