@@ -59,13 +59,10 @@ public class Chating {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        Log.d(TAG, "@@@@" + task.getResult());
-//                        List<QueryDocumentSnapshot> dotest = (List<QueryDocumentSnapshot>) task.getResult();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> data = document.getData();
                                 String dialogueId = document.getId();
-//                                Log.d(TAG, document.getId() + " => #####" + data);
                                 // DONE: 跳转
                                 db.collection("users").whereIn("email", DialogueHelper.convertStringToList(newDialogue.get("playerString").toString()))
                                         .get()
@@ -79,7 +76,6 @@ public class Chating {
                                                         Map<String, Object> item = document.getData();
                                                         data.put(document.getId(), item);
                                                         dialogTitle.append(item.get("email").equals(sender.getEmail()) ? "" : (dialogTitle.toString().equals("") ? item.get("username") : "," + item.get("username")));
-//                                                        Log.d(TAG, document.getId() + " => #####" + data);
                                                     }
                                                     try {
                                                         Dialogue dialogue = new Dialogue();
@@ -91,7 +87,7 @@ public class Chating {
                                                         e.printStackTrace();
                                                     }
                                                 } else {
-//                                                    Log.d(TAG, "Error getting documents: ", task.getException());
+                                                    Log.d(TAG, "Error getting documents: ", task.getException());
                                                 }
                                             }
                                         });
@@ -99,13 +95,11 @@ public class Chating {
                                 break;
                             }
                             if (0 == task.getResult().size()) {
-//                                System.out.println("#$$$$%%%%%%%%%%%%%%%%%%%$#%#%#$%");
-//                                System.out.println(newDialogue.get("playerString"));
                                 insertDialogue(newDialogue);
                                 go(context,players);
                             }
                         } else {
-//                            Log.d(TAG, "Error getting documents: ", task.getException());
+                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -134,7 +128,20 @@ public class Chating {
         newDialogue.put("lastTime", System.currentTimeMillis());
         newDialogue.put("orderID", "testOrderId-123");
 
-        insertDialogue(newDialogue);
+        db.collection("dialogue").whereEqualTo("playerString", players.toString())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (0 == task.getResult().size()) {
+                                insertDialogue(newDialogue);
+                            }
+                        } else {
+                            Log.d(TAG, "add one dialogue");
+                        }
+                    }
+                });
     }
 
     private static void insertDialogue(Map<String, Object> newDialogue) {
@@ -144,12 +151,7 @@ public class Chating {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-//                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                         String dialogueId = documentReference.getId();
-//                                Arrays.asList(dialogue.get("playerString").toString().split(","));
-//                        db.collection("users").whereArrayContainsAny("email", arrPlayers)
-//                        db.collection("users").whereEqualTo("email", "liuguowen@qq.com")
-//
                         db.collection("users").whereIn("email", (List<? extends Object>) newDialogue.get("playerList"))
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -161,20 +163,10 @@ public class Chating {
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 Map<String, Object> item = document.getData();
                                                 dialogTitle.append(item.get("email").equals(sender.getEmail()) ? "" : (dialogTitle.toString().equals("") ? item.get("username") : "," + item.get("username")));
-//                                                Log.d(TAG, document.getId() + " => #####" + item);
                                                 db.collection("dialogue").document(dialogueId).collection("players").add(item);
                                             }
-//                                            try {
-//                                                Dialogue dialogue = new Dialogue();
-//                                                dialogue.setType(newDialogue.get("type").toString());
-//                                                dialogue.setDialogueId(dialogueId);
-//                                                go(context, dialogue);
-
-//                                            } catch (ParseException e) {
-//                                                e.printStackTrace();
-//                                            }
                                         } else {
-//                                            Log.d(TAG, "Error getting documents: ", task.getException());
+                                            Log.d(TAG, "Error getting documents: ", task.getException());
                                         }
                                     }
                                 });
