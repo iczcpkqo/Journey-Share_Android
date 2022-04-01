@@ -258,7 +258,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 serverIP,
-                "3344",null,null);
+                "3344",null,null,null,null,null);
 
         Peer user2 = new Peer("user_2@user_2.com",
                 "Female",
@@ -279,7 +279,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 "127.0.0.1",
-                "3030",null,null);
+                "3030",null,null, null, null, null);
         Peer user3 = new Peer("liu@tcd.com",
                 "Female",
                 12,
@@ -299,7 +299,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 "127.0.0.1",
-                "3030",null,null);
+                "3030",null,null,null,null,null);
         peers.add(user1);
         //peers.add(user2);
         peers.add(user3);
@@ -354,7 +354,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
         });
 
-        peersList = (List<Peer>) getIntent().getExtras().get(getString(R.string.PEER_LIST));
+        peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
         currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
 
         //peersList = testPeerList();
@@ -480,12 +480,7 @@ public class NavigationActivity extends AppCompatActivity implements
         while (iter.hasNext())
         {
             Peer temporaryPeer = iter.next();
-            if(temporaryPeer.getLeader())
-            {
-                serverIP = temporaryPeer.getIp();
-                serverPort = Integer.parseInt(temporaryPeer.getPort());
-            }
-            if(temporaryPeer.getEmail() == mCurretnID)
+            if(temporaryPeer.getEmail().equals(mCurretnID))
             {
                 currentPeer = temporaryPeer;
             }

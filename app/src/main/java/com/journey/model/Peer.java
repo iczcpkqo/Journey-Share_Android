@@ -63,6 +63,41 @@ public class Peer implements Serializable {
 
     Map<String, String> otherFields;
 
+    Integer minAge;
+
+    Integer maxAge;
+
+    String genderCon;
+
+    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, String orderId, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination, Integer minAge, Integer maxAge, String genderCon) {
+
+        this.email = email;
+        this.gender = gender;
+        this.age = age;
+        this.score = score;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.dLongtitude = dLongtitude;
+        this.dLatitude = dLatitude;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.order = order;
+        this.orderId = orderId;
+        this.limit = limit;
+        this.leader = leader;
+        this.furthest = furthest;
+        this.uuid = uuid;
+        this.confirmed = confirmed;
+        this.blacklist = blacklist;
+        this.ip = ip;
+        this.port = port;
+        this.startAddress = startAddress;
+        this.destination = destination;
+        this.minAge = minAge;
+        this.maxAge = maxAge;
+        this.genderCon = genderCon;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -239,36 +274,27 @@ public class Peer implements Serializable {
         this.destination = destination;
     }
 
-    public Map<String, String> getOtherFields() {
-        return otherFields;
+    public Integer getMinAge() {
+        return minAge;
     }
 
-    public void setOtherFields(Map<String, String> otherFields) {
-        this.otherFields = otherFields;
+    public void setMinAge(Integer minAge) {
+        this.minAge = minAge;
     }
 
-    public Peer(String email, String gender, Integer age, Double score, Double longitude, Double latitude, Double dLongtitude, Double dLatitude, Long startTime, Long endTime, Integer order, String orderId, Integer limit, Boolean leader, Boolean furthest, String uuid, Boolean confirmed, List<String> blacklist, String ip, String port, String startAddress, String destination) {
-        this.email = email;
-        this.gender = gender;
-        this.age = age;
-        this.score = score;
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.dLongtitude = dLongtitude;
-        this.dLatitude = dLatitude;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.order = order;
-        this.orderId = orderId;
-        this.limit = limit;
-        this.leader = leader;
-        this.furthest = furthest;
-        this.uuid = uuid;
-        this.confirmed = confirmed;
-        this.blacklist = blacklist;
-        this.ip = ip;
-        this.port = port;
-        this.startAddress = startAddress;
-        this.destination = destination;
+    public Integer getMaxAge() {
+        return maxAge;
+    }
+
+    public void setMaxAge(Integer maxAge) {
+        this.maxAge = maxAge;
+    }
+
+    public String getGenderCon() {
+        return genderCon;
+    }
+
+    public void setGenderCon(String genderCon) {
+        this.genderCon = genderCon;
     }
 }
