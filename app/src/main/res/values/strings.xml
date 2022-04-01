@@ -88,4 +88,6 @@
     <string name="left">left</string>
     <string name="right">right</string>
     <!--  end  message use this-->
+    <string name="PEER_LIST">PEER_LIST</string>
+    <string name="CURRENT_PEER_EMAIL">CURRENT_PEER_EMAIL</string>
 </resources>
