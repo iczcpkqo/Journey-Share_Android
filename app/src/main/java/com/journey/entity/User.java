@@ -78,21 +78,7 @@ public class User implements Comparable<User>{
 
     public String getBirthDate() { return birthDate; }
 
-    public void setBirthDate(String birthDate) throws ParseException {
-        this.birthDate = birthDate;
-        SimpleDateFormat BirthFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String str1 = this.birthDate;
-        String str2 = BirthFormat.format(System.currentTimeMillis());
-        Calendar bef = Calendar.getInstance();
-        Calendar aft = Calendar.getInstance();
-
-        bef.setTime(BirthFormat.parse(str1));
-        aft.setTime(BirthFormat.parse(str2));
-        int surplus = aft.get(Calendar.DATE) - bef.get(Calendar.DATE);
-        int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
-        int year = aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR);
-        this.age = Integer.toString(year);
-    }
+    public void setBirthDate(String birthDate){ this.birthDate = birthDate; }
 
     public void setAge(String age) { this.age = age; }
 
