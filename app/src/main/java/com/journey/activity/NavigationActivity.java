@@ -341,11 +341,11 @@ public class NavigationActivity extends AppCompatActivity implements
                 setToNavigationRoute(currentRoute_2,false);
             }
         });
-        //peersList = (List<Peer>) getIntent().getExtras().get(getString(R.string.PEER_LIST));
-        //currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
+        peersList = (List<Peer>) getIntent().getExtras().get(getString(R.string.PEER_LIST));
+        currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
 
-        peersList = testPeerList();
-        currentUserID = "user_3@user_3.com";
+        //peersList = testPeerList();
+        //currentUserID = "user_1@user_1.com";
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
         if(isLeader(peersList,currentPeer))
