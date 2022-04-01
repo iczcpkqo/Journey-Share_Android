@@ -92,7 +92,7 @@ public class FirebaseOperation {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 Message message = new Message();
-
+                                message.what = FIELD_NOT_FOUND;
                                 try {
                                     Thread.sleep(sleepTime);
                                 } catch (InterruptedException e) {
@@ -106,13 +106,13 @@ public class FirebaseOperation {
                                         message.obj = null;
                                         message.what = FILE_EXISTS;
                                     }
-                                    else
-                                    {
-                                        message.obj = null;
-                                        message.what = FIELD_NOT_FOUND;
-                                    }
-                                }
 
+                                }
+                                else
+                                {
+                                    message.obj = null;
+                                    message.what = FIELD_NOT_FOUND;
+                                }
 
 
                                 mainHandler.sendMessage(message);
