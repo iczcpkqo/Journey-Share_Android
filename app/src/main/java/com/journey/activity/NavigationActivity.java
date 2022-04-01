@@ -22,6 +22,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.journey.R;
+import com.journey.adapter.Chating;
 import com.journey.map.ParseRoutes;
 import com.journey.map.network.FirebaseOperation;
 import com.journey.model.Peer;
@@ -105,6 +106,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else
             {
+                Chating.add( getUserNames(peersList));
                 toast("You have arrived at your destination.");
             }
 
@@ -165,6 +167,16 @@ public class NavigationActivity extends AppCompatActivity implements
         }
     };
 
+    private List<String> getUserNames(List<Peer> peersList)
+    {
+        List<String> names = new ArrayList<String>();
+        Iterator<Peer> iter = peersList.iterator();
+        while (iter.hasNext()) {
+            Peer peer = iter.next();
+            names.add(peer.getEmail());
+        }
+        return names;
+    }
     private void setToNavigationRoute(Object data,boolean isSingle)
     {
 
