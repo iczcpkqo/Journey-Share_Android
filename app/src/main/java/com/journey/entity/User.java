@@ -1,5 +1,12 @@
 package com.journey.entity;
 
+import android.util.Log;
+
+import com.google.firebase.firestore.FieldValue;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class User implements Comparable<User>{
@@ -23,6 +30,8 @@ public class User implements Comparable<User>{
     private Integer order;
 
     private String uuid;
+
+    private String age;
 
     public User(String username, String password, Date createDate, String birthDate, String gender, String phone, String email, Double mark, Integer order) {
         this.username = username;
@@ -69,7 +78,25 @@ public class User implements Comparable<User>{
 
     public String getBirthDate() { return birthDate; }
 
-    public void setBirthDate(String birthDate) { this.birthDate = birthDate; }
+    public void setBirthDate(String birthDate) throws ParseException {
+        this.birthDate = birthDate;
+        SimpleDateFormat BirthFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String str1 = this.birthDate;
+        String str2 = BirthFormat.format(System.currentTimeMillis());
+        Calendar bef = Calendar.getInstance();
+        Calendar aft = Calendar.getInstance();
+
+        bef.setTime(BirthFormat.parse(str1));
+        aft.setTime(BirthFormat.parse(str2));
+        int surplus = aft.get(Calendar.DATE) - bef.get(Calendar.DATE);
+        int result = aft.get(Calendar.MONTH) - bef.get(Calendar.MONTH);
+        int year = aft.get(Calendar.YEAR) - bef.get(Calendar.YEAR);
+        this.age = Integer.toString(year);
+    }
+
+    public void setAge(String age) { this.age = age; }
+
+    public String getAge() { return age; }
 
     public String getGender() { return gender; }
 

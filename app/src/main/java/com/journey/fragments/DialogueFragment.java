@@ -52,7 +52,6 @@ import java.util.logging.Level;
  * @date: 2022-03-26-04:00
  * @tag: Dialogue
  */
-// TODO: 传参增加会话不启动
 // TODO: 头像判断
 // FIXME: 聊天列表时间索引排序
 public class DialogueFragment extends Fragment {
@@ -69,20 +68,6 @@ public class DialogueFragment extends Fragment {
     private User sender;
     private Map<String, Integer> sortDialogue;
     private ListenerRegistration registration;
-//    private static final int REFRESH_DIALOGUE = 1;
-//    private Handler handler = new Handler(){
-//        @Override
-//        public void handleMessage(@NonNull Message msg) {
-//            super.handleMessage(msg);
-//            switch(msg.what){
-//                case REFRESH_DIALOGUE:
-//                    reFreshDialogue();
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,6 +105,20 @@ public class DialogueFragment extends Fragment {
         // DONE: 增加会话
 //        Chating.add(Arrays.asList("123456@qq.com", "liu@qq.com"));
 
+        User uu = new User();
+        try {
+            uu.setBirthDate("1995-6-2");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String ss = "dsfs";
+        try {
+            uu.setBirthDate(ss);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
         return diaFrame;
     }
 
@@ -141,7 +140,6 @@ public class DialogueFragment extends Fragment {
 
     private void reFreshDialogue() {
         //Direction.DESCENDING
-//        db.collection("dialogue").whereNotEqualTo("lastTime", "")
 //        db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(sender.getEmail())).orderBy("lastTime", Query.Direction.DESCENDING).orderBy("createTime", Query.Direction.DESCENDING)
         this.registration = db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(sender.getEmail())).orderBy("lastTime", Query.Direction.DESCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -180,8 +178,9 @@ public class DialogueFragment extends Fragment {
                                                     oneDialogue.setDialogueId(dialogueId);
                                                 }
 //                                                dialogueList.add(sortDialogue.get(oneDialogue.getDialogueId()),oneDialogue);
-                                                dialogueList.add(oneDialogue);
+//                                                dialogueList.add(oneDialogue);
                                                 dialogueRecycler.setAdapter(adapter);
+
 
                                             } else {
                                                 Log.d(TAG, "Error getting documents: ", task.getException());

@@ -89,10 +89,9 @@ public class Dialogue {
         String s = this.playerString.append(",").append(player.getUsername()).toString();
         this.playerString.setLength(0);
         this.playerString.append(DialogueHelper.cleanDialogueString(DialogueHelper.sortString(s)));
-//        this.dialogueTitle.append(this.dialogueTitle.length()==0?"":",").append(player.getUsername());
         this.dialogueTitle.setLength(0);
         this.dialogueTitle.append(DialogueHelper.userListToUserString(this.receiver));
-        this.type = new StringBuffer(this.receiver.size() < 1? "single":"group");
+        this.type = new StringBuffer(this.receiver.size() < 2? "single":"group");
     }
 
     public ArrayList<User> getPlayerList() { return playerList; }

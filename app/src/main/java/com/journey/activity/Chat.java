@@ -64,20 +64,6 @@ public class Chat extends AppCompatActivity {
     private MsgAdapter adapter;
     private LinearLayoutManager layoutManager;
     private Dialogue dialogue;
-//    private static final int SCROLL_TO_BOTTOM = 1;
-//    private Handler handler = new Handler(){
-//        @Override
-//        public void handleMessage(@NonNull Message msg) {
-//            super.handleMessage(msg);
-//            switch(msg.what){
-//                case SCROLL_TO_BOTTOM:
-//                    msgRecycler.scrollToPosition(msgList.size() - 1);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +112,7 @@ public class Chat extends AppCompatActivity {
                 if (b) {
                     // TODO: 调试初始滚动
                     // TODO: 移除测试数据
-                    Toast.makeText(Chat.this, "input click", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Chat.this, "input click", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -135,13 +121,6 @@ public class Chat extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                msgRefresh();
-//            }
-//        }).start();
-
         msgRefresh();
     }
 
@@ -158,7 +137,6 @@ public class Chat extends AppCompatActivity {
             db.collection("message").add(msg);
             db.collection("dialogue").document(dialogue.getDialogueId()).update("lastTime", System.currentTimeMillis());
         }
-
     }
 
     private void msgRefresh(){
@@ -191,16 +169,6 @@ public class Chat extends AppCompatActivity {
                         }
                     }
                 });
-
-
-//        try {
-//            TimeUnit.SECONDS.sleep(3);
-//            msgRefresh();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-
     }
 
     private void initMsgTestData(){
