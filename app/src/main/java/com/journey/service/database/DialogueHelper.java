@@ -19,7 +19,6 @@ public class DialogueHelper {
     // Done: 获取我是谁
     public static User getSender(){
         Map<String,Object> userInfo = new ReadUserInfoFile().readUserFile();
-        System.out.println(userInfo);
         User sender = new User(userInfo.get("email").toString(),
                 userInfo.get("username").toString(),
                 userInfo.get("gender").toString());

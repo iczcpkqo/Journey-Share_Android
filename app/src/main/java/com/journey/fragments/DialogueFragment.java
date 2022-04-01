@@ -105,20 +105,6 @@ public class DialogueFragment extends Fragment {
         // DONE: 增加会话
 //        Chating.add(Arrays.asList("123456@qq.com", "liu@qq.com"));
 
-        User uu = new User();
-        try {
-            uu.setBirthDate("1995-6-2");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String ss = "dsfs";
-        try {
-            uu.setBirthDate(ss);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
         return diaFrame;
     }
 
@@ -145,29 +131,29 @@ public class DialogueFragment extends Fragment {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                Log.d(TAG, "@@@@ number of dialogue: " + value);
-                Log.d(TAG, "@@@@ I'm " + DialogueHelper.getSender().getEmail());
+//                Log.d(TAG, "@@@@ number of dialogue: " + value);
+//                Log.d(TAG, "@@@@ I'm " + DialogueHelper.getSender().getEmail());
                 if (error == null) {
                     // TODO: 异步排序不能同步
 //                    dialogueList = new ArrayList<>(value.size());
                     for (QueryDocumentSnapshot document : value) {
                         Map<String, Object> data = document.getData();
                         String dialogueId = document.getId();
-                        Log.d(TAG, dialogueId + " => #####" + data);
+//                        Log.d(TAG, dialogueId + " => #####" + data);
 //                        sortDialogue.put(dialogueId, dialogueList.size());
                         db.collection("dialogue").document(dialogueId).collection("players")
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        Log.d(TAG, "@@@@" + task.getResult());
+//                                        Log.d(TAG, "@@@@" + task.getResult());
                                         try {
                                             Dialogue oneDialogue = new Dialogue();
                                             oneDialogue.setDialogueId(dialogueId);
                                             if (task.isSuccessful()) {
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     Map<String, Object> data = document.getData();
-                                                    Log.d(TAG, document.getId() + " => #user#user#user#user" + data);
+//                                                    Log.d(TAG, document.getId() + " => #user#user#user#user" + data);
 
                                                     User player = new User();
                                                     player.setUuid(document.getId());
@@ -183,7 +169,7 @@ public class DialogueFragment extends Fragment {
 
 
                                             } else {
-                                                Log.d(TAG, "Error getting documents: ", task.getException());
+//                                                Log.d(TAG, "Error getting documents: ", task.getException());
                                             }
 
                                         } catch (ParseException e) {
@@ -196,7 +182,7 @@ public class DialogueFragment extends Fragment {
 
                     }
                 } else {
-                    Log.d(TAG, "Error getting documents: ");
+//                    Log.d(TAG, "Error getting documents: ");
                 }
 
             }
