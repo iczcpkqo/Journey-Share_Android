@@ -137,8 +137,8 @@ public class ConditionActivity extends AppCompatActivity {
     }
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
-            //sendConInfo();
-            testNavigationActivity();
+            sendConInfo();
+            //testNavigationActivity();
         });
     }
 

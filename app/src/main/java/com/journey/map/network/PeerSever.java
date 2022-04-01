@@ -38,6 +38,7 @@ public class PeerSever {
         serverPort = port;
         clientList = new ArrayList<peerNetowrkInformation>();
         peersList = peers;
+        startServer();
     }
     public void startServer()
     {

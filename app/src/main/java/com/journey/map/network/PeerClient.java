@@ -29,6 +29,8 @@ public class PeerClient {
         this.serverIp = serverIp;
         this.mainTheradHandler = mainTheradHandler;
         currentPeer = peer;
+        startClient();
+        sendData();
     }
     private void sendData()
     {

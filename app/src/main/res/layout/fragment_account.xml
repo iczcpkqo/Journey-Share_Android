@@ -7,8 +7,8 @@
     tools:context=".fragments.AccountFragment">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
@@ -30,27 +30,27 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="644dp"
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/imageIV"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="74dp"
                     android:layout_marginTop="50dp"
                     android:src="@drawable/u1" />
 
                 <LinearLayout
-                    android:layout_width="287dp"
-                    android:layout_height="530dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <EditText
                         android:id="@+id/Username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_gravity="center"
                         android:text="Username"
                         android:textColor="@color/teal_200"
                         android:textFontWeight="1000"
@@ -67,7 +67,7 @@
                             android:id="@+id/Email_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="30dp"
                             android:layout_marginTop="15dp"
                             android:text="Email:"
                             android:textFontWeight="1000"
@@ -79,7 +79,7 @@
                             android:id="@+id/Email"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="15dp"
                             android:text="Email"
                             android:textFontWeight="1000"
@@ -98,7 +98,7 @@
                             android:id="@+id/Phone_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="30dp"
                             android:layout_marginTop="15dp"
                             android:text="Phone:"
                             android:textFontWeight="1000"
@@ -110,7 +110,7 @@
                             android:id="@+id/Phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="15dp"
                             android:text="Phone"
                             android:textFontWeight="1000"
@@ -129,7 +129,7 @@
                             android:id="@+id/Gender_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="30dp"
                             android:layout_marginTop="15dp"
                             android:text="Gender:"
                             android:textFontWeight="1000"
@@ -141,7 +141,7 @@
                             android:id="@+id/Gender"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="15dp"
                             android:text="Gender"
                             android:textFontWeight="1000"
@@ -160,7 +160,7 @@
                             android:id="@+id/Age_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="30dp"
                             android:layout_marginTop="15dp"
                             android:text="Age:"
                             android:textFontWeight="1000"
@@ -172,7 +172,7 @@
                             android:id="@+id/Age"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="15dp"
                             android:text="Age"
                             android:textFontWeight="1000"
@@ -191,7 +191,7 @@
                             android:id="@+id/Birthday_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="30dp"
                             android:layout_marginTop="15dp"
                             android:text="Birthday:"
                             android:textFontWeight="1000"
@@ -204,7 +204,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginTop="10dp"
                             android:text="Birthday"
                             android:textFontWeight="1000"
                             android:textSize="20dp"
@@ -222,7 +222,7 @@
                             android:id="@+id/Mark_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginStart="30dp"
                             android:layout_marginTop="15dp"
                             android:text="Mark:"
                             android:textFontWeight="1000"
@@ -234,7 +234,7 @@
                             android:id="@+id/Mark"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="15dp"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="15dp"
                             android:text="Mark"
                             android:textFontWeight="1000"
@@ -244,29 +244,35 @@
 
                     </LinearLayout>
 
-                    <Button
-                        android:id="@+id/Modify"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="15dp"
-                        android:background="@drawable/round_corner"
-                        android:text="Modify"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/Mark_hint" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent">
 
-                    <Button
-                        android:id="@+id/Logout"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
-                        android:layout_marginTop="15dp"
-                        android:text="Log out"
-                        android:background="@drawable/round_corner"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/information_container_fragment" />
+                        <Button
+                            android:id="@+id/Modify"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/round_corner"
+                            android:text="Modify"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Mark_hint" />
+
+                        <Button
+                            android:id="@+id/Logout"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/round_corner"
+                            android:text="Log out"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/information_container_fragment" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
