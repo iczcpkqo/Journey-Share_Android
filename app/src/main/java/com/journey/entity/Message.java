@@ -53,8 +53,8 @@ public class Message {
 
     public Message(String text, int type){
 
-        this(new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
-             new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0),
+        this(new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0, 23),
+             new User("test_name_111", "11111", new Date(), "1994", "male", "13555555", "xiang.mao@outlook.com", 0.0, 0, 25),
              text, new Date(), type, 1);
     }
 

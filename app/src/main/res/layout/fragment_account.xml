@@ -10,13 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:text="@string/account_fragment"
             android:textColor="@color/white"
-            android:textSize="25sp"
-            />
+            android:textSize="25sp" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -29,7 +30,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="176dp"
+                android:layout_height="match_parent"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -41,10 +42,10 @@
 
                 <LinearLayout
                     android:layout_width="287dp"
-                    android:layout_height="159dp"
+                    android:layout_height="530dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <EditText
                         android:id="@+id/Username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -56,16 +57,18 @@
                         android:textSize="30dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
+
                         <TextView
                             android:id="@+id/Email_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="15dp"
                             android:text="Email:"
                             android:textFontWeight="1000"
                             android:textSize="20dp"
@@ -77,13 +80,138 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="15dp"
                             android:text="Email"
                             android:textFontWeight="1000"
                             android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/Email_hint" />
-                    </LinearLayout>>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/Phone_hint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Phone:"
+                            android:textFontWeight="1000"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Email" />
+
+                        <TextView
+                            android:id="@+id/Phone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Phone"
+                            android:textFontWeight="1000"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Phone_hint" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/Gender_hint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Gender:"
+                            android:textFontWeight="1000"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Phone" />
+
+                        <TextView
+                            android:id="@+id/Gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Gender"
+                            android:textFontWeight="1000"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Gender_hint" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/Age_hint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Age:"
+                            android:textFontWeight="1000"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Gender" />
+
+                        <TextView
+                            android:id="@+id/Age"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Age"
+                            android:textFontWeight="1000"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Age_hint" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/Birthday_hint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Birthday:"
+                            android:textFontWeight="1000"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Age" />
+
+                        <TextView
+                            android:id="@+id/Birthday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginTop="15dp"
+                            android:text="Birthday"
+                            android:textFontWeight="1000"
+                            android:textSize="20dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Birthday_hint" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -95,38 +223,52 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="15dp"
                             android:text="Mark:"
                             android:textFontWeight="1000"
                             android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/Email" />
+                            app:layout_constraintTop_toBottomOf="@+id/Birthday" />
 
                         <TextView
                             android:id="@+id/Mark"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="15dp"
                             android:text="Mark"
                             android:textFontWeight="1000"
                             android:textSize="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/Mark_hint" />
 
-                        <Button
-                            android:id="@+id/information_container_fragment"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginTop="0dp"
-                            android:text="Modify"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/Mark_hint" />
                     </LinearLayout>
 
+                    <Button
+                        android:id="@+id/Modify"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/round_corner"
+                        android:text="Modify"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/Mark_hint" />
+
+                    <Button
+                        android:id="@+id/Logout"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:text="Log out"
+                        android:background="@drawable/round_corner"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/information_container_fragment" />
                 </LinearLayout>
+
             </LinearLayout>
 
 

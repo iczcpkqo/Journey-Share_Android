@@ -43,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button signup;
     private Button datepicker;
     private Spinner gender;
+    private EditText age;
     private EditText phone;
     private EditText username;
     private EditText email;
@@ -54,10 +55,13 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    String[] month_list = {"Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"};
+
     public void init() {
         back = (Button) findViewById(R.id.back);
         signup = (Button) findViewById(R.id.signup);
         datepicker = (Button) findViewById(R.id.datepicker);
+        age = (EditText) findViewById(R.id.age);
         gender = (Spinner) findViewById(R.id.gender);
         phone = (EditText) findViewById(R.id.phone);
         username = (EditText) findViewById(R.id.username);
@@ -84,6 +88,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String txt_phone = phone.getText().toString();
                 String txt_username = username.getText().toString();
                 String txt_confirm = confirm.getText().toString();
+                String txt_age = age.getText().toString();
+                Integer age = Integer.valueOf(txt_age);
 
                 if (TextUtils.isEmpty(txt_email) || TextUtils.isEmpty(txt_password)||TextUtils.isEmpty(txt_birthDate)||
                         TextUtils.isEmpty(txt_gender)||TextUtils.isEmpty(txt_phone)||TextUtils.isEmpty(txt_username)||
@@ -94,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }else if(!txt_password.equals(txt_confirm)){
                     Toast.makeText(RegisterActivity.this, "Please enter the same password twice. ", Toast.LENGTH_SHORT).show();
                 }else{
-                    createAccount(txt_username,txt_password,txt_birthDate,txt_gender,txt_phone,txt_email,  5.0, 0);
+                    createAccount(txt_username,txt_password,txt_birthDate,txt_gender,txt_phone,txt_email,  5.0, 0, age);
                 }
             }
         });
@@ -122,14 +128,15 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                RegisterActivity.this.datepicker.setText(year + "-" + monthOfYear + "-" + dayOfMonth);
+                monthOfYear = monthOfYear + 1;
+                RegisterActivity.this.datepicker.setText(monthOfYear + "-" + dayOfMonth);
             }
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
 
     }
 
-    private void createAccount(String username, String password,String birthDate,String gender,String phone,String email, Double mark, Integer order) {
+    private void createAccount(String username, String password,String birthDate,String gender,String phone,String email, Double mark, Integer order, Integer age) {
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email,password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -138,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            User user1 = new User(username,  password, new Date(),  birthDate, gender,  phone,  email, mark, order);
+                            User user1 = new User(username,  password, new Date(),  birthDate, gender,  phone,  email, mark, order, age);
                             String result = UserDb.getInstance().save(user1);
                             System.out.println(result);
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -146,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(RegisterActivity.this, "Authentication failed.(Change another email address)",
+                            Toast.makeText(RegisterActivity.this, "Authentication failed.(The email address has already been registered or the email address format is wrong)",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }

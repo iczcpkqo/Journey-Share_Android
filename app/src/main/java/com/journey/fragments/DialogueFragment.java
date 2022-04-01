@@ -106,17 +106,17 @@ public class DialogueFragment extends Fragment {
 //        Chating.add(Arrays.asList("123456@qq.com", "liu@qq.com"));
 
         User uu = new User();
-        try {
-            uu.setBirthDate("1995-6-2");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String ss = "dsfs";
-        try {
-            uu.setBirthDate(ss);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            uu.setBirthDate("1995-6-2");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        String ss = "dsfs";
+//        try {
+//            uu.setBirthDate(ss);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
 
         return diaFrame;
