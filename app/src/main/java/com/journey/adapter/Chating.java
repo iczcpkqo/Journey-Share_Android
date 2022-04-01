@@ -164,15 +164,15 @@ public class Chating {
                                                 Log.d(TAG, document.getId() + " => #####" + item);
                                                 db.collection("dialogue").document(dialogueId).collection("players").add(item);
                                             }
-                                            try {
-                                                Dialogue dialogue = new Dialogue();
+//                                            try {
+//                                                Dialogue dialogue = new Dialogue();
 //                                                dialogue.setType(newDialogue.get("type").toString());
 //                                                dialogue.setDialogueId(dialogueId);
 //                                                go(context, dialogue);
 
-                                            } catch (ParseException e) {
-                                                e.printStackTrace();
-                                            }
+//                                            } catch (ParseException e) {
+//                                                e.printStackTrace();
+//                                            }
                                         } else {
                                             Log.d(TAG, "Error getting documents: ", task.getException());
                                         }
