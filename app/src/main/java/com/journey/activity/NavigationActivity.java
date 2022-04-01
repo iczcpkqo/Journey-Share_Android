@@ -268,7 +268,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 null,
                 "127.0.0.1",
                 "3030",null,null);
-        Peer user3 = new Peer("user_3@user_3.com",
+        Peer user3 = new Peer("liu@tcd.com",
                 "Female",
                 12,
                 4.5,
@@ -341,11 +341,13 @@ public class NavigationActivity extends AppCompatActivity implements
                 setToNavigationRoute(currentRoute_2,false);
             }
         });
+
         peersList = (List<Peer>) getIntent().getExtras().get(getString(R.string.PEER_LIST));
         currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
 
         //peersList = testPeerList();
-        //currentUserID = "user_1@user_1.com";
+        //currentUserID = "liu@tcd.com";
+        //FirebaseOperation.fuzzyQueries("users","email",currentUserID,mHandler);
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
         if(isLeader(peersList,currentPeer))

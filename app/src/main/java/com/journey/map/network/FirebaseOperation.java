@@ -9,14 +9,19 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.alibaba.fastjson.JSON;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.R;
 
 import java.io.ByteArrayInputStream;
@@ -82,6 +87,37 @@ public class FirebaseOperation {
                 });
 
     }
+
+
+    public static  void  fuzzyQueries(String collectionPath,String key,String value,Handler mhandler) {
+        FirebaseFirestore fuzzyDb = FirebaseFirestore.getInstance();
+
+        fuzzyDb.collection(collectionPath).whereEqualTo(key,value).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Message message = new Message();
+                message.what = 0;
+
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        String jsonMsg = JSON.toJSON(document.getData()).toString();
+                        if(jsonMsg != null)
+                        {
+                            message.what = 1;
+                            message.obj = jsonMsg;
+                            break;
+                        }
+                        break;
+                    }
+
+                } else {
+                    message.what = 0;
+                }
+                mhandler.sendMessage(message);
+            }
+        });
+    }
+
     public void  startListnere(String collectionPath,String documentPath,String field)
     {
         new Thread(){

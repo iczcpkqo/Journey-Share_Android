@@ -56,6 +56,7 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
 
             if(message.what == FirebaseOperation.FILE_NOT_FOUND_RECORD)
             {
+
                 isNetwork = false;
             }
 
