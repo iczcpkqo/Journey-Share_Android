@@ -20,7 +20,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".activity.FollowerPeerGroupActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".activity.RateComActivity"
             android:exported="false" />

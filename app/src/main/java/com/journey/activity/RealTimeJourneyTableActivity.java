@@ -172,7 +172,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
                     Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "leader Send successfully", Toast.LENGTH_SHORT).show();
                     List<Peer> peers = response.body();
-                    getIsLeader(peers);
+//                    getIsLeader(peers);
                 }
                 @Override
                 public void onFailure(Call<List<Peer>> call, Throwable t) {
@@ -206,7 +206,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
                 }
             });
         } catch (Exception e) {
-            System.out.println(e.toString());
+            e.printStackTrace();
             Toast.makeText(RealTimeJourneyTableActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
         Intent intent = new Intent(RealTimeJourneyTableActivity.this, FollowerPeerGroupActivity.class);
