@@ -1,5 +1,6 @@
 package com.journey.service.database;
 
+import com.journey.R;
 import com.journey.adapter.ReadUserInfoFile;
 import com.journey.entity.Dialogue;
 import com.journey.entity.User;
@@ -64,5 +65,22 @@ public class DialogueHelper {
                 dia = dialogue;
                 return;
             }
+    }
+
+
+    public static List<Integer> getHeadCupboard(){
+        List<Integer> headCupboard = new ArrayList<>();
+        headCupboard.add(R.drawable.h_0);
+        headCupboard.add(R.drawable.h_1);
+        headCupboard.add(R.drawable.h_2);
+        headCupboard.add(R.drawable.h_3);
+        headCupboard.add(R.drawable.h_4);
+        headCupboard.add(R.drawable.h_5);
+        headCupboard.add(R.drawable.h_6);
+        headCupboard.add(R.drawable.h_7);
+        headCupboard.add(R.drawable.h_8);
+        headCupboard.add(R.drawable.h_g);
+        headCupboard.add(R.drawable.h_nijita);
+        return headCupboard;
     }
 }
