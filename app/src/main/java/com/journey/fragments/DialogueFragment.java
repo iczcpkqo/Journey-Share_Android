@@ -110,6 +110,9 @@ public class DialogueFragment extends Fragment {
 //        Chating.add(Arrays.asList("mao@tcd.com", "liu@tcd.com"));
 //        Chating.go(JourneyActivity.this,Arrays.asList("mao@tcd.com", "liu@tcd.com", "yan@tcd.com", "iris@123.com"));
 
+//        Chating.addWithMe(Arrays.asList("liu@tcd.com", "yan@tcd.com"));
+//        Chating.addWithMe(Arrays.asList("liu@tcd.com", "mao@tcd.com"));
+
         return diaFrame;
     }
 
@@ -156,6 +159,8 @@ public class DialogueFragment extends Fragment {
                                                     player.setEmail(data.get("email").toString());
                                                     player.setUsername(data.get("username").toString());
                                                     player.setGender(data.get("gender").toString());
+                                                    Log.d(TAG, data.get("headImg").toString());
+                                                    player.setHeadImg(Integer.parseInt(data.get("headImg").toString()));
                                                     oneDialogue.addPlayer(player);
                                                     oneDialogue.setDialogueId(dialogueId);
                                                 }

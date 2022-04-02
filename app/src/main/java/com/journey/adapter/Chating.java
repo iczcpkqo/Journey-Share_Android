@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.collect.Lists;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +44,24 @@ public class Chating {
     @SuppressLint("StaticFieldLeak")
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "DialogueFragment";
+
+    public static void addWithMe(List<String> players) {
+        add(withMe(players));
+    }
+
+    public static void goWithMe(Context context, List<String> players) {
+        go(context, withMe(players));
+    }
+
+    public static List<String> withMe(List<String> players) {
+        User sender = DialogueHelper.getSender();
+        List<String> arr = new ArrayList<>(players);
+        arr.add(sender.getEmail());
+        HashSet<String> uni = new HashSet<>(arr);
+        if(2>uni.size())
+            return null;
+        return new ArrayList<>(uni);
+    }
 
     public static void go(Context context,List<String> players) {
         Collections.sort(players);

@@ -3,6 +3,7 @@ package com.journey.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import java.util.List;
 public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHolder> {
 
     private List<Dialogue> dialogueList;
+    private static final String TAG = "DialogueAdapter";
     Context context;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -51,8 +53,16 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
         }
 
         private void initHeadCupboard(){
-            headCupboard.add(R.drawable.u1);
-            headCupboard.add(R.drawable.u2);
+            headCupboard.add(R.drawable.h_0);
+            headCupboard.add(R.drawable.h_1);
+            headCupboard.add(R.drawable.h_2);
+            headCupboard.add(R.drawable.h_3);
+            headCupboard.add(R.drawable.h_4);
+            headCupboard.add(R.drawable.h_5);
+            headCupboard.add(R.drawable.h_6);
+            headCupboard.add(R.drawable.h_7);
+            headCupboard.add(R.drawable.h_8);
+            headCupboard.add(R.drawable.h_g);
         }
     }
 
@@ -84,7 +94,13 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
         holder.title.setText(dia.getTitle().replace(",", ", "));
 
         // 根据用户信息设置头像
-        holder.img.setImageResource(holder.headCupboard.get((int) (dialogueList.get(position).getSender().getGender().equals("Female")?0:1) ));
+//        holder.img.setImageResource(holder.headCupboard.get((int) (dialogueList.get(position).getSender().getGender().equals("Female")?0:1) ));
+        holder.img.setImageResource(holder.headCupboard.get(dia.getType().equals("single") ? (int)dia.getReceiver().get(0).getHeadImg():9));
+//        if(dia.getReceiver() != null) {
+//            Log.d(TAG, "The Recever ==> " +  dia.getReceiver().get(0).getHeadImg());
+//            Log.d(TAG, "The Recever ==> " +  dia.getReceiver().get(0).getEmail());
+//            Log.d(TAG, "The Recever ==> " +  dia.getReceiver().get(0).getUsername());
+//        }
     }
 
     @Override
