@@ -21,6 +21,7 @@ import com.journey.activity.JourneyActivity;
 import com.journey.entity.ChatDeliver;
 import com.journey.entity.Dialogue;
 import com.journey.entity.User;
+import com.journey.service.database.DialogueHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +42,7 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
         View theDialogue;
         ImageView img;
         TextView title;
-        List<Integer> headCupboard = new ArrayList<>();
+        List<Integer> headCupboard;
 
         public ViewHolder(View view){
             super(view);
@@ -53,17 +54,7 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
         }
 
         private void initHeadCupboard(){
-            headCupboard.add(R.drawable.h_0);
-            headCupboard.add(R.drawable.h_1);
-            headCupboard.add(R.drawable.h_2);
-            headCupboard.add(R.drawable.h_3);
-            headCupboard.add(R.drawable.h_4);
-            headCupboard.add(R.drawable.h_5);
-            headCupboard.add(R.drawable.h_6);
-            headCupboard.add(R.drawable.h_7);
-            headCupboard.add(R.drawable.h_8);
-            headCupboard.add(R.drawable.h_g);
-            headCupboard.add(R.drawable.h_nijita);
+            headCupboard = DialogueHelper.getHeadCupboard();
         }
     }
 

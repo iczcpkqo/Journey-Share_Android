@@ -88,8 +88,6 @@ public class Chat extends AppCompatActivity {
             dialogue.setDialogueId(deliver.getDialogueId());
             dialogue.setType(deliver.getType());
 
-
-
         // 设置
         setChatBar(dialogue.getTitle());
         msgRecycler.setLayoutManager(layoutManager);
