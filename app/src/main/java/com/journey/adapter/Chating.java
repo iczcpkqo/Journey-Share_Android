@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SymbolTable;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -46,10 +47,18 @@ public class Chating {
     private static final String TAG = "DialogueFragment";
 
     public static void addWithMe(List<String> players) {
+        if(0==players.size())
+            return;
+        if(2>players.size() && DialogueHelper.getSender().getEmail().equals(players.get(0)))
+            return;
         add(withMe(players));
     }
 
     public static void goWithMe(Context context, List<String> players) {
+        if(0==players.size())
+            return;
+        if(2>players.size() && DialogueHelper.getSender().getEmail().equals(players.get(0)))
+            return;
         go(context, withMe(players));
     }
 
