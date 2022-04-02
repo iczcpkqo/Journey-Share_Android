@@ -17,4 +17,6 @@
     <!--real time journey table-->
     <item name="create_journey_btn" type="id"/>
     <item name="join_journey_btn" type="id"/>
+    <item name="delete_btn" type="id"/>
+    <item name="no_peer_show" type="id"/>
 </resources>

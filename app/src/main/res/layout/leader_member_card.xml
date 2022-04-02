@@ -82,7 +82,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/title_tv" />
 
                     <Button
-                        android:id="@+id/delete"
+                        android:id="@+id/delete_btn"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="70dp"

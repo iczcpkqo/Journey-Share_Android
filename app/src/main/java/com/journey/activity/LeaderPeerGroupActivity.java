@@ -71,16 +71,15 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     CountDownTimer countDownTimer;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
-    LoadingDialog loadingDialog = new LoadingDialog(this,  10000, 2000, "");
+    LoadingDialog loadingDialog = new LoadingDialog(this,  8000, 2000, "");
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.137:8080/")
+            .baseUrl("http://10.6.40.176:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         Intent inte = new Intent();
         LeaderPeerGroupActivity.this.setResult(RESULT_OK, inte);
         finish();
@@ -94,11 +93,9 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
         confirm = findViewById(R.id.confirm_btn);
         recyclerView = findViewById(R.id.leader_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// create recyclerview in linear layout
-
-
         try {
             loadingDialog.startLoadingDialog();
-            sendMultiRequests();
+            sendMultiRequests(8000, 2000);
             cancelJourney();
 
         } catch (Exception e) {
@@ -107,8 +104,8 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
 
     }
 
-    private void sendMultiRequests() {
-        new CountDownTimer(20000, 2000) {
+    private void sendMultiRequests(Integer totalTime, Integer interval) {
+        new CountDownTimer(totalTime, interval) {
             @Override
             public void onTick(long millisUntilFinished) {
                 createPost(retrofit);
@@ -120,29 +117,6 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
         }.start();
     }
 
-    private void createPostToPeerGroup(Retrofit retrofit) {
-        Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
-        final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
-        try {
-            reqResApi[0].createUser(peer).enqueue(new Callback<List<Peer>>() {
-                @Override
-                public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
-                    Toast.makeText(LeaderPeerGroupActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
-                    List<Peer> peers = response.body();
-                    confirmToJoin(peers);
-                }
-
-                @Override
-                public void onFailure(Call<List<Peer>> call, Throwable t) {
-                    System.out.println("-------------------on-failure--------------" + t.toString());
-                    Toast.makeText(LeaderPeerGroupActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            Toast.makeText(LeaderPeerGroupActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }
     private Boolean confirmToJoin(List<Peer> peerList){
         return peerList.get(0).getLeader();
     }
@@ -157,10 +131,10 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
                     Toast.makeText(LeaderPeerGroupActivity.this, response.code() + " Response", Toast.LENGTH_SHORT).show();
                     List<Peer> peerList = response.body();
+//                    String orderID = saveInfoToFirebase(peerList);
+//                    udpateOrderId(peerList,orderID);
                     LeaderPeerAdapter leaderPeerAdapter = new LeaderPeerAdapter(LeaderPeerGroupActivity.this, peerList);
                     recyclerView.setAdapter(leaderPeerAdapter);
-                    String orderID = saveInfoToFirebase(peerList);
-                    udpateOrderId(peerList,orderID);
                     sendPeersToNavigation(peerList);
 
                 }
@@ -188,26 +162,31 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     private void sendPeersToNavigation(List<Peer> peerList) {
         confirm.setOnClickListener(view -> {
             List<Peer> peers = peerList;
-            for (Peer peer : peerList) {
-                if(DialogueHelper.getSender().getEmail().equals(peer.getEmail())){
-                    Intent intent = new Intent(LeaderPeerGroupActivity.this, NavigationActivity.class);
-                    intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(peerList));
-                    intent.putExtra(getString(R.string.CURRENT_PEER_EMAIL), peer.getEmail());
-                    //startActivity(intent);
-                    startActivityForResult(intent,1);
-                }
-            }
-            try {
-                savePeerListToFile(peerList);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //get data
-//            List<Peer> peers = (List<Peer>) getIntent().getSerializableExtra(PeerGroupActivity.MATCHED_PEERS);
-//            Collections.shuffle(peers);
-//            Peer peer1 = peers.get(0);
-            //save to the file
+            int peerIndex = 0;
+            if(!peers.isEmpty()){
+                //check which peer in peer list is current user
+                for (Peer peer : peerList) {
+                    peerIndex++;
+                    if(DialogueHelper.getSender().getEmail().equals(peer.getEmail())){
+                        //do not display the current user
+//                        peerList.remove(peerIndex-1);
 
+                        //send peer to navigation page
+                        Intent intent = new Intent(LeaderPeerGroupActivity.this, NavigationActivity.class);
+                        intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(peerList));
+                        intent.putExtra(getString(R.string.CURRENT_PEER_EMAIL), peer.getEmail());
+                        //startActivity(intent);
+                        startActivityForResult(intent,1);
+                    }
+                }
+            }else {
+                Toast.makeText(LeaderPeerGroupActivity.this, "There is no peer", Toast.LENGTH_SHORT).show();
+            }
+//            try {
+//                savePeerListToFile(peerList);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         });
     }
 
@@ -248,28 +227,28 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("NewApi")
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public String saveInfoToFirebase(List<Peer> peerList) {
-        //to do
-        Map<String, Object> record = new HashMap<>();
-        Peer peer = peerList.stream().filter(o -> o.getLeader() == true).findAny().orElse(null);
-        List<String> collect = peerList.stream().map(Peer::getEmail).collect(Collectors.toList());
-        record.put("BelongTo", peer.getEmail());
-        record.put("date", new Date());
-        record.put("companion", collect);
-
-        String uuid = UUID.randomUUID().toString();
-
-        db.collection("record").document(uuid).set(record);
-        for (Peer peer1 : peerList) {
-            Map<String, Object> userRecord = new HashMap<>();
-            userRecord.put("record_id", uuid);
-            userRecord.put("email", peer1.getEmail());
-            String uuid2 = UUID.randomUUID().toString();
-            db.collection("user_record").document(uuid2).set(record);
-        }
-        return uuid;
-    }
+//    @SuppressLint("NewApi")
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public String saveInfoToFirebase(List<Peer> peerList) {
+//        //to do
+//        Map<String, Object> record = new HashMap<>();
+//        Peer peer = peerList.stream().filter(o -> o.getLeader() == true).findAny().orElse(null);
+//        List<String> collect = peerList.stream().map(Peer::getEmail).collect(Collectors.toList());
+//        record.put("BelongTo", peer.getEmail());
+//        record.put("date", new Date());
+//        record.put("companion", collect);
+//
+//        String uuid = UUID.randomUUID().toString();
+//
+//        db.collection("record").document(uuid).set(record);
+//        for (Peer peer1 : peerList) {
+//            Map<String, Object> userRecord = new HashMap<>();
+//            userRecord.put("record_id", uuid);
+//            userRecord.put("email", peer1.getEmail());
+//            String uuid2 = UUID.randomUUID().toString();
+//            db.collection("user_record").document(uuid2).set(record);
+//        }
+//        return uuid;
+//    }
 
 }

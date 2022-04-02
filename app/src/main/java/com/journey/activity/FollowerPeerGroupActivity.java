@@ -48,7 +48,7 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// create recyclerview in linear layout
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.137:8080/")
+                .baseUrl("http://10.6.40.176:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

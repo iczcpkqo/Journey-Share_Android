@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <Button
-        android:id="@+id/find_leader_btn"
+    <TextView
+        android:id="@+id/no_peer_show"
+        android:layout_gravity="center"
         android:layout_width="400dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="20dp"
-        android:text="Find Leader"
-        android:textSize="20dp" />
+        android:text="No peers, Go alone!"
+        android:textSize="25dp"
+        android:textColor="@color/icon_color"
+        android:textAlignment="center"/>
 </LinearLayout>
