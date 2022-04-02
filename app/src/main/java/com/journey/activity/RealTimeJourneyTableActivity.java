@@ -170,10 +170,9 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             reqResApi[0].matchLeader(peer).enqueue(new Callback<List<Peer>>() {
                 @Override
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
-                    Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "leader Send successfully", Toast.LENGTH_SHORT).show();
                     List<Peer> peers = response.body();
                     getIsLeader(peers);
-                    realTimeToGroup(peers,peer);
                 }
                 @Override
                 public void onFailure(Call<List<Peer>> call, Throwable t) {
@@ -185,6 +184,9 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             System.out.println(e.toString());
             Toast.makeText(RealTimeJourneyTableActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
+        Intent intent = new Intent(RealTimeJourneyTableActivity.this, LeaderPeerGroupActivity.class);
+        intent.putExtra(PEER_KEY, peer);
+        startActivity(intent);
     }
 
     private void joinPostToPeerGroup(Retrofit retrofit, Peer peer) {
@@ -195,8 +197,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
                     Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
                     List<Peer> peers = response.body();
-                    getIsLeader(peers);
-                    realTimeToGroup(peers,peer);
+//                    getIsLeader(peers);
                 }
                 @Override
                 public void onFailure(Call<List<Peer>> call, Throwable t) {
@@ -208,6 +209,9 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             System.out.println(e.toString());
             Toast.makeText(RealTimeJourneyTableActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
+        Intent intent = new Intent(RealTimeJourneyTableActivity.this, FollowerPeerGroupActivity.class);
+        intent.putExtra(PEER_KEY, peer);
+        startActivity(intent);
     }
     private Boolean getIsLeader(List<Peer> peerList){
         for (Peer peer : peerList) {
@@ -216,17 +220,6 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
-    private void realTimeToGroup(List<Peer> peerList,Peer peer){
-        Intent intent;
-        if (getIsLeader(peerList)==true){
-            intent = new Intent(RealTimeJourneyTableActivity.this, LeaderPeerGroupActivity.class);
-        }else {
-            intent = new Intent(RealTimeJourneyTableActivity.this, FollowerPeerGroupActivity.class);
-        }
-        intent.putExtra(PEER_KEY, peer);
-        startActivityForResult(intent,1);
-        //startActivity(intent);
     }
 
 }
