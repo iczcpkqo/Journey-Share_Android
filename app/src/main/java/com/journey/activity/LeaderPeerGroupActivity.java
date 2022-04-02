@@ -73,7 +73,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
     LoadingDialog loadingDialog = new LoadingDialog(this,  8000, 2000, "");
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.6.40.176:8080/")
+            .baseUrl("http://192.168.0.81:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -125,14 +125,12 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
         Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
         ReqResApi reqResApi = retrofit.create(ReqResApi.class);
         try {
-            reqResApi.matchUser(peer).enqueue(new Callback<List<Peer>>() {
+            reqResApi.matchLeader(peer).enqueue(new Callback<List<Peer>>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
                     Toast.makeText(LeaderPeerGroupActivity.this, response.code() + " Response", Toast.LENGTH_SHORT).show();
                     List<Peer> peerList = response.body();
-//                    String orderID = saveInfoToFirebase(peerList);
-//                    udpateOrderId(peerList,orderID);
                     LeaderPeerAdapter leaderPeerAdapter = new LeaderPeerAdapter(LeaderPeerGroupActivity.this, peerList);
                     recyclerView.setAdapter(leaderPeerAdapter);
                     sendPeersToNavigation(peerList);
@@ -149,13 +147,6 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             System.out.println(e.toString());
             Toast.makeText(LeaderPeerGroupActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void udpateOrderId(List<Peer> peerList, String orderID) {
-        for (Peer peer : peerList) {
-            peer.setOrderId(orderID);
-        }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -182,11 +173,6 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             }else {
                 Toast.makeText(LeaderPeerGroupActivity.this, "There is no peer", Toast.LENGTH_SHORT).show();
             }
-//            try {
-//                savePeerListToFile(peerList);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
         });
     }
 
