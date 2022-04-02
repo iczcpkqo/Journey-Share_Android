@@ -106,6 +106,9 @@ public class DialogueFragment extends Fragment {
 //        Chating.go(getActivity(),Arrays.asList("yan@tcd.com", "mao@tcd.com"));
 //        Chating.add(Arrays.asList("mao@tcd.com", "liu@tcd.com", "yan@tcd.com", "iris@123.com"));
 
+        // TAG: TEST DATA
+//        Chating.add(Arrays.asList("mao@tcd.com", "liu@tcd.com"));
+//        Chating.go(JourneyActivity.this,Arrays.asList("mao@tcd.com", "liu@tcd.com", "yan@tcd.com", "iris@123.com"));
 
         return diaFrame;
     }
@@ -137,14 +140,14 @@ public class DialogueFragment extends Fragment {
                     for (QueryDocumentSnapshot document : value) {
                         Map<String, Object> data = document.getData();
                         String dialogueId = document.getId();
+                        Dialogue oneDialogue = new Dialogue();
+                        oneDialogue.setDialogueId(dialogueId);
+                        dialogueList.add(oneDialogue);
                         db.collection("dialogue").document(dialogueId).collection("players")
                                 .get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        try {
-                                            Dialogue oneDialogue = new Dialogue();
-                                            oneDialogue.setDialogueId(dialogueId);
                                             if (task.isSuccessful()) {
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     Map<String, Object> data = document.getData();
@@ -157,7 +160,9 @@ public class DialogueFragment extends Fragment {
                                                     oneDialogue.setDialogueId(dialogueId);
                                                 }
 //                                                dialogueList.add(sortDialogue.get(oneDialogue.getDialogueId()),oneDialogue);
-                                                dialogueList.add(oneDialogue);
+//                                                dialogueList.add(oneDialogue);
+
+                                                DialogueHelper.putIntoRightDialogue(oneDialogue, dialogueList);
                                                 dialogueRecycler.setAdapter(adapter);
 
 
@@ -165,9 +170,6 @@ public class DialogueFragment extends Fragment {
 //                                                Log.d(TAG, "Error getting documents: ", task.getException());
                                             }
 
-                                        } catch (ParseException e) {
-                                            e.printStackTrace();
-                                        }
                                     }
                                 });
 

@@ -1,6 +1,7 @@
 package com.journey.service.database;
 
 import com.journey.adapter.ReadUserInfoFile;
+import com.journey.entity.Dialogue;
 import com.journey.entity.User;
 
 import java.util.ArrayList;
@@ -57,4 +58,11 @@ public class DialogueHelper {
         return s.toString();
     }
 
+    public static void putIntoRightDialogue(Dialogue dialogue, List<Dialogue> dialogueList){
+        for(Dialogue dia : dialogueList)
+            if (dialogue.getDialogueId() == dia.getDialogueId()) {
+                dia = dialogue;
+                return;
+            }
+    }
 }

@@ -77,15 +77,12 @@ public class Chating {
                                                         data.put(document.getId(), item);
                                                         dialogTitle.append(item.get("email").equals(sender.getEmail()) ? "" : (dialogTitle.toString().equals("") ? item.get("username") : "," + item.get("username")));
                                                     }
-                                                    try {
                                                         Dialogue dialogue = new Dialogue();
                                                         dialogue.setTitle(dialogTitle.toString());
                                                         dialogue.setType(newDialogue.get("type").toString());
                                                         dialogue.setDialogueId(dialogueId);
                                                         go(context, dialogue);
-                                                    } catch (ParseException e) {
-                                                        e.printStackTrace();
-                                                    }
+
                                                 } else {
                                                     Log.d(TAG, "Error getting documents: ", task.getException());
                                                 }

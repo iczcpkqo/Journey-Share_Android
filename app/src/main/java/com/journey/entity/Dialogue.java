@@ -29,17 +29,17 @@ public class Dialogue {
     private StringBuffer type = new StringBuffer();
     private StringBuffer orderId = new StringBuffer();
 
-    public Dialogue() throws ParseException {
+    public Dialogue() {
         this.sender = DialogueHelper.getSender();
         this.playerList.add(this.sender);
         this.playerString = new StringBuffer(this.sender.getUsername());
     }
 
-    public Dialogue(User sender) throws ParseException {
+    public Dialogue(User sender){
         this.sender = sender;
     }
 
-    public Dialogue(User sender, User receiver) throws ParseException {
+    public Dialogue(User sender, User receiver){
         setSender(sender);
         addReceiver(Collections.singletonList(receiver));
         this.dialogueTitle.append(this.receiver.get(0).getUsername());
