@@ -1,11 +1,13 @@
 package com.journey.service.database;
 
 import com.journey.adapter.ReadUserInfoFile;
+import com.journey.entity.Dialogue;
 import com.journey.entity.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,10 +21,17 @@ public class DialogueHelper {
     // Done: 获取我是谁
     public static User getSender(){
         Map<String,Object> userInfo = new ReadUserInfoFile().readUserFile();
-        System.out.println(userInfo);
         User sender = new User(userInfo.get("email").toString(),
                 userInfo.get("username").toString(),
                 userInfo.get("gender").toString());
+        sender.setAge((Integer)userInfo.get("age"));
+        sender.setBirthDate(userInfo.get("birthDate").toString());
+        sender.setEmail(userInfo.get("email").toString());
+        sender.setGender(userInfo.get("gender").toString());
+        sender.setMark(Double.valueOf(userInfo.get("mark").toString()));
+        sender.setOrder(Integer.valueOf(userInfo.get("order").toString()));
+        sender.setPhone(userInfo.get("phone").toString());
+
         return sender;
     }
 
@@ -49,4 +58,11 @@ public class DialogueHelper {
         return s.toString();
     }
 
+    public static void putIntoRightDialogue(Dialogue dialogue, List<Dialogue> dialogueList){
+        for(Dialogue dia : dialogueList)
+            if (dialogue.getDialogueId() == dia.getDialogueId()) {
+                dia = dialogue;
+                return;
+            }
+    }
 }

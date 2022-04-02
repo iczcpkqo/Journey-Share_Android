@@ -23,7 +23,7 @@
                 android:layout_height="80dp"
                 android:layout_marginTop="50dp"
                 android:id="@+id/imageIV"
-                android:src="@drawable/u1"/>
+                android:src="@drawable/h_1"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

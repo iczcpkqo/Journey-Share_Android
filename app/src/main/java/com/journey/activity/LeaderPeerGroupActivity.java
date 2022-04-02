@@ -1,5 +1,6 @@
 package com.journey.activity;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,17 +12,21 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Parcelable;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.JSONSerializer;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.R;
 import com.journey.adapter.LeaderPeerAdapter;
 import com.journey.adapter.ReqResApi;
+import com.journey.map.network.FirebaseOperation;
 import com.journey.model.Peer;
+import com.journey.service.database.DialogueHelper;
 
 import org.json.JSONObject;
 
@@ -66,17 +71,25 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     CountDownTimer countDownTimer;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
-    LoadingDialog loadingDialog = new LoadingDialog(this,  20000, 2000, "");
+    LoadingDialog loadingDialog = new LoadingDialog(this,  10000, 2000, "");
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Intent inte = new Intent();
+        LeaderPeerGroupActivity.this.setResult(RESULT_OK, inte);
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_peer_group);
-
         cancel = findViewById(R.id.cancel_btn);
         confirm = findViewById(R.id.confirm_btn);
         recyclerView = findViewById(R.id.leader_recyclerview);
@@ -100,7 +113,6 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {
                 createPost(retrofit);
             }
-
             @Override
             public void onFinish() {
 
@@ -176,16 +188,15 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     private void sendPeersToNavigation(List<Peer> peerList) {
         confirm.setOnClickListener(view -> {
             List<Peer> peers = peerList;
-//            createPostToPeerGroup(retrofit);
-//            if(name==l)
-//                startActivity();
-//            else
-//                loadd(false)
-
-            Intent intent = new Intent(LeaderPeerGroupActivity.this, NavigationActivity.class);
-//            intent.putExtra(MATCHED_PEERS, peers.get(0));
-//            intent.putExtra(MATCHED_PEERS, peers.get(1));
-//            startActivity(intent);
+            for (Peer peer : peerList) {
+                if(DialogueHelper.getSender().getEmail().equals(peer.getEmail())){
+                    Intent intent = new Intent(LeaderPeerGroupActivity.this, NavigationActivity.class);
+                    intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(peerList));
+                    intent.putExtra(getString(R.string.CURRENT_PEER_EMAIL), peer.getEmail());
+                    //startActivity(intent);
+                    startActivityForResult(intent,1);
+                }
+            }
             try {
                 savePeerListToFile(peerList);
             } catch (IOException e) {

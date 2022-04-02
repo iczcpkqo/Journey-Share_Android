@@ -10,6 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         mapbox:mapbox_cameraZoom="12"/>
-
-
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <Button
+        android:id="@+id/select_navigation_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="8dp"
+        android:background="@color/colorPrimary"
+        android:text="Navigate to Destination"
+        android:textColor="@android:color/white"/>
+    </TableLayout>
 </FrameLayout>

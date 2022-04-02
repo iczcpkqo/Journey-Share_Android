@@ -28,7 +28,7 @@ public class ReadUserInfoFile {
                     jsonMsg += str;
                     str = br.readLine();
                 }
-                System.out.println(jsonMsg);
+//                System.out.println(jsonMsg);
                 map = JSON.parseObject(jsonMsg, new TypeReference<Map<String, Object>>(){});
             } catch (Exception e) {
                 e.printStackTrace();

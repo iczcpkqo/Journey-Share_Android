@@ -33,6 +33,7 @@ public class UserDb implements Db<User> {
 
     @Override
     public String save(User user) {
+        user.setHeadImg((int) Math.floor(Math.random()*9));
         return firebaseUtil.insert(collectionName, user);
     }
 

@@ -33,6 +33,8 @@ public class User implements Comparable<User>{
 
     private Integer age;
 
+    private int headImg;
+
     public User(String username, String password, Date createDate, String birthDate, String gender, String phone, String email, Double mark, Integer order, Integer age) {
         this.username = username;
         this.password = password;
@@ -108,6 +110,10 @@ public class User implements Comparable<User>{
     public Integer getAge() { return age; }
 
     public void setAge(Integer age) { this.age = age; }
+
+    public int getHeadImg() { return headImg; }
+
+    public void setHeadImg(int headImg) { this.headImg = headImg; }
 
     @Override
     public int compareTo(User user) { return this.email.compareTo(user.getEmail()); }

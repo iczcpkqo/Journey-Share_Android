@@ -83,14 +83,11 @@ public class Chat extends AppCompatActivity {
         Intent intent = getIntent();
         ChatDeliver deliver =(ChatDeliver) intent.getSerializableExtra("deliver");
 
-        try {
             dialogue = new Dialogue();
             dialogue.setTitle(deliver.getDialogueTitle());
             dialogue.setDialogueId(deliver.getDialogueId());
             dialogue.setType(deliver.getType());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
 
 
         // 设置

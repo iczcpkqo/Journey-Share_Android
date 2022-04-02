@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -20,6 +22,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.journey.R;
+import com.journey.adapter.Chating;
 import com.journey.map.ParseRoutes;
 import com.journey.map.network.FirebaseOperation;
 import com.journey.model.Peer;
@@ -77,7 +80,7 @@ public class NavigationActivity extends AppCompatActivity implements
     boolean routeTag = false;
     DirectionsRoute currentRoute_1;
     DirectionsRoute currentRoute_2;
-
+    Button navigationButton;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -88,7 +91,7 @@ public class NavigationActivity extends AppCompatActivity implements
             boolean network = data.getExtras().getBoolean("network");
             boolean isSingle = data.getExtras().getBoolean("IS_SINGLE");
 
-            if( network == true && isSingle == true)
+            if( network == true && isSingle == true && peersList.size() != 1)
             {
 
 
@@ -98,11 +101,19 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else if(network == false && isSingle == false)
             {
+
                 toast("Journey record is saved in the cache !");
             }
             else
             {
+                Chating.add( getUserNames(peersList));
                 toast("You have arrived at your destination.");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                finish();
             }
 
         }
@@ -125,8 +136,6 @@ public class NavigationActivity extends AppCompatActivity implements
             {
                 //currentFirebase.startListnere("MAP","UID","ROUTE");
                 toast((String) msg.obj);
-                FirebaseOperation fir = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
-                fir.startListnere("map",currentPeer.getUuid(),"START");
             }
             else if(msg.what == FirebaseOperation.GET_SINGLE_ROUTE)
             {
@@ -142,7 +151,6 @@ public class NavigationActivity extends AppCompatActivity implements
             else if(msg.what == FirebaseOperation.ARRIVED_LEADER)
             {
 
-
             }
             else if(msg.what == FirebaseOperation.FILE_NOT_FOUND_RECORD)
             {
@@ -156,9 +164,25 @@ public class NavigationActivity extends AppCompatActivity implements
             {
                 currentRoute_2 = (DirectionsRoute) msg.obj;
             }
+            else if(msg.what == FirebaseOperation.FIELD_NOT_FOUND)
+            {
+                toast((String) msg.obj);
+                FirebaseOperation fir = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
+                fir.startListnere("map",currentPeer.getUuid(),"START");
+            }
         }
     };
 
+    private List<String> getUserNames(List<Peer> peersList)
+    {
+        List<String> names = new ArrayList<String>();
+        Iterator<Peer> iter = peersList.iterator();
+        while (iter.hasNext()) {
+            Peer peer = iter.next();
+            names.add(peer.getEmail());
+        }
+        return names;
+    }
     private void setToNavigationRoute(Object data,boolean isSingle)
     {
 
@@ -221,7 +245,7 @@ public class NavigationActivity extends AppCompatActivity implements
         //10.0.2.16
         String serverIP = getLocalIpAddress();
 
-        Peer user1 = new Peer("user_1@user_1.com",
+        Peer user1 = new Peer("liu@tcd.com",
                 "Female",
                 12,
                 4.5,
@@ -240,7 +264,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 serverIP,
-                "3344",null,null);
+                "3344",null,null,null,null,null);
 
         Peer user2 = new Peer("user_2@user_2.com",
                 "Female",
@@ -261,8 +285,8 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 "127.0.0.1",
-                "3030",null,null);
-        Peer user3 = new Peer("user_3@user_3.com",
+                "3030",null,null, null, null, null);
+        Peer user3 = new Peer("liu@tcd.com",
                 "Female",
                 12,
                 4.5,
@@ -281,11 +305,34 @@ public class NavigationActivity extends AppCompatActivity implements
                 true,
                 null,
                 "127.0.0.1",
-                "3030",null,null);
+                "3030",null,null,null,null,null);
         peers.add(user1);
-        peers.add(user2);
+        //peers.add(user2);
         peers.add(user3);
         return peers;
+    }
+    private boolean isLeader(List<Peer>peers,Peer peer)
+    {
+        boolean isLeader = false;
+
+        Iterator<Peer> iter = peers.iterator();
+        while (iter.hasNext())
+        {
+            Peer iterPeer = iter.next();
+            if(iterPeer.getLeader() && peer.getEmail().equals(iterPeer.getEmail()))
+            {
+                isLeader = true;
+                break;
+            }
+            else
+            {
+                isLeader = false;
+                break;
+            }
+
+        }
+
+        return isLeader;
     }
 
 
@@ -304,23 +351,46 @@ public class NavigationActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.navigationView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        navigationButton = findViewById(R.id.select_navigation_button);
+        navigationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                setToNavigationRoute(currentRoute_2,false);
+            }
+        });
 
-        peersList = testPeerList();
-        currentUserID = "user_1@user_1.com";
+        peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
+        currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
+
+        //peersList = testPeerList();
+        //currentUserID = "liu@tcd.com";
+        //FirebaseOperation.fuzzyQueries("users","email",currentUserID,mHandler);
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
-
+        if(isLeader(peersList,currentPeer))
+        {
+            navigationButton.setVisibility(View.INVISIBLE);
+        }
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         setLocationUpdata(10000,5000);
         setUpdateCallback();
 
     }
 
-    private void getSingleRoute(Peer peer,Peer LeaderPeer)
+    private void getSingleRoute(Peer peer,Peer LeaderPeer,boolean isLeader)
     {
-        Point destinationPoint = Point.fromLngLat(LeaderPeer.getLatitude(),LeaderPeer.getLongitude());
-        Point originPoint = Point.fromLngLat(peer.getLatitude(),peer.getLongitude());
+        Point destinationPoint;
+        if(!isLeader)
+        {
+            destinationPoint = Point.fromLngLat(LeaderPeer.getLongitude(),LeaderPeer.getLatitude());
+        }
+        else
+        {
+            destinationPoint = Point.fromLngLat(LeaderPeer.getdLongtitude(),LeaderPeer.getdLatitude());
+
+        }
+        Point originPoint = Point.fromLngLat(peer.getLongitude(),peer.getLatitude());
         ParseRoutes route = new ParseRoutes(peer,
                 mHandler,
                 getString(R.string.access_token),
@@ -347,8 +417,8 @@ public class NavigationActivity extends AppCompatActivity implements
             //change furthest
             if(peer.getLeader())
             {
-                originPoint = Point.fromLngLat( peer.getLatitude(),peer.getLongitude());
-                destinationPoint = Point.fromLngLat(peer.getdLatitude(),peer.getdLongtitude());
+                originPoint = Point.fromLngLat(peer.getLongitude(), peer.getLatitude());
+                destinationPoint = Point.fromLngLat(peer.getdLongtitude(),peer.getdLatitude());
                 destinationName = peer.getEmail();
                 continue;
             }
@@ -377,7 +447,12 @@ public class NavigationActivity extends AppCompatActivity implements
     {
         if(currentPeer.getLeader())
         {
-            getMultipleRoute(listPeer,true);
+            if(listPeer.size() == 1)
+            {
+                getSingleRoute(currentPeer, currentPeer,true);
+            }
+            else
+                getMultipleRoute(listPeer,true);
         }
         else
         {
@@ -389,7 +464,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 {
                     //to leader
                     LeaderPeer = peer;
-                    getSingleRoute(currentPeer,LeaderPeer);
+                    getSingleRoute(currentPeer,LeaderPeer,false);
                     continue;
                 }
                 if(peer.getEmail().equals(currentPeer.getEmail()))
@@ -425,12 +500,7 @@ public class NavigationActivity extends AppCompatActivity implements
         while (iter.hasNext())
         {
             Peer temporaryPeer = iter.next();
-            if(temporaryPeer.getLeader())
-            {
-                serverIP = temporaryPeer.getIp();
-                serverPort = Integer.parseInt(temporaryPeer.getPort());
-            }
-            if(temporaryPeer.getEmail() == mCurretnID)
+            if(temporaryPeer.getEmail().equals(mCurretnID))
             {
                 currentPeer = temporaryPeer;
             }
@@ -643,6 +713,9 @@ public class NavigationActivity extends AppCompatActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Intent inte = new Intent();
+        NavigationActivity.this.setResult(RESULT_OK, inte);
+        finish();
         mapView.onDestroy();
     }
 

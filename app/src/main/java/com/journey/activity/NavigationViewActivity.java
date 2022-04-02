@@ -56,6 +56,7 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
 
             if(message.what == FirebaseOperation.FILE_NOT_FOUND_RECORD)
             {
+
                 isNetwork = false;
             }
 
@@ -136,9 +137,10 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                                     @Override
                                     public void run() {
                                         try {
-                                            Thread.sleep(10000);
+                                            Message message = new Message();
                                             if(!isSingle)
                                             {
+                                                Thread.sleep(5000);
                                                 String allName =  getAllName(peers);
                                                 FirebaseOperation operation = new FirebaseOperation(getString(R.string.firebase_record),currentPeer.getUuid(),mHandler);
                                                 Map<String,Object> data = new HashMap<String,Object>();
@@ -151,9 +153,10 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                                                 operation.saveDocData(data);
                                                 return;
                                             }
-                                            Message message = new Message();
-                                            message.what = FirebaseOperation.FILE_EXISTS_RECORD;
                                             message.obj = "You have arrived at a leader position!";
+                                            Thread.sleep(10000);
+                                            message.what = FirebaseOperation.FILE_EXISTS_RECORD;
+
                                             mHandler.sendMessage(message);
 
                                         } catch (InterruptedException e) {

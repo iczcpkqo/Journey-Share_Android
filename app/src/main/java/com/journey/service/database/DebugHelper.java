@@ -22,28 +22,10 @@ public class DebugHelper {
 
     private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "DebugHelper";
-    private static ArrayList<String> emailList = Lists.newArrayList( "123456@qq.com",
-            "1234@qq.com",
-            "123@11.com",
-            "12@234.com",
-            "222@222.com",
-            "Lucy@123.com",
-            "Lucy@qq.com",
-            "Rachel@12.com",
-            "Tommama@123.com",
-            "iris@123.com",
-            "liu@qq.com",
-            "liuguowen@qq.com",
-            "pengb@tcd.ie",
-            "race@123.com",
-            "radio@123.com",
-            "sfs34@23.com",
-            "tomous2@123.com",
-            "tomous@123.com",
-            "ya@qq.com",
-            "yan123@qq.com",
-            "zizz@qq.com");
-
+    private static ArrayList<String> emailList = Lists.newArrayList("iris@123.com",
+            "liu@tcd.com",
+            "mao@tcd.com",
+            "yan@tcd.com");
     /**
      * 打印所有用户的邮箱
      */
@@ -95,5 +77,4 @@ public class DebugHelper {
             }
         }).start();
     }
-
 }

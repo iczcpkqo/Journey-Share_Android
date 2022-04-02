@@ -75,6 +75,7 @@ public class ParseRoutes {
         waypoints = UserWaypoints;
         navigationMapRoute = mapRoute;
         wayPointsName = mWayPointsName;
+
         getMultipleWaypointRoute();
     }
 
@@ -147,11 +148,16 @@ public class ParseRoutes {
             .origin(origin)
             .destination(destination)
             .profile(DirectionsCriteria.PROFILE_DRIVING);
+        if(waypoints.size() != 0 )
+        {
+            for (Point waypoint : waypoints) {
+                builder.addWaypoint(waypoint);
+            }
 
-        for (Point waypoint : waypoints) {
-            builder.addWaypoint(waypoint);
+
         }
         builder.addWaypointNames(wayPointsName);
+
 
         builder.build().getRoute(new Callback<DirectionsResponse>() {
             @Override
