@@ -131,7 +131,11 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                         RouteLeg lg = routeProgress.currentLeg();
                         if(instruction.contains(currentPeer.getEmail()))
                         {
-                            if(instruction.contains(getString(R.string.arrived)) || instruction.contains(getString(R.string.left)) || instruction.contains(getString(R.string.left)))
+                            if(instruction.contains("will") || instruction.contains("Will") )
+                            {
+                                return;
+                            }
+                            if(instruction.contains(getString(R.string.arrived)) || instruction.contains(getString(R.string.left)) || instruction.contains(getString(R.string.right)))
                             {
                                 new Thread(new Runnable() {
                                     @Override
