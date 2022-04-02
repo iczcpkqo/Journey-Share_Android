@@ -106,7 +106,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else
             {
-                Chating.add( getUserNames(peersList));
+                Chating.addWithMe(getUserNames(peersList));
                 toast("You have arrived at your destination.");
                 try {
                     Thread.sleep(3000);
