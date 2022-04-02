@@ -161,36 +161,6 @@ public class ConditionActivity extends AppCompatActivity {
         });
     }
 
-    private void leaderSelection() {
-        String email = DialogueHelper.getSender().getEmail();
-        String userGender = DialogueHelper.getSender().getGender();
-        Double mark = DialogueHelper.getSender().getMark();
-        Peer peer = new Peer(email, prefer_gender, 20, mark,
-                Double.parseDouble(origin_lon), Double.parseDouble(origin_lat),
-                Double.parseDouble(end_lon), Double.parseDouble(end_lat),
-                0L,0L, 3,"12334",3, null,
-                null,null, null,null,null,
-                startAddress,destination,null, null, null,null);
-        final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
-        try {
-            reqResApi[0].createUser(peer).enqueue(new Callback<List<Peer>>() {
-                @Override
-                public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
-                    Toast.makeText(ConditionActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
-                    List<Peer> peers = response.body();
-                }
-                @Override
-                public void onFailure(Call<List<Peer>> call, Throwable t) {
-                    System.out.println("-------------------on-failure--------------"+ t.toString());
-                    Toast.makeText(ConditionActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            Toast.makeText(ConditionActivity.this, e.toString(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
     /**
      *@className: TEST
      *@desc:
