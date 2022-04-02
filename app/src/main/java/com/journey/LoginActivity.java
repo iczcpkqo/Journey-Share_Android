@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // [END declare_auth]
 
     public void init() {
-        login = (Button) findViewById(R.id.login);
         register = (Button) findViewById(R.id.register);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
@@ -60,7 +59,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
         init();
         login_in.setOnClickListener(this);
-        login.setOnClickListener(this);
         register.setOnClickListener(this);
     }
 
@@ -86,9 +84,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     signIn(txt_email,txt_password);
                 }
                 break;
-//            case R.id.login:
-//                Intent intent_login = new Intent(this, LoginActivity.class);
-//                startActivity(intent_login);
             case R.id.register:
                 Intent intent_register = new Intent(this, RegisterActivity.class);
                 startActivity(intent_register);
