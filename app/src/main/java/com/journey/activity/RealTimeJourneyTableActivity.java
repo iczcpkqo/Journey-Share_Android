@@ -71,7 +71,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     private Button joinJourney;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.6.40.176:8080/")
+            .baseUrl("http://192.168.0.81:8080/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
@@ -167,7 +167,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     private void createPostToPeerGroup(Retrofit retrofit, Peer peer) {
         final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
         try {
-            reqResApi[0].createUser(peer).enqueue(new Callback<List<Peer>>() {
+            reqResApi[0].matchLeader(peer).enqueue(new Callback<List<Peer>>() {
                 @Override
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
                     Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
@@ -190,7 +190,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     private void joinPostToPeerGroup(Retrofit retrofit, Peer peer) {
         final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
         try {
-            reqResApi[0].matchUser(peer).enqueue(new Callback<List<Peer>>() {
+            reqResApi[0].matchMemeber(peer).enqueue(new Callback<List<Peer>>() {
                 @Override
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
                     Toast.makeText(RealTimeJourneyTableActivity.this, response.code() + "Send successfully", Toast.LENGTH_SHORT).show();
