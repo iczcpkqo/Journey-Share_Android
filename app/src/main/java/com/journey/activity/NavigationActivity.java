@@ -422,7 +422,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 destinationName = peer.getEmail();
                 continue;
             }
-            UserWaypoints.add(Point.fromLngLat(peer.getdLatitude(), peer.getdLongtitude()));
+            UserWaypoints.add(Point.fromLngLat(peer.getdLongtitude(),peer.getdLatitude()));
             wayPointsName += peer.getEmail()+getString(R.string.way_point_arrived);
         }
         wayPointsName+= destinationName;

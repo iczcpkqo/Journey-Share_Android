@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.journey.RegisterActivity;
 import com.journey.activity.ConditionActivity;
 import com.journey.activity.InformationActivity;
 import com.journey.fragments.journeyModeFragments.DailyFragment;
+import com.journey.service.database.DialogueHelper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,6 +44,7 @@ import java.util.Map;
 
 public class AccountFragment extends Fragment {
     private Button modify;
+    private ImageView img;
     private EditText username;
     private TextView email;
     private EditText phone;
@@ -64,6 +67,7 @@ public class AccountFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         modify = view.findViewById(R.id.Modify);
+        img = view.findViewById(R.id.imageIV);
         username = view.findViewById(R.id.Username);
         email = view.findViewById(R.id.Email);
         phone = view.findViewById(R.id.Phone);
@@ -149,6 +153,7 @@ public class AccountFragment extends Fragment {
                 phone.setText(mp.get("phone").toString());
                 gender.setText(mp.get("gender").toString());
                 age.setText(mp.get("age").toString());
+                img.setImageResource(DialogueHelper.getHeadCupboard().get(Integer.parseInt(mp.get("headImg").toString())));
                 String original_birthday = mp.get("birthDate").toString();
                 Integer index = Integer.valueOf(original_birthday.substring(0, original_birthday.indexOf("-")));
                 birthday.setText(month_list[index - 1] + " " + original_birthday.substring(original_birthday.indexOf("-") + 1));

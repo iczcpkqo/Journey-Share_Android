@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -77,14 +78,14 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_leader_peer_group);
         follower_cancel = findViewById(R.id.follower_cancel_btn);
         follower_confirm = findViewById(R.id.follower_confirm_btn);
+        follower_cancel.setVisibility(View.INVISIBLE);
         recyclerView = findViewById(R.id.leader_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// create recyclerview in linear layout
         try {
             loadingDialog.startLoadingDialog();
             sendMultiRequests(8000, 2000);
-            sendPeersToNavigation(returnPeers);
+            sendPeersToNavigation();
             cancelJourney();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -92,7 +93,6 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
     }
 
     private void sendMultiRequests(Integer totalTime, Integer interval) {
-
         Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
         new CountDownTimer(totalTime, interval) {
             @Override
@@ -134,13 +134,14 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void sendPeersToNavigation(List<Peer> peerList) {
+    private void sendPeersToNavigation() {
         follower_confirm.setOnClickListener(view -> {
-            if(peerList != null&&!peerList.isEmpty()){
+            if(returnPeers != null&&!returnPeers.isEmpty()){
                 //check which peer in peer list is current user
                 Intent intent = new Intent(FollowerPeerGroupActivity.this, NavigationActivity.class);
-                intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(peerList));
+                intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(returnPeers));
                 intent.putExtra(getString(R.string.CURRENT_PEER_EMAIL), DialogueHelper.getSender().getEmail());
+                startActivityForResult(intent,1);
             }else {
                 Toast.makeText(FollowerPeerGroupActivity.this, "There is no peer", Toast.LENGTH_SHORT).show();
             }

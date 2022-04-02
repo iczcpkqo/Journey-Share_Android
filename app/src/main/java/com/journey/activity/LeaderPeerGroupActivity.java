@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Parcelable;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,12 +93,13 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_leader_peer_group);
         cancel = findViewById(R.id.cancel_btn);
         confirm = findViewById(R.id.confirm_btn);
+        cancel.setVisibility(View.INVISIBLE);
         recyclerView = findViewById(R.id.leader_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// create recyclerview in linear layout
         try {
             loadingDialog.startLoadingDialog();
             sendMultiRequests(8000, 2000);
-            sendPeersToNavigation(returnPeers);
+            sendPeersToNavigation();
             cancelJourney();
 
         } catch (Exception e) {
@@ -123,7 +125,6 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     public void createLeaderPost(Retrofit retrofit) {
         ReqResApi reqResApi = retrofit.create(ReqResApi.class);
         Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
-        System.out.println("****************" + peer.toString());
         try {
             reqResApi.matchLeader(peer).enqueue(new Callback<List<Peer>>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -149,15 +150,15 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void sendPeersToNavigation(List<Peer> peerList) {
+    private void sendPeersToNavigation() {
         confirm.setOnClickListener(view -> {
-            if(peerList != null&&!peerList.isEmpty()){
-                //check which peer in peer list is current user
+            System.out.println("--------------------------------------------" + returnPeers.size());
+            if (returnPeers != null && returnPeers.size() > 0) {
                 Intent intent = new Intent(LeaderPeerGroupActivity.this, NavigationActivity.class);
-                intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(peerList));
+                intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(returnPeers));
                 intent.putExtra(getString(R.string.CURRENT_PEER_EMAIL), DialogueHelper.getSender().getEmail());
-            }else {
+                startActivityForResult(intent,1);
+            } else {
                 Toast.makeText(LeaderPeerGroupActivity.this, "There is no peer", Toast.LENGTH_SHORT).show();
             }
         });

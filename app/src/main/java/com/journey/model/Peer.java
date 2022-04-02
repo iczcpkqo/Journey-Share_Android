@@ -203,6 +203,9 @@ public class Peer implements Serializable {
     }
 
     public Boolean getLeader() {
+        if(leader == null){
+            leader = false;
+        }
         return leader;
     }
 
