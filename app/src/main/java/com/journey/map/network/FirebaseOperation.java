@@ -54,6 +54,7 @@ public class FirebaseOperation {
     public static final int SAVE_ROUTE = 11;
     public static final int NAVIGATION_ACTIVITY_VIEW = 12;
     public static final int FIELD_NOT_FOUND = 13;
+    public static final int START_NAVIGATION = 14;
     public static final String ROUTE_2 = "ROUTE_2";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Handler mainHandler;
@@ -179,7 +180,7 @@ public class FirebaseOperation {
         mainHandler = handler;
     }
 
-    public void  saveDocData(String collectionPath,String documentPath,Map<String, Object> data)
+    public void  saveDocData(String collectionPath,String documentPath,Map<String, Object> data,int saveWhat)
     {
         //collectionPath = map
         //documentPath = UID + something(_ROUTE)
@@ -191,6 +192,14 @@ public class FirebaseOperation {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("firebaseSuccess", "DocumentSnapshot successfully written!");
+                        if(saveWhat != -1)
+                        {
+                            Message mg = new Message();
+                            mg.what   = saveWhat;
+                            mainHandler.sendMessage(mg);
+                        }
+
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

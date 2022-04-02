@@ -50,8 +50,11 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -130,6 +133,10 @@ public class NavigationActivity extends AppCompatActivity implements
             if(msg.what == FirebaseOperation.FILE_EXISTS)
             {
                 toast("Loading routes.");
+                setToNavigationRoute(currentRoute_2,false);
+            }
+            else if(msg.what == FirebaseOperation.START_NAVIGATION)
+            {
                 setToNavigationRoute(currentRoute_2,false);
             }
             else if(msg.what == FirebaseOperation.FILE_NOT_FOUND)
@@ -351,14 +358,8 @@ public class NavigationActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.navigationView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-        navigationButton = findViewById(R.id.select_navigation_button);
-        navigationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                setToNavigationRoute(currentRoute_2,false);
-            }
-        });
+
 
         peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
         currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
@@ -368,10 +369,31 @@ public class NavigationActivity extends AppCompatActivity implements
         //FirebaseOperation.fuzzyQueries("users","email",currentUserID,mHandler);
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
+        navigationButton = findViewById(R.id.select_navigation_button);
         if(isLeader(peersList,currentPeer))
         {
-            navigationButton.setVisibility(View.INVISIBLE);
+            navigationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setToNavigationRoute(currentRoute_2,false);
+                }
+            });
         }
+        else
+        {
+            navigationButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    toast("Navigate to Destination !");
+                    Map<String, Object> data = new HashMap<String,Object>();
+                    data.put("START",new String("1"));
+                    FirebaseOperation db = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
+                    db.saveDocData("map",currentPeer.getUuid(),data,FirebaseOperation.START_NAVIGATION);
+                }
+            });
+        }
+
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         setLocationUpdata(10000,5000);
         setUpdateCallback();
@@ -449,10 +471,11 @@ public class NavigationActivity extends AppCompatActivity implements
         {
             if(listPeer.size() == 1)
             {
+                navigationButton.setVisibility(View.INVISIBLE);
                 getSingleRoute(currentPeer, currentPeer,true);
             }
             else
-                getMultipleRoute(listPeer,true);
+                getMultipleRoute(listPeer,false);
         }
         else
         {
