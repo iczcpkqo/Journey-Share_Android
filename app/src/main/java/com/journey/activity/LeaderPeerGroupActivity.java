@@ -125,7 +125,7 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
         Peer peer = (Peer) getIntent().getSerializableExtra(RealTimeJourneyTableActivity.PEER_KEY);
         ReqResApi reqResApi = retrofit.create(ReqResApi.class);
         try {
-            reqResApi.createUser(peer).enqueue(new Callback<List<Peer>>() {
+            reqResApi.matchUser(peer).enqueue(new Callback<List<Peer>>() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onResponse(Call<List<Peer>> call, Response<List<Peer>> response) {
