@@ -6,12 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".fragments.JourneyFragment">
 
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
         android:text="@string/journey_fragment"
         android:textColor="@color/white"
-        android:textSize="25sp"/>
+        android:textSize="20sp"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/mode_navigation"

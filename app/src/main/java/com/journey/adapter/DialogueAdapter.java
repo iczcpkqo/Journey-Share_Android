@@ -63,6 +63,7 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
             headCupboard.add(R.drawable.h_7);
             headCupboard.add(R.drawable.h_8);
             headCupboard.add(R.drawable.h_g);
+            headCupboard.add(R.drawable.h_nijita);
         }
     }
 
