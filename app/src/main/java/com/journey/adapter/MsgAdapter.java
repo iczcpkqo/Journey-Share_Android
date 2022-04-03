@@ -32,6 +32,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
         LinearLayout rightLayout;
         TextView leftMsg;
         TextView rightMsg;
+        TextView leftName;
         View theMsg;
 
         public ViewHolder(View view) {
@@ -41,6 +42,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
             this.rightLayout = (LinearLayout) view.findViewById(R.id.msg_right_box);
             this.leftMsg = (TextView) view.findViewById(R.id.msg_left_txt);
             this.rightMsg = (TextView) view.findViewById(R.id.msg_right_txt);
+            this.leftName = (TextView) view.findViewById(R.id.msg_left_name);
         }
     }
 
@@ -69,6 +71,9 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
             holder.leftLayout.setVisibility(View.VISIBLE);
             holder.rightLayout.setVisibility(View.GONE);
             holder.leftMsg.setText(msg.getContent());
+            holder.leftName.setText(msg.getSender().getUsername()+":");
+            if (msg.getType().equals("single"))
+                holder.leftName.setVisibility(View.GONE);
         }
     }
 

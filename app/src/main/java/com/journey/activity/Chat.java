@@ -127,7 +127,7 @@ public class Chat extends AppCompatActivity {
 
     private void msgSend(String content){
         if(!"".equals(content)){
-            Msg msg = new Msg(content, dialogue.getDialogueId());
+            Msg msg = new Msg(content, dialogue);
             msgInput.setText("");
             db.collection("message").add(msg);
             db.collection("dialogue").document(dialogue.getDialogueId()).update("lastTime", System.currentTimeMillis());
@@ -154,7 +154,8 @@ public class Chat extends AppCompatActivity {
                                 Msg msg = new Msg(new User(sender.get("email"), sender.get("username"), sender.get("gender")),
                                         data.get("content").toString(),
                                         (long)data.get("time"),
-                                        data.get("dialogueId").toString());
+                                        data.get("dialogueId").toString(),
+                                        data.get("type").toString());
                                 msgList.add(msg);
                             }
                             msgRecycler.setAdapter(adapter);

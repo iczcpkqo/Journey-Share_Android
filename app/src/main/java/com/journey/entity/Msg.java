@@ -11,9 +11,10 @@ public class Msg {
     private Sender sender;
     private String content;
     private String dialogueId;
+    private String type;
     private long time;
 
-    private class Sender{
+    public class Sender{
         private String email;
         private String username;
         private String gender;
@@ -45,14 +46,28 @@ public class Msg {
         this.dialogueId = dialogueId;
     }
 
+    public Msg(String content, Dialogue dialogue){
+        User userInfo = DialogueHelper.getSender();
+        this.sender = new Sender(userInfo.getEmail(), userInfo.getUsername(), userInfo.getGender());
+        this.content = content;
+        this.time = System.currentTimeMillis();
+        this.dialogueId = dialogue.getDialogueId();
+        this.type = dialogue.getType();
+    }
+
     public Msg(User sender, String content, long time, String dialogueId){
         this.sender = new Sender(sender.getEmail(), sender.getUsername(), sender.getGender());
         this.content = content;
         this.time = time;
         this.dialogueId = dialogueId;
     }
-
-
+    public Msg(User sender, String content, long time, String dialogueId, String type){
+        this.sender = new Sender(sender.getEmail(), sender.getUsername(), sender.getGender());
+        this.content = content;
+        this.time = time;
+        this.dialogueId = dialogueId;
+        this.type = type;
+    }
 
     public Sender getSender() {
         return sender;
@@ -84,4 +99,10 @@ public class Msg {
     public long getTime() {
         return time;
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() { return type; }
 }
