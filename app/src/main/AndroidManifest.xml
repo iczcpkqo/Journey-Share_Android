@@ -55,10 +55,6 @@
             android:name=".MapboxActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true" />
-        <activity android:name=".IndexActivity" />
-        <activity
             android:name=".activity.ConditionActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.ActionBar" />
