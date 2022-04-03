@@ -29,9 +29,6 @@
             android:name=".activity.showDetail"
             android:exported="false" />
         <activity
-            android:name=".activity.InformationActivity"
-            android:exported="true" />
-        <activity
             android:name=".activity.LeaderPeerGroupActivity"
             android:exported="true"
             android:parentActivityName=".activity.RealTimeJourneyTableActivity" />
