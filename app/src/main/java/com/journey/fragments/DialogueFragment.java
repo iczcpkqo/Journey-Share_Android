@@ -140,6 +140,7 @@ public class DialogueFragment extends Fragment {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error == null) {
+                    dialogueList.clear();
                     for (QueryDocumentSnapshot document : value) {
                         Map<String, Object> data = document.getData();
                         String dialogueId = document.getId();
