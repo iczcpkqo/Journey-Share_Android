@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.activity.ChatActivity;
+import com.journey.dontremoveme.Chating;
 import com.journey.entity.ChatDeliver;
 import com.journey.entity.Dialogue;
 import com.journey.entity.User;
@@ -29,169 +30,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class ChatingService {
+public class ChatingService implements Chating {
 
-    @SuppressLint("StaticFieldLeak")
-    private static final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static final String TAG = "DialogueFragment";
+    public static void addWithMe(List<String> players) { Chating.addWithMe(players); }
 
-    public static void addWithMe(List<String> players) {
-        if(0==players.size())
-            return;
-        if(2>players.size() && DialogueHelper.getSender().getEmail().equals(players.get(0)))
-            return;
-        add(withMe(players));
-    }
+    public static void goWithMe(Context context, List<String> players) { Chating.goWithMe(context, players); }
 
-    public static void goWithMe(Context context, List<String> players) {
-        if(0==players.size())
-            return;
-        if(2>players.size() && DialogueHelper.getSender().getEmail().equals(players.get(0)))
-            return;
-        go(context, withMe(players));
-    }
+    public static List<String> withMe(List<String> players) { return Chating.withMe(players) ; }
 
-    public static List<String> withMe(List<String> players) {
-        User sender = DialogueHelper.getSender();
-        List<String> arr = new ArrayList<>(players);
-        arr.add(sender.getEmail());
-        HashSet<String> uni = new HashSet<>(arr);
-        if(2>uni.size())
-            return null;
-        return new ArrayList<>(uni);
-    }
+    public static void go(Context context,List<String> players) { Chating.go(context, players); }
 
-    public static void go(Context context,List<String> players) {
-        Collections.sort(players);
-        User sender = DialogueHelper.getSender();
-        Map<String, Object> newDialogue = new HashMap<>();
-        newDialogue.put("type", players.size() > 2 ? "group" : "single");
-        newDialogue.put("playerString", players.toString());
-        newDialogue.put("playerList", players);
-        newDialogue.put("createTime", FieldValue.serverTimestamp());
-        newDialogue.put("lastTime", System.currentTimeMillis());
-        newDialogue.put("orderID", "testOrderId-123");
+    public static void go(Context context, Dialogue dialogue) { Chating.go(context, dialogue); }
 
-        db.collection("dialogue").whereEqualTo("playerString", players.toString())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Object> data = document.getData();
-                                String dialogueId = document.getId();
-                                // DONE: 跳转
-                                db.collection("users").whereIn("email", DialogueHelper.convertStringToList(newDialogue.get("playerString").toString()))
-                                        .get()
-                                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                if (task.isSuccessful()) {
-                                                    Map<String, Object> data = new HashMap<>();
-                                                    StringBuffer dialogTitle = new StringBuffer();
-                                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                                        Map<String, Object> item = document.getData();
-                                                        data.put(document.getId(), item);
-                                                        dialogTitle.append(item.get("email").equals(sender.getEmail()) ? "" : (dialogTitle.toString().equals("") ? item.get("username") : "," + item.get("username")));
-                                                    }
-                                                        Dialogue dialogue = new Dialogue();
-                                                        dialogue.setTitle(dialogTitle.toString());
-                                                        dialogue.setType(newDialogue.get("type").toString());
-                                                        dialogue.setDialogueId(dialogueId);
-                                                        go(context, dialogue);
+    public static void add(List<String> players) { Chating.add(players);}
 
-                                                } else {
-                                                    Log.d(TAG, "Error getting documents: ", task.getException());
-                                                }
-                                            }
-                                        });
-
-                                break;
-                            }
-                            if (0 == task.getResult().size()) {
-                                insertDialogue(newDialogue);
-                                go(context,players);
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
-
-    public static void go(Context context, Dialogue dialogue) {
-        Intent intent = new Intent(context, ChatActivity.class);
-        ChatDeliver deliver = new ChatDeliver();
-
-        deliver.setDialogueTitle(dialogue.getTitle());
-        deliver.setDialogueId(dialogue.getDialogueId());
-        deliver.setType(dialogue.getType());
-
-        intent.putExtra("deliver", deliver);
-        context.startActivity(intent);
-    }
-
-    public static void add(List<String> players) {
-        Collections.sort(players);
-        User sender = DialogueHelper.getSender();
-        Map<String, Object> newDialogue = new HashMap<>();
-        newDialogue.put("type", players.size() > 2 ? "group" : "single");
-        newDialogue.put("playerString", players.toString());
-        newDialogue.put("playerList", players);
-        newDialogue.put("createTime", FieldValue.serverTimestamp());
-        newDialogue.put("lastTime", System.currentTimeMillis());
-        newDialogue.put("orderID", "testOrderId-123");
-
-        db.collection("dialogue").whereEqualTo("playerString", players.toString())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (0 == task.getResult().size()) {
-                                insertDialogue(newDialogue);
-                            }
-                        } else {
-                            Log.d(TAG, "add one dialogue");
-                        }
-                    }
-                });
-    }
-
-    private static void insertDialogue(Map<String, Object> newDialogue) {
-        User sender = DialogueHelper.getSender();
-        db.collection("dialogue")
-                .add(newDialogue)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        String dialogueId = documentReference.getId();
-                        db.collection("users").whereIn("email", (List<? extends Object>) newDialogue.get("playerList"))
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            StringBuffer dialogTitle = new StringBuffer();
-                                            // TODO: 无法插入, 可以插入, 但是没有标题, 考虑分离 Chat 和 Dialogue
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                Map<String, Object> item = document.getData();
-                                                dialogTitle.append(item.get("email").equals(sender.getEmail()) ? "" : (dialogTitle.toString().equals("") ? item.get("username") : "," + item.get("username")));
-                                                db.collection("dialogue").document(dialogueId).collection("players").add(item);
-                                            }
-                                        } else {
-                                            Log.d(TAG, "Error getting documents: ", task.getException());
-                                        }
-                                    }
-                                });
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }
+    private static void insertDialogue(Map<String, Object> newDialogue) { Chating.insertDialogue(newDialogue); }
 }
