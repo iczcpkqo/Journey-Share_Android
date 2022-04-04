@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.R;
+import com.journey.adapter.Chating;
 import com.journey.adapter.FollowerPeerAdapter;
 import com.journey.adapter.LeaderPeerAdapter;
 import com.journey.adapter.ReqResApi;
