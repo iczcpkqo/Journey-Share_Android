@@ -4,7 +4,10 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.BoringLayout;
+import java.util.UUID;
+
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,9 +31,11 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.Timestamp;
 import com.journey.R;
 import com.journey.adapter.JSONPlaceholder;
 import com.journey.adapter.ReqResApi;
+import com.journey.map.network.FirebaseOperation;
 import com.journey.model.ConditionInfo;
 import com.journey.model.Peer;
 import com.journey.service.database.DialogueHelper;
@@ -37,11 +43,13 @@ import com.journey.service.database.DialogueHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import retrofit2.Call;
@@ -116,7 +124,16 @@ public class ConditionActivity extends AppCompatActivity {
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
+    Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(@NonNull Message message) {
 
+            if(message.what == 1){
+
+            }
+            return false;
+        }
+    });
     public void init(){
         chooseDateTime = (TextInputEditText)findViewById(R.id.choose_date_time_dt);
         originPlace = (TextInputEditText)findViewById(R.id.origin_address_dt);
@@ -241,6 +258,39 @@ public class ConditionActivity extends AppCompatActivity {
                 end_lat,startAddress,destination,journeyMode);
         return conditionInfo;
     }
+
+    private void saveData(String email,
+                          String dateTime,
+                          String endAddress,
+                          String end_lat,
+                          String end_lon,
+                          String journeyMode,
+                          String maxAge,
+                          String minAge,
+                          String originAddress,
+                          String origin_lat,
+                          String origin_lon,
+                          String preferGender)
+    {
+        Map<String,Object> data = new HashMap<String,Object>();
+        data.put("email",email);
+        data.put("dateTime",dateTime);
+        data.put("endAddress",endAddress);
+        data.put("end_lat",end_lat);
+        data.put("end_lon",end_lon);
+        data.put("originAddress",originAddress);
+        data.put("origin_lat",origin_lat);
+        data.put("origin_lon",origin_lon);
+        data.put("maxAge",maxAge);
+        data.put("minAge",minAge);
+        data.put("journeyMode",journeyMode);
+        data.put("preferGender",preferGender);
+        data.put("route","null");
+
+        String uuid = UUID.randomUUID().toString();
+        FirebaseOperation.saveDocData("daily",uuid,data,mHandler,1);
+    }
+
     private void sendConInfo(){
         infoChecker();
         if(awesomeValidation.validate()){
@@ -258,6 +308,7 @@ public class ConditionActivity extends AppCompatActivity {
                 conInfo.putExtra(CONDITION_INFO,conditionInfo);
                 startActivityForResult(conInfo,1);
             }else if(id == 0){
+                saveData();
 
                 Intent conInfo = new Intent(this, DailyJourneyTableActivity.class);
                 addDailyJourney(conditionInfo);
