@@ -256,15 +256,14 @@ public class NavigationActivity extends AppCompatActivity implements
         List<Peer> peers = new ArrayList<Peer>();
         //10.0.2.16
         String serverIP = getLocalIpAddress();
-
-        Peer user1 = new Peer("liu@tcd.com",
+        Peer user1 = new Peer("test1@tcd.com",
                 "Female",
                 12,
                 4.5,
-                53.3481,
                 -6.2594,
                 53.3481,
                 -6.2483,
+                53.3481,
                 0L,
                 0L,
                 1,
@@ -272,12 +271,11 @@ public class NavigationActivity extends AppCompatActivity implements
                 12,
                 true,
                 true,
-                "123456789",
+                "1234567891",
                 true,
                 null,
                 serverIP,
                 "3344",null,null,null,null,null);
-
         Peer user2 = new Peer("user_2@user_2.com",
                 "Female",
                 12,
@@ -293,27 +291,27 @@ public class NavigationActivity extends AppCompatActivity implements
                 12,
                 false,
                 false,
-                "123456789",
+                "1234567891",
                 true,
                 null,
                 "127.0.0.1",
                 "3030",null,null, null, null, null);
-        Peer user3 = new Peer("liu@tcd.com",
+        Peer user3 = new Peer("test2@tcd.com",
                 "Female",
                 12,
                 4.5,
-                53.3490,
                 -6.2588,
-                53.3483,
+                53.3490,
                 -6.2515,
+                53.3483,
                 0L,
                 0L,
                 1,
                 "12",
                 12,
+                null,
                 false,
-                false,
-                "123456789",
+                "1234567891",
                 true,
                 null,
                 "127.0.0.1",
@@ -369,8 +367,8 @@ public class NavigationActivity extends AppCompatActivity implements
         peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
         currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
 
-        //peersList = testPeerList();
-        //currentUserID = "liu@tcd.com";
+//        peersList = testPeerList();
+//        currentUserID = "test2@tcd.com";
         //FirebaseOperation.fuzzyQueries("users","email",currentUserID,mHandler);
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
