@@ -4,16 +4,23 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.activity.ChatActivity;
@@ -22,7 +29,14 @@ import com.journey.entity.Dialogue;
 import com.journey.entity.User;
 import com.journey.service.database.DialogueHelper;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,7 +47,88 @@ public interface Chating {
 
     @SuppressLint("StaticFieldLeak")
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String TAG = "DialogueFragment";
+    String TAG = "Chating";
+
+    /**
+     * Get a list of all my friends' emails, not including my own
+     * @return ArrayList<String> User emails list
+     */
+    static ArrayList<String> getMyFriends(){
+        ArrayList<String> myFriends = getFriendShip();
+        myFriends.remove(DialogueHelper.getSender().getEmail());
+        return myFriends;
+    }
+
+    /**
+     * Get a list of all my friends' emails, including my own
+     * @return ArrayList<String> User emails list
+     */
+    static ArrayList<String> getFriendShip(){
+        File file = new File(android.os.Environment.getExternalStorageDirectory()+"/FriendsList.txt");
+        FileReader fis = null;
+        BufferedReader br = null;
+        ArrayList<String> friendsList = null;
+
+        if(file.exists()) {
+            try {
+                fis = new FileReader(file);
+                br = new BufferedReader(fis);
+                String str = br.readLine();
+                String jsonMsg = "";
+                while(str != null){
+                    jsonMsg += str;
+                    str = br.readLine();
+                }
+                friendsList = JSON.parseObject(jsonMsg, new TypeReference<ArrayList<String>>(){});
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                try {
+                    br.close();
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return friendsList;
+    }
+
+    static void refreshFriends() {
+       refreshFriends(DialogueHelper.getSender().getEmail());
+    }
+
+    static void refreshFriends(String userEmail) {
+        db.collection("dialogue").whereArrayContainsAny("playerList", Arrays.asList(userEmail)).orderBy("lastTime", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            HashSet<String> friendsList = new HashSet<>();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> dia = document.getData();
+                                friendsList.addAll(DialogueHelper.convertStringToList(dia.get("playerList").toString()));
+                            }
+                            String jsonFriends = JSON.toJSON(friendsList).toString();
+                            try {
+                                File fs = new File(android.os.Environment.getExternalStorageDirectory()+"/FriendsList.txt");
+                                FileOutputStream outputStream = null;
+                                outputStream = new FileOutputStream(fs, false);
+                                outputStream.write(jsonFriends.getBytes());
+                                outputStream.flush();
+                                outputStream.close();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+                });
+
+    }
 
     static void addWithMe(List<String> players) {
         if(0==players.size())
@@ -106,7 +201,6 @@ public interface Chating {
                                                 }
                                             }
                                         });
-
                                 break;
                             }
                             if (0 == task.getResult().size()) {

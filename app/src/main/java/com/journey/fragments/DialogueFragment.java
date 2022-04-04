@@ -24,6 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.R;
 import com.journey.adapter.DialogueAdapter;
+import com.journey.dontremoveme.Chating;
 import com.journey.entity.Dialogue;
 import com.journey.entity.User;
 import com.journey.service.database.DialogueHelper;
@@ -97,6 +98,8 @@ public class DialogueFragment extends Fragment {
 
 //        Chating.addWithMe(Arrays.asList("liu@tcd.com", "yan@tcd.com"));
 //        Chating.addWithMe(Arrays.asList("liu@tcd.com", "mao@tcd.com"));
+
+//        Chating.refreshFriends("mao@tcd.com");
 
         return diaFrame;
     }
