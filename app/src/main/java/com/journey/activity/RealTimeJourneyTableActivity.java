@@ -53,6 +53,8 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     Boolean isLeader;
     String startAddress;
     String destination;
+    String journeyMode;
+    String mode;
 
     //user info
     String birthday;
@@ -71,7 +73,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     private Button joinJourney;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.81:8080/")
+            .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
@@ -96,28 +98,6 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         postInfo();
 
     }
-    private void postInfo() {
-        Peer peer = getPeer();
-        createJourney.setOnClickListener(view -> {
-//            sendMultiRequests();
-            createPostToPeerGroup(retrofit, peer);
-//            realTimeToLeaderGroup();
-            });
-        joinJourney.setOnClickListener(view -> {
-            joinPostToPeerGroup(retrofit, peer);
-        });
-    }
-
-    private Peer getPeer() {
-        Peer peer = new Peer(email, gender, 20, Double.parseDouble(mark),
-                Double.parseDouble(longitude), Double.parseDouble(latitude), Double.parseDouble(dLongitude),
-                Double.parseDouble(dLatitude),0L,0L,
-                3,"12334",3, null,null,
-                null, null,null,null,startAddress,destination,
-                null, Integer.valueOf(minAge),Integer.valueOf(maxAge),preferGender);
-        return peer;
-    }
-
     private void getConInfo(){
         if(getIntent() != null && getIntent().getExtras() != null && getIntent().hasExtra(ConditionActivity.CONDITION_INFO)){
             //deserialization condition info
@@ -135,6 +115,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             dLongitude = conditionInfo.getEnd_lon();
             startAddress = conditionInfo.getStartAddress();
             destination = conditionInfo.getDestination();
+            journeyMode = conditionInfo.getJourneyMode();
         }
     }
     private void setConInfo(){
@@ -155,6 +136,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         max.setText(maxAge);
         s.setText(score);
     }
+
     private void getUserInfo(){
         Map<String,Object> map = new ReadUserInfoFile().readUserFile();
         birthday = map.get("birthDate").toString();
@@ -163,7 +145,39 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         username = map.get("username").toString();
         email = map.get("email").toString();
         mark = map.get("mark").toString();
+        age = DialogueHelper.getSender().getAge();
     }
+
+
+    private Peer getPeer() {
+        if(journeyMode.equals("Car")){
+            mode = "1";
+        }else if(journeyMode.equals("Bike")){
+            mode = "2";
+        }else{
+            mode = "3";
+        }
+        Peer peer = new Peer(email, gender, age, Double.parseDouble(mark),
+                Double.parseDouble(longitude), Double.parseDouble(latitude), Double.parseDouble(dLongitude),
+                Double.parseDouble(dLatitude),0L,0L,
+                3,"12334",3, null,null,
+                null, null,null,mode,startAddress,destination,
+                null, Integer.valueOf(minAge),Integer.valueOf(maxAge),preferGender);
+        return peer;
+    }
+
+    private void postInfo() {
+        Peer peer = getPeer();
+        createJourney.setOnClickListener(view -> {
+//            sendMultiRequests();
+            createPostToPeerGroup(retrofit, peer);
+//            realTimeToLeaderGroup();
+            });
+        joinJourney.setOnClickListener(view -> {
+            joinPostToPeerGroup(retrofit, peer);
+        });
+    }
+
     private void createPostToPeerGroup(Retrofit retrofit, Peer peer) {
         final ReqResApi[] reqResApi = {retrofit.create(ReqResApi.class)};
         try {
@@ -186,7 +200,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(RealTimeJourneyTableActivity.this, LeaderPeerGroupActivity.class);
         intent.putExtra(PEER_KEY, peer);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 
     private void joinPostToPeerGroup(Retrofit retrofit, Peer peer) {

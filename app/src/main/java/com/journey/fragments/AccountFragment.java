@@ -27,6 +27,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.LoginActivity;
 import com.journey.R;
+import com.journey.RegisterActivity;
+import com.journey.activity.ConditionActivity;
+import com.journey.fragments.journeyModeFragments.DailyFragment;
 import com.journey.service.database.DialogueHelper;
 
 import java.io.BufferedReader;

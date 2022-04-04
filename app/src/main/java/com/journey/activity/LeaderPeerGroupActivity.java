@@ -23,6 +23,7 @@ import com.alibaba.fastjson.serializer.JSONSerializer;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.R;
+import com.journey.adapter.Chating;
 import com.journey.adapter.LeaderPeerAdapter;
 import com.journey.adapter.ReqResApi;
 import com.journey.map.network.FirebaseOperation;
@@ -69,13 +70,14 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button cancel;
     Button confirm;
+    Button chat;
     CountDownTimer countDownTimer;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
     LoadingDialog loadingDialog = new LoadingDialog(this, 8000, 2000, "");
     List<Peer> returnPeers;
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.81:8080/")
+            .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -91,15 +93,16 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_peer_group);
+        chat = findViewById(R.id.chat_btn);
         cancel = findViewById(R.id.cancel_btn);
         confirm = findViewById(R.id.confirm_btn);
-        cancel.setVisibility(View.INVISIBLE);
         recyclerView = findViewById(R.id.leader_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// create recyclerview in linear layout
         try {
             loadingDialog.startLoadingDialog();
             sendMultiRequests(8000, 2000);
             sendPeersToNavigation();
+            chatJourney();
             cancelJourney();
 
         } catch (Exception e) {
@@ -168,7 +171,17 @@ public class LeaderPeerGroupActivity extends AppCompatActivity {
     private void cancelJourney() {
         cancel.setOnClickListener(view -> {
             Intent intent = new Intent(this, JourneyActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,1);
+        });
+    }
+
+    private void chatJourney() {
+        List<String> emailList = new ArrayList<>();
+        chat.setOnClickListener(view -> {
+            for (Peer p : returnPeers) {
+                emailList.add(p.getEmail());
+            }
+            Chating.goWithMe(LeaderPeerGroupActivity.this,emailList);
         });
     }
 }

@@ -83,6 +83,12 @@ public class ConditionActivity extends AppCompatActivity {
     private RadioButton female;
     private RadioButton other;
     final String[] gender = new String[1];
+    //mode radio group
+    private RadioGroup modeRadioGroup;
+    private RadioButton carRadio;
+    private RadioButton bikeRadio;
+    private RadioButton walkingRadio;
+    final String[] mode = new String[1];
 
     AwesomeValidation awesomeValidation;
     //location contains latitude and longitude
@@ -102,6 +108,7 @@ public class ConditionActivity extends AppCompatActivity {
     private String end_lat;
     private String startAddress;
     private String destination;
+    private String journeyMode;
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://192.168.0.137:8080/")
@@ -132,6 +139,11 @@ public class ConditionActivity extends AppCompatActivity {
         male = (RadioButton) findViewById(R.id.male_radio);
         female = (RadioButton) findViewById(R.id.female_radio);
         other = (RadioButton) findViewById(R.id.other_radio);
+        //mode radio group
+        modeRadioGroup = (RadioGroup) findViewById(R.id.mode_radio_group);
+        carRadio = (RadioButton) findViewById(R.id.car_radio);
+        bikeRadio = (RadioButton) findViewById(R.id.bike_radio);
+        walkingRadio = (RadioButton) findViewById(R.id.walking_radio);
     }
 
 
@@ -150,6 +162,8 @@ public class ConditionActivity extends AppCompatActivity {
         setEndPlaceListener(endPlace);
         //gender listener
         genderListener();
+        //mode listener
+        modeListener();
         //submit listener
         submitConditionData();
     }
@@ -210,6 +224,7 @@ public class ConditionActivity extends AppCompatActivity {
         origin_address = originPlace.getText().toString().trim();
         end_address = endPlace.getText().toString().trim();
         prefer_gender = gender[0];
+        journeyMode = mode[0];
         min_age = minAge.getText().toString().trim();
         max_age = maxAge.getText().toString().trim();
         min_score = score.getText().toString().trim();
@@ -225,7 +240,7 @@ public class ConditionActivity extends AppCompatActivity {
             getText();
             ConditionInfo conditionInfo = new ConditionInfo(choose_date,origin_address,
                     end_address,prefer_gender,min_age,max_age,
-                    min_score,origin_lon,origin_lat,end_lon,end_lat,startAddress,destination);
+                    min_score,origin_lon,origin_lat,end_lon,end_lat,startAddress,destination,journeyMode);
             //send serialized conditionInfo to real time activity
             conInfo.putExtra(CONDITION_INFO,conditionInfo);
             startActivityForResult(conInfo,1);
@@ -374,6 +389,29 @@ public class ConditionActivity extends AppCompatActivity {
                     case R.id.other_radio:
                         Toast.makeText(ConditionActivity.this,"select other",Toast.LENGTH_SHORT).show();
                         gender[0] = other.getText().toString();
+                        break;
+                }
+            }
+        });
+        radioGroup.clearCheck();
+        return gender[0];
+    }
+    private String modeListener(){
+        modeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedButtonId) {
+                switch (checkedButtonId){
+                    case R.id.car_radio:
+                        Toast.makeText(ConditionActivity.this,"Car mode",Toast.LENGTH_SHORT).show();
+                        mode[0] = carRadio.getText().toString();
+                        break;
+                    case R.id.bike_radio:
+                        Toast.makeText(ConditionActivity.this,"Bike mode",Toast.LENGTH_SHORT).show();
+                        mode[0] = bikeRadio.getText().toString();
+                        break;
+                    case R.id.walking_radio:
+                        Toast.makeText(ConditionActivity.this,"Walking mode",Toast.LENGTH_SHORT).show();
+                        mode[0] = walkingRadio.getText().toString();
                         break;
                 }
             }

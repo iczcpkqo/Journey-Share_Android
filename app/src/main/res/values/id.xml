@@ -13,10 +13,29 @@
     <item name="female_radio" type="id"/>
     <item name="other_radio" type="id"/>
     <item name="rb_option_btn" type="id"/>
+    <item name="mode_radio_group" type="id"/>
+    <item name="mode_option_btn" type="id"/>
+    <item name="car_radio" type="id"/>
+    <item name="bike_radio" type="id"/>
+    <item name="walking_radio" type="id"/>
 
     <!--real time journey table-->
     <item name="create_journey_btn" type="id"/>
     <item name="join_journey_btn" type="id"/>
     <item name="delete_btn" type="id"/>
     <item name="no_peer_show" type="id"/>
+
+    <!--leader peer group-->
+    <item name="leader_recyclerview" type="id"/>
+    <item name="leader_btn" type="id"/>
+    <item name="chat_btn" type="id"/>
+    <item name="confirm_btn" type="id"/>
+    <item name="cancel_btn" type="id"/>
+
+    <!--follower peer group-->
+    <item name="follower_recyclerview" type="id"/>
+    <item name="follower_btn" type="id"/>
+    <item name="follower_chat_btn" type="id"/>
+    <item name="follower_confirm_btn" type="id"/>
+    <item name="follower_cancel_btn" type="id"/>
 </resources>

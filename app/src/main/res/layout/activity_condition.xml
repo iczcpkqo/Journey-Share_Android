@@ -98,7 +98,7 @@
                 android:id="@+id/female_radio"
                 android:layout_height="wrap_content">
             </RadioButton>
-            <RadioButton android:text="Other"
+            <RadioButton android:text="All"
                 android:layout_width="wrap_content"
                 android:id="@+id/other_radio"
                 android:layout_height="wrap_content">
@@ -173,13 +173,37 @@
             android:background="@drawable/text_input_round"
             android:maxLength="3" />
     </com.google.android.material.textfield.TextInputLayout>
-
+    <RadioGroup
+        android:layout_height="wrap_content"
+        android:id="@+id/mode_radio_group"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:checkedButton="@id/mode_option_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/score">
+        <RadioButton android:text="Car"
+            android:layout_width="wrap_content"
+            android:id="@+id/car_radio"
+            android:layout_height="wrap_content">
+        </RadioButton>
+        <RadioButton android:text="Bike"
+            android:layout_width="wrap_content"
+            android:id="@+id/bike_radio"
+            android:layout_height="wrap_content">
+        </RadioButton>
+        <RadioButton android:text="Walking"
+            android:layout_width="wrap_content"
+            android:id="@+id/walking_radio"
+            android:layout_height="wrap_content">
+        </RadioButton>
+    </RadioGroup>
     <Button
         android:id="@+id/submit_btn"
         android:layout_width="210dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="100dp"
         android:background="@drawable/round_corner"
         android:text="@string/submit"

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.R;
+import com.journey.adapter.Chating;
 import com.journey.adapter.FollowerPeerAdapter;
 import com.journey.adapter.LeaderPeerAdapter;
 import com.journey.adapter.ReqResApi;
@@ -53,6 +54,7 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     Button follower_cancel;
     Button follower_confirm;
+    Button follower_chat;
     CountDownTimer countDownTimer;
 
     List<Peer> returnPeers;
@@ -60,7 +62,7 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
     LoadingDialog loadingDialog = new LoadingDialog(this,  8000, 2000, "");
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.81:8080/")
+            .baseUrl("http://192.168.0.137:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
@@ -76,11 +78,10 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_follower_peer_group);
-
+        follower_chat = (Button) findViewById(R.id.follower_chat_btn);
         follower_cancel = (Button) findViewById(R.id.follower_cancel_btn);
-
         follower_confirm = findViewById(R.id.follower_confirm_btn);
-        follower_cancel.setVisibility(View.INVISIBLE);
+//        follower_cancel.setVisibility(View.INVISIBLE);
         recyclerView = findViewById(R.id.follower_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));// create recyclerview in linear layout
         try {
@@ -88,6 +89,7 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
             sendMultiRequests(8000, 2000);
             sendPeersToNavigation();
             cancelJourney();
+            chatWithOthers();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -140,6 +142,7 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
         follower_confirm.setOnClickListener(view -> {
             if(returnPeers != null && returnPeers.size() > 0){
                 //check which peer in peer list is current user
+                System.out.println("-------------------"+returnPeers.get(1).getLeader());
                 Intent intent = new Intent(FollowerPeerGroupActivity.this, NavigationActivity.class);
                 intent.putExtra(getString(R.string.PEER_LIST), FirebaseOperation.getObjectString(returnPeers));
                 intent.putExtra(getString(R.string.CURRENT_PEER_EMAIL), DialogueHelper.getSender().getEmail());
@@ -149,11 +152,19 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void chatWithOthers() {
+        List<String> emailList = new ArrayList<>();
+        follower_chat.setOnClickListener(view -> {
+            for (Peer p : returnPeers) {
+                emailList.add(p.getEmail());
+            }
+            Chating.goWithMe(FollowerPeerGroupActivity.this,emailList);
+        });
+    }
     private void cancelJourney() {
         follower_cancel.setOnClickListener(view -> {
             Intent intent = new Intent(this, JourneyActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,1);
         });
     }
 
