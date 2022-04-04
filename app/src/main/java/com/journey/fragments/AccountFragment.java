@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -64,6 +65,11 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser!=null){
+            String userEmail = currentUser.getEmail();
+            saveUserInformation(userEmail);
+        }
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         modify = view.findViewById(R.id.Modify);
         img = view.findViewById(R.id.imageIV);
@@ -168,6 +174,38 @@ public class AccountFragment extends Fragment {
                 }
 
             }
+        }
+    }
+
+    private void saveUserInformation(String userEmail) {
+        if(userEmail != null){
+            System.out.println(userEmail);
+            db.collection("users")
+                    .whereEqualTo("email", userEmail)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String jsonMsg = JSON.toJSON(document.getData()).toString();
+                                    try {
+                                        File fs = new File(android.os.Environment.getExternalStorageDirectory()+"/UserInformation.txt");
+                                        FileOutputStream outputStream =new FileOutputStream(fs, false);
+                                        outputStream.write(jsonMsg.getBytes());
+                                        outputStream.flush();
+                                        outputStream.close();
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else {
+//                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
         }
     }
 
