@@ -27,7 +27,7 @@ public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCa
     @NonNull
     @Override
     public DailyJourneyCardAdapter.DailyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.follower_member_card, parent , false);
+        View view = LayoutInflater.from(context).inflate(R.layout.daily_journey_card, parent , false);
         return new DailyViewHolder(view);
     }
 

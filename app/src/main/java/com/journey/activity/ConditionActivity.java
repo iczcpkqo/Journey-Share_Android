@@ -95,6 +95,7 @@ public class ConditionActivity extends AppCompatActivity {
     List<Double> location = new ArrayList<Double>();
     //condition form key
     public final static String CONDITION_INFO = "CONDITION_INFO";
+    private String userEmail;
     private String choose_date;
     private String origin_address;
     private String end_address;
@@ -219,6 +220,7 @@ public class ConditionActivity extends AppCompatActivity {
      *@date: 2022/3/7 19:05
      */
     private void getText(){
+        userEmail = DialogueHelper.getSender().getEmail();
         choose_date = chooseDateTime.getText().toString().trim();
         origin_address = originPlace.getText().toString().trim();
         end_address = endPlace.getText().toString().trim();
@@ -234,7 +236,7 @@ public class ConditionActivity extends AppCompatActivity {
     }
     private ConditionInfo getConditionInfo(){
         ConditionInfo conditionInfo = new ConditionInfo(
-                choose_date,origin_address,end_address,prefer_gender,
+                userEmail,choose_date,origin_address,end_address,prefer_gender,
                 min_age,max_age, min_score,origin_lon,origin_lat,end_lon,
                 end_lat,startAddress,destination,journeyMode);
         return conditionInfo;

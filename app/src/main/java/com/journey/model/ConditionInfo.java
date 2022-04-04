@@ -3,6 +3,7 @@ package com.journey.model;
 import java.io.Serializable;
 
 public class ConditionInfo implements Serializable {
+    private String userEmail;
     private String dateTime;
     private String originAddress;
     private String endAddress;
@@ -18,7 +19,8 @@ public class ConditionInfo implements Serializable {
     private String destination;
     private String journeyMode;
 
-    public ConditionInfo(String dateTime, String originAddress, String endAddress, String preferGender, String minAge, String maxAge, String minScore, String origin_lon, String origin_lat, String end_lon, String end_lat, String startAddress, String destination, String journeyMode) {
+    public ConditionInfo(String userEmail, String dateTime, String originAddress, String endAddress, String preferGender, String minAge, String maxAge, String minScore, String origin_lon, String origin_lat, String end_lon, String end_lat, String startAddress, String destination, String journeyMode) {
+        this.userEmail = userEmail;
         this.dateTime = dateTime;
         this.originAddress = originAddress;
         this.endAddress = endAddress;
@@ -33,6 +35,14 @@ public class ConditionInfo implements Serializable {
         this.startAddress = startAddress;
         this.destination = destination;
         this.journeyMode = journeyMode;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getDateTime() {
