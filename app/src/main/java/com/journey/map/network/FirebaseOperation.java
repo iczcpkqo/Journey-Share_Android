@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.alibaba.fastjson.JSON;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -198,8 +199,6 @@ public class FirebaseOperation {
                             mg.what   = saveWhat;
                             mainHandler.sendMessage(mg);
                         }
-
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -272,6 +271,7 @@ public class FirebaseOperation {
                         mainHandler.sendMessage(message);
                     }
                 });
+
     }
     public void loadNote(String Field)
     {

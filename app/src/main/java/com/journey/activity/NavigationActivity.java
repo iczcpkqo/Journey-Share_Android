@@ -109,21 +109,17 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else if(network == false && isSingle == false)
             {
-
                 toast("Journey record is saved in the cache !");
             }
-            else
-            {
-                ChatingService.addWithMe(getUserNames(peersList));
-                toast("You have arrived at your destination.");
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                finish();
+            ChatingService.addWithMe(getUserNames(peersList));
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            toast("You have arrived at your destination.");
 
+            finish();
         }
     }
 

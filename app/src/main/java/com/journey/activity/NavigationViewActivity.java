@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.journey.map.network.FirebaseOperation;
+import com.journey.map.network.NetworkUtils;
 import com.journey.model.Peer;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.api.directions.v5.models.RouteLeg;
@@ -155,6 +156,13 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                                                 data.put(COMPANION, allName);
                                                 data.put(DATE, new Timestamp(new Date(currentPeer.getStartTime())));
                                                 operation.saveDocData(data);
+                                                if(!NetworkUtils.isNetworkConnected(getApplicationContext()))
+                                                {
+                                                    Message ms = new Message();
+                                                    ms.what = FirebaseOperation.FILE_NOT_FOUND_RECORD;
+                                                    mHandler.sendMessage(ms);
+                                                }
+
                                                 return;
                                             }
                                             message.obj = "You have arrived at a leader position!";
