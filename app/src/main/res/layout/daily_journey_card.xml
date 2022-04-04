@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <LinearLayout
+        android:id="@+id/journey_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/real_time_table_round">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/daily_datetime_tv"
+                    android:layout_width="313dp"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textColor="@color/icon_color"
+                    android:textFontWeight="1000"
+                    android:textSize="30dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="From:" />
+
+                    <TextView
+                        android:id="@+id/daily_oAddress_tv"
+                        android:layout_width="255dp"
+                        android:layout_height="wrap_content"
+                        android:text="address"
+                        android:textColor="@color/black"
+                        android:textFontWeight="1000"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="To:" />
+
+                    <TextView
+                        android:id="@+id/daily_eAddress_tv"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:text="address"
+                        android:textColor="@color/black"
+                        android:textFontWeight="1000"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="94dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Prefer Gender:" />
+
+                    <TextView
+                        android:id="@+id/daily_gender_tv"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="address"
+                        android:textColor="@color/black"
+                        android:textFontWeight="1000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="110dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Prefer Age From:" />
+
+                    <TextView
+                        android:id="@+id/daily_min_age_tv"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="23"
+                        android:textColor="@color/black"
+                        android:textFontWeight="1000"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="To:" />
+
+                    <TextView
+                        android:id="@+id/daily_max_age_tv"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:text="23"
+                        android:textColor="@color/black"
+                        android:textFontWeight="1000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="125dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Expect peer review:" />
+
+                    <TextView
+                        android:id="@+id/daily_score_tv"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:text="3.4"
+                        android:textColor="@color/black"
+                        android:textFontWeight="1000"
+                        android:textSize="18dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+</RelativeLayout>

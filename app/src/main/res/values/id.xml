@@ -38,4 +38,14 @@
     <item name="follower_chat_btn" type="id"/>
     <item name="follower_confirm_btn" type="id"/>
     <item name="follower_cancel_btn" type="id"/>
+
+    <!--daily journey table-->
+    <item name="daily_recyclerview" type="id"/>
+    <item name="daily_datetime_tv" type="id"/>
+    <item name="daily_oAddress_tv" type="id"/>
+    <item name="daily_eAddress_tv" type="id"/>
+    <item name="daily_gender_tv" type="id"/>
+    <item name="daily_min_age_tv" type="id"/>
+    <item name="daily_max_age_tv" type="id"/>
+    <item name="daily_score_tv" type="id"/>
 </resources>

@@ -7,8 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,12 +20,14 @@
         android:theme="@style/Theme.Journey_sharing"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.DailyJourneyTableActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.FollowerPeerGroupActivity"
             android:exported="true" />
         <activity
             android:name=".activity.RateComActivity"
             android:exported="false" />
-
         <activity
             android:name=".activity.showDetail"
             android:exported="false" />
@@ -66,19 +69,18 @@
             android:theme="@style/Theme.AppCompat.Light.ActionBar" />
         <activity
             android:name=".activity.NavigationActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".activity.NavigationViewActivity"
-            android:exported="true" >
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".activity.ChatActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.ActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

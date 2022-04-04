@@ -90,4 +90,6 @@
     <!--  end  message use this-->
     <string name="PEER_LIST">PEER_LIST</string>
     <string name="CURRENT_PEER_EMAIL">CURRENT_PEER_EMAIL</string>
+    <!--condition list in condition activity-->
+    <string name="CONDITION_LIST">CONDITION_LIST</string>
 </resources>

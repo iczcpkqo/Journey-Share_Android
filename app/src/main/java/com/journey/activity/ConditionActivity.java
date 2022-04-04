@@ -170,7 +170,6 @@ public class ConditionActivity extends AppCompatActivity {
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
             sendConInfo();
-//            leaderSelection();
 //            testNavigationActivity();
         });
     }
@@ -233,24 +232,49 @@ public class ConditionActivity extends AppCompatActivity {
         end_lon = location.get(3).toString();
         end_lat = location.get(2).toString();
     }
+    private ConditionInfo getConditionInfo(){
+        ConditionInfo conditionInfo = new ConditionInfo(
+                choose_date,origin_address,end_address,prefer_gender,
+                min_age,max_age, min_score,origin_lon,origin_lat,end_lon,
+                end_lat,startAddress,destination,journeyMode);
+        return conditionInfo;
+    }
     private void sendConInfo(){
         infoChecker();
-        Intent conInfo = new Intent(this, RealTimeJourneyTableActivity.class);
         if(awesomeValidation.validate()){
             getText();
-            ConditionInfo conditionInfo = new ConditionInfo(choose_date,origin_address,
-                    end_address,prefer_gender,min_age,max_age,
-                    min_score,origin_lon,origin_lat,end_lon,end_lat,startAddress,destination,journeyMode);
-            //send serialized conditionInfo to real time activity
-            conInfo.putExtra(CONDITION_INFO,conditionInfo);
-            startActivityForResult(conInfo,1);
-            //startActivity(conInfo);
+            //get condition object
+            ConditionInfo conditionInfo = getConditionInfo();
+            //get id from daily and real time fragments
+            Intent intent = getIntent();
+            int id = intent.getIntExtra("id",0);
+            // check if it is daily mode or real time mode
+            // if id == 1, send condition info to realTimeJourneyTable
+            if(id == 1){
+                Intent conInfo = new Intent(this, RealTimeJourneyTableActivity.class);
+                //send serialized conditionInfo to real time activity
+                conInfo.putExtra(CONDITION_INFO,conditionInfo);
+                startActivityForResult(conInfo,1);
+            }else if(id == 0){
+
+                Intent conInfo = new Intent(this, DailyJourneyTableActivity.class);
+                addDailyJourney(conditionInfo);
+                startActivityForResult(conInfo,1);
+            }
         }else if(!male.isChecked() && !female.isChecked() && !other.isChecked()){
             Toast.makeText(ConditionActivity.this,"please select gender",Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Please complete your information!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void addDailyJourney(ConditionInfo conditionInfo) {
+        List<ConditionInfo> conditionInfoList = new ArrayList<>();
+        Intent conInfo = new Intent(this, DailyJourneyTableActivity.class);
+        conInfo.putExtra(getString(R.string.CONDITION_LIST), conditionInfoList.add(conditionInfo));
+        startActivityForResult(conInfo,1);
+    }
+
     /**
      *@desc: check the user input fields
      *@author: Congqin yan
