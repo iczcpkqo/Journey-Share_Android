@@ -59,7 +59,7 @@ public class FirebaseOperation {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Handler mainHandler;
     private DocumentReference noteRef;
-    private int sleepTime = 2000;
+    private int sleepTime = 1000;
 
     static public void isExist(String collectionPath,String documentPath,Handler currentHandler)
     {

@@ -22,6 +22,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.journey.R;
+import com.journey.map.network.NetworkUtils;
 import com.journey.service.database.ChatingService;
 import com.journey.map.ParseRoutes;
 import com.journey.map.network.FirebaseOperation;
@@ -84,6 +85,10 @@ public class NavigationActivity extends AppCompatActivity implements
     DirectionsRoute currentRoute_1;
     DirectionsRoute currentRoute_2;
     Button navigationButton;
+    NetworkUtils network = new NetworkUtils();
+
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -173,7 +178,11 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else if(msg.what == FirebaseOperation.FIELD_NOT_FOUND)
             {
-                toast((String) msg.obj);
+                if(!NetworkUtils.isNetworkConnected(getApplicationContext()))
+                {
+                    toast("Automatic navigation due to network loss !");
+                    setToNavigationRoute(currentRoute_2,false);
+                }
                 FirebaseOperation fir = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
                 fir.startListnere("map",currentPeer.getUuid(),"START");
             }
@@ -370,7 +379,7 @@ public class NavigationActivity extends AppCompatActivity implements
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
         navigationButton = findViewById(R.id.select_navigation_button);
-        if(isLeader(peersList,currentPeer))
+        if(!isLeader(peersList,currentPeer))
         {
             navigationButton.setOnClickListener(new View.OnClickListener() {
                 @Override
