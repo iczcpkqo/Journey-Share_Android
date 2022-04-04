@@ -17,6 +17,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.journey.dontremoveme.Chating;
 import com.journey.entity.Record;
 import com.journey.fragments.AccountFragment;
 import com.journey.R;
@@ -65,6 +66,7 @@ public class JourneyActivity extends AppCompatActivity {
                     selectedFragment = new RecordFragment();
                     break;
                 case R.id.journeyFragment:
+                    Chating.refreshFriends();
                     selectedFragment = new JourneyFragment();
                     break;
                 case R.id.messageFragment:
