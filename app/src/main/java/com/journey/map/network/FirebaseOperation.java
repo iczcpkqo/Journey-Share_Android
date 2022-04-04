@@ -180,7 +180,40 @@ public class FirebaseOperation {
         noteRef = db.collection(collectionPath).document(documentPath);
         mainHandler = handler;
     }
+    static public  void saveDocData(String collectionPath,String documentPath,Map<String, Object> data,Handler mhandler,int saveWhat)
+    {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        DocumentReference  noteRef = db.collection(collectionPath).document(documentPath);
+
+        db.collection(collectionPath).document(documentPath)
+                .set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("firebaseSuccess", "DocumentSnapshot successfully written!");
+                        if(saveWhat != -1 && mhandler != null)
+                        {
+                            Message mg = new Message();
+                            mg.what   = saveWhat;
+                            mhandler.sendMessage(mg);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("firebaseFailure", "Error writing document", e);
+                        if(saveWhat != -1 && mhandler != null)
+                        {
+                            Message mg = new Message();
+                            mg.what   = saveWhat;
+                            mhandler.sendMessage(mg);
+                        }
+                    }
+                });
+    }
     public void  saveDocData(String collectionPath,String documentPath,Map<String, Object> data,int saveWhat)
     {
         //collectionPath = map
