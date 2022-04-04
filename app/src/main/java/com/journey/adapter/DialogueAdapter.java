@@ -1,30 +1,19 @@
 package com.journey.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.protobuf.DescriptorProtos;
 import com.journey.R;
-import com.journey.activity.Chat;
-import com.journey.activity.JourneyActivity;
-import com.journey.entity.ChatDeliver;
 import com.journey.entity.Dialogue;
-import com.journey.entity.User;
+import com.journey.service.database.ChatingService;
 import com.journey.service.database.DialogueHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,7 +60,7 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 int position = holder.getLayoutPosition();
-                Chating.go(context, dialogueList.get(position));
+                ChatingService.go(context, dialogueList.get(position));
             }
         });
         return holder;

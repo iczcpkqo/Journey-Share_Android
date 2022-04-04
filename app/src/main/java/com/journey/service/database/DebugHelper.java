@@ -10,11 +10,8 @@ import com.google.common.collect.Lists;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.journey.adapter.Chating;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -73,7 +70,7 @@ public class DebugHelper {
                 for (; n>dialogues.size(); dialogues.add((ArrayList<String>) getNRandomEmail(t)));
 
                 for(ArrayList<String> players : dialogues)
-                    Chating.add(players);
+                    ChatingService.add(players);
             }
         }).start();
     }

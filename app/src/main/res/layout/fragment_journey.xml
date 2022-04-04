@@ -9,12 +9,13 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_height="45dp"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:text="@string/journey_fragment"
         android:textColor="@color/white"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/mode_navigation"

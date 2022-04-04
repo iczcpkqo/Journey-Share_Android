@@ -7,12 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +20,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.R;
-import com.journey.adapter.RecordItemAdapter;
+import com.journey.adapter.RecordAdapter;
 import com.journey.entity.Record;
 
 import java.util.ArrayList;
@@ -52,7 +49,7 @@ public class RecordFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_record,container,false);
         records = new ArrayList<>();
         mlistView = v.findViewById(R.id.listView);
-        RecordItemAdapter adapter = new RecordItemAdapter(this.getContext(),records);
+        RecordAdapter adapter = new RecordAdapter(this.getContext(),records);
         mlistView.setAdapter(adapter);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();

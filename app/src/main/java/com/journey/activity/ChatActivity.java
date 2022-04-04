@@ -1,59 +1,42 @@
 package com.journey.activity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.journey.R;
-import com.journey.adapter.DialogueAdapter;
-import com.journey.adapter.MsgAdapter;
+import com.journey.adapter.MessageAdapter;
 import com.journey.entity.ChatDeliver;
 import com.journey.entity.Dialogue;
 import com.journey.entity.Msg;
 import com.journey.entity.User;
-import com.journey.service.database.DialogueHelper;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author: Xiang Mao
  * @date: 2022-03-26-04:00
  * @tag: Chat
  */
-public class Chat extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
 
     private static final String TAG = "Chat";
     private List<Msg> msgList = new ArrayList<>();
@@ -61,7 +44,7 @@ public class Chat extends AppCompatActivity {
     private RecyclerView msgRecycler;
     private EditText msgInput;
     private Button msgBtn;
-    private MsgAdapter adapter;
+    private MessageAdapter adapter;
     private LinearLayoutManager layoutManager;
     private Dialogue dialogue;
 
@@ -72,7 +55,7 @@ public class Chat extends AppCompatActivity {
         this.msgRecycler = (RecyclerView) findViewById(R.id.msg_recycler_view);
         this.msgInput = (EditText) findViewById(R.id.msg_input_text);
         this.msgBtn = (Button) findViewById(R.id.msg_btn);
-        this.adapter = new MsgAdapter(msgList);
+        this.adapter = new MessageAdapter(msgList);
         this.layoutManager = new LinearLayoutManager(this);
 
         // 移除test data

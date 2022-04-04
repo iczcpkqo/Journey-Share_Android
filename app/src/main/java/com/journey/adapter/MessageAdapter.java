@@ -1,12 +1,10 @@
 package com.journey.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +20,7 @@ import java.util.List;
  * @date: 2022-03-26-04:00
  * @tag: Chat
  */
-public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
     private List<Msg> msgList;
     private User sender;
@@ -46,14 +44,14 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
         }
     }
 
-    public MsgAdapter(List<Msg> data){
+    public MessageAdapter(List<Msg> data){
         this.msgList = data;
         this.sender = DialogueHelper.getSender();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.msg_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.message_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

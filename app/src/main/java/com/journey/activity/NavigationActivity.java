@@ -22,7 +22,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.journey.R;
-import com.journey.adapter.Chating;
+import com.journey.service.database.ChatingService;
 import com.journey.map.ParseRoutes;
 import com.journey.map.network.FirebaseOperation;
 import com.journey.model.Peer;
@@ -109,7 +109,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else
             {
-                Chating.addWithMe(getUserNames(peersList));
+                ChatingService.addWithMe(getUserNames(peersList));
                 toast("You have arrived at your destination.");
                 try {
                     Thread.sleep(3000);

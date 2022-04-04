@@ -14,9 +14,9 @@ import com.journey.entity.Record;
 
 import java.util.ArrayList;
 
-public class RecordItemAdapter extends ArrayAdapter<Record> {
+public class RecordAdapter extends ArrayAdapter<Record> {
 
-    public RecordItemAdapter(Context context, ArrayList<Record> records){
+    public RecordAdapter(Context context, ArrayList<Record> records){
         super(context,0,records);
     }
 
@@ -24,7 +24,7 @@ public class RecordItemAdapter extends ArrayAdapter<Record> {
     public View getView(int position, View convertView, ViewGroup parent){
         Record record = getItem(position);
         if (convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_record_listitem,parent,false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.record_item,parent,false);
         }
         TextView departure = (TextView) convertView.findViewById(R.id.departure);
         TextView arrival = (TextView) convertView.findViewById(R.id.arrival);
