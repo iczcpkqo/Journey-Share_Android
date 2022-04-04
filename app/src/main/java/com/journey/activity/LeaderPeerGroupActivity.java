@@ -23,7 +23,6 @@ import com.alibaba.fastjson.serializer.JSONSerializer;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.R;
-import com.journey.adapter.Chating;
 import com.journey.adapter.LeaderPeerAdapter;
 import com.journey.adapter.ReqResApi;
 import com.journey.dontremoveme.Chating;
