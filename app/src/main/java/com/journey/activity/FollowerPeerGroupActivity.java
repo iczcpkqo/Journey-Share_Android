@@ -16,10 +16,10 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.journey.R;
-import com.journey.adapter.Chating;
 import com.journey.adapter.FollowerPeerAdapter;
 import com.journey.adapter.LeaderPeerAdapter;
 import com.journey.adapter.ReqResApi;
+import com.journey.dontremoveme.Chating;
 import com.journey.map.network.FirebaseOperation;
 import com.journey.model.Peer;
 import com.journey.service.database.DialogueHelper;
