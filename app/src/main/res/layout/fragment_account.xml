@@ -32,7 +32,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="644dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
@@ -43,16 +43,17 @@
                     android:src="@drawable/h_1" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:gravity="center">
 
                     <EditText
                         android:id="@+id/Username"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
+                        android:textAlignment="center"
                         android:text="Username"
                         android:textColor="@color/teal_200"
                         android:textFontWeight="1000"
@@ -61,19 +62,21 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
 
                         <TextView
                             android:id="@+id/Email_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
                             android:layout_marginTop="15dp"
+                            android:layout_marginStart="140dp"
                             android:text="Email:"
                             android:textFontWeight="1000"
                             android:textSize="20dp"
+
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/Username" />
 
@@ -92,7 +95,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
@@ -100,7 +103,7 @@
                             android:id="@+id/Phone_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
+                            android:layout_marginStart="130dp"
                             android:layout_marginTop="15dp"
                             android:text="Phone:"
                             android:textFontWeight="1000"
@@ -123,7 +126,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
@@ -131,7 +134,7 @@
                             android:id="@+id/Gender_hint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
+                            android:layout_marginStart="130dp"
                             android:layout_marginTop="15dp"
                             android:text="Gender:"
                             android:textFontWeight="1000"
@@ -141,7 +144,7 @@
 
                         <TextView
                             android:id="@+id/Gender"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="15dp"
@@ -160,7 +163,7 @@
 
                         <TextView
                             android:id="@+id/Age_hint"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="30dp"
                             android:layout_marginTop="15dp"
@@ -247,31 +250,44 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
 
                         <Button
                             android:id="@+id/Modify"
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="15dp"
+                            android:layout_marginStart="70dp"
                             android:background="@drawable/round_corner"
                             android:text="Modify"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/Mark_hint" />
-
                         <Button
                             android:id="@+id/Logout"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="40dp"
-                            android:layout_marginTop="15dp"
                             android:background="@drawable/round_corner"
                             android:text="Log out"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/information_container_fragment" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content">
+                        <Button
+                            android:id="@+id/download_map"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:background="@drawable/round_corner"
+                            android:text="Download Map"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/Mark_hint" />
 
                     </LinearLayout>
 

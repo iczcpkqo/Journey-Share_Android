@@ -41,6 +41,7 @@
 
     <!--daily journey table-->
     <item name="daily_recyclerview" type="id"/>
+    <item name="daily_userName_tv" type="id"/>
     <item name="daily_datetime_tv" type="id"/>
     <item name="daily_oAddress_tv" type="id"/>
     <item name="daily_eAddress_tv" type="id"/>
@@ -48,4 +49,8 @@
     <item name="daily_min_age_tv" type="id"/>
     <item name="daily_max_age_tv" type="id"/>
     <item name="daily_score_tv" type="id"/>
+    <item name="daily_mode_tv" type="id"/>
+
+    <!--account fragment-->
+    <item name="download_map" type="id"/>
 </resources>

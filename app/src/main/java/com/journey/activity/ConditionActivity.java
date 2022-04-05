@@ -117,19 +117,13 @@ public class ConditionActivity extends AppCompatActivity {
     private String end_lat;
     private String startAddress;
     private String destination;
-    private String journeyMode;
+    private String journey_mode;
 
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.137:8080/")
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message message) {
-
             if(message.what == 1){
-
+                Toast.makeText(ConditionActivity.this,"Save condition to database",Toast.LENGTH_SHORT).show();
             }
             return false;
         }
@@ -188,48 +182,7 @@ public class ConditionActivity extends AppCompatActivity {
     private void submitConditionData() {
         submit.setOnClickListener(view -> {
             sendConInfo();
-//            testNavigationActivity();
         });
-    }
-
-    /**
-     *@className: TEST
-     *@desc:
-     *@author: Guowen Liu
-     *@date: 2022/3/12 14:45
-     */
-    private void testNavigationActivity(){
-        String testJson  = "[{\n" +
-                " \"email\": \"11@qq.com\",\n" +
-                " \"gender\": 1,\n" +
-                " \"age\": 29,\n" +
-                " \"score\": 4.1,\n" +
-                " \"longitude\": 53.13424,\n" +
-                " \"latitude\": -6.13929,\n" +
-                " \"dLongtitude\": 53.15922,\n" +
-                " \"dLatitude\": -6.1012,\n" +
-                " \"startTime\": 2193932002,\n" +
-                " \"endTime\": 2196662719,\n" +
-                " \"limit\": 5,\n" +
-                " \"isLeader\": true\n" +
-                "}, {\n" +
-                " \"email\": \"11@qq.com\",\n" +
-                " \"gender\": 1,\n" +
-                " \"age\": 29,\n" +
-                " \"score\": 4.1,\n" +
-                " \"longitude\": 53.13424,\n" +
-                " \"latitude\": -6.13929,\n" +
-                " \"dLongtitude\": 53.15922,\n" +
-                " \"dLatitude\": -6.1012,\n" +
-                " \"startTime\": 2193932002,\n" +
-                " \"endTime\": 2196662719,\n" +
-                " \"limit\": 5,\n" +
-                " \"isLeader\": false\n" +
-                "}]";
-
-        Intent conInfo = new Intent(this, NavigationActivity.class);
-        conInfo.putExtra("list", testJson);
-        startActivity(conInfo);
     }
     /**
      *@desc: send the information into realTimeJourneyTable
@@ -242,7 +195,7 @@ public class ConditionActivity extends AppCompatActivity {
         origin_address = originPlace.getText().toString().trim();
         end_address = endPlace.getText().toString().trim();
         prefer_gender = gender[0];
-        journeyMode = mode[0];
+        journey_mode = mode[0];
         min_age = minAge.getText().toString().trim();
         max_age = maxAge.getText().toString().trim();
         min_score = score.getText().toString().trim();
@@ -255,25 +208,27 @@ public class ConditionActivity extends AppCompatActivity {
         ConditionInfo conditionInfo = new ConditionInfo(
                 userEmail,choose_date,origin_address,end_address,prefer_gender,
                 min_age,max_age, min_score,origin_lon,origin_lat,end_lon,
-                end_lat,startAddress,destination,journeyMode);
+                end_lat,startAddress,destination,journey_mode);
         return conditionInfo;
     }
 
     private void saveData(String email,
                           String dateTime,
+                          String originAddress,
                           String endAddress,
-                          String end_lat,
+                          String origin_lon,
+                          String origin_lat,
                           String end_lon,
-                          String journeyMode,
+                          String end_lat,
                           String maxAge,
                           String minAge,
-                          String originAddress,
-                          String origin_lat,
-                          String origin_lon,
-                          String preferGender)
+                          String minScore,
+                          String preferGender,
+                          String journeyMode)
     {
         Map<String,Object> data = new HashMap<String,Object>();
         data.put("email",email);
+        data.put("minScore",minScore);
         data.put("dateTime",dateTime);
         data.put("endAddress",endAddress);
         data.put("end_lat",end_lat);
@@ -308,10 +263,12 @@ public class ConditionActivity extends AppCompatActivity {
                 conInfo.putExtra(CONDITION_INFO,conditionInfo);
                 startActivityForResult(conInfo,1);
             }else if(id == 0){
-                saveData();
+
+                saveData(userEmail,choose_date,origin_address,end_address,
+                        origin_lon,origin_lat,end_lon,end_lat,
+                        min_age,max_age,min_score,prefer_gender,journey_mode);
 
                 Intent conInfo = new Intent(this, DailyJourneyTableActivity.class);
-                addDailyJourney(conditionInfo);
                 startActivityForResult(conInfo,1);
             }
         }else if(!male.isChecked() && !female.isChecked() && !other.isChecked()){
@@ -319,13 +276,6 @@ public class ConditionActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Please complete your information!", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void addDailyJourney(ConditionInfo conditionInfo) {
-        List<ConditionInfo> conditionInfoList = new ArrayList<>();
-        Intent conInfo = new Intent(this, DailyJourneyTableActivity.class);
-        conInfo.putExtra(getString(R.string.CONDITION_LIST), conditionInfoList.add(conditionInfo));
-        startActivityForResult(conInfo,1);
     }
 
     /**
@@ -542,10 +492,6 @@ public class ConditionActivity extends AppCompatActivity {
                 }
             }
         }
-//        else if (resultCode == RESULT_CANCELED)
-//        {
-            // No results
-//        }
     }
 
     // back journey home listener

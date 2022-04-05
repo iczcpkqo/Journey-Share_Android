@@ -34,10 +34,15 @@ public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCa
     @Override
     public void onBindViewHolder(@NonNull DailyViewHolder holder, int position) {
         ConditionInfo conditionInfo = conditionInfoList.get(position);
-        holder.email.setText(conditionInfo.getDateTime());
-        holder.gender.setText("gender : " + conditionInfo.getStartAddress());
-        holder.age.setText("age :" + conditionInfo.getDestination());
-        holder.score.setText("score :" + conditionInfo.getMinScore());
+        holder.email.setText(conditionInfo.getUserEmail());
+        holder.date.setText(conditionInfo.getDateTime());
+        holder.oAddress.setText(conditionInfo.getOriginAddress());
+        holder.eAddress.setText(conditionInfo.getEndAddress());
+        holder.gender.setText(conditionInfo.getPreferGender());
+        holder.min_age.setText(conditionInfo.getMinAge());
+        holder.max_age.setText(conditionInfo.getMaxAge());
+        holder.score.setText(conditionInfo.getMinScore());
+        holder.mode.setText(conditionInfo.getJourneyMode());
     }
 
     @Override
@@ -46,17 +51,23 @@ public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCa
     }
 
     public class DailyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView email, gender, age, score;
-        ImageView imageView;
+        TextView email, date, oAddress, eAddress,gender, min_age,max_age, score, mode;
 
         public DailyViewHolder(@NonNull View itemView) {
             super(itemView);
-            email = itemView.findViewById(R.id.follower_user_id_tv);
-            gender = itemView.findViewById(R.id.follower_id_tv);
-            age = itemView.findViewById(R.id.follower_title_tv);
-            score = itemView.findViewById(R.id.follower_body_tv);
+            email = itemView.findViewById(R.id.daily_userName_tv);
+            date = itemView.findViewById(R.id.daily_datetime_tv);
+            oAddress = itemView.findViewById(R.id.daily_oAddress_tv);
+            eAddress = itemView.findViewById(R.id.daily_eAddress_tv);
+            gender = itemView.findViewById(R.id.daily_gender_tv);
+            min_age = itemView.findViewById(R.id.daily_min_age_tv);
+            max_age = itemView.findViewById(R.id.daily_max_age_tv);
+            score = itemView.findViewById(R.id.daily_score_tv);
+            mode = itemView.findViewById(R.id.daily_mode_tv);
         }
-
+//        public interface OnItemListener{
+//            void onItemClick(int position);
+//        }
         @Override
         public void onClick(View view) {
 
