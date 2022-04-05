@@ -9,11 +9,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+import com.google.gson.Gson;
 import com.journey.R;
 import com.journey.adapter.DailyJourneyCardAdapter;
 import com.journey.adapter.FollowerPeerAdapter;
+import com.journey.adapter.ParseDailyInfo;
 import com.journey.map.network.FirebaseOperation;
 import com.journey.model.ConditionInfo;
+import com.journey.model.DailyInfo;
 import com.journey.service.database.DialogueHelper;
 
 import org.json.JSONArray;
@@ -26,16 +30,16 @@ import java.util.Map;
 
 public class DailyJourneyTableActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-
-    JSONObject conJson;
     private Handler mhandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message message) {
 
             if(message.what == 1)
             {
-                conJson = (JSONObject) message.obj;
-
+                //Transform a json to java object
+                String json = (String) message.obj;
+                ParseDailyInfo parseDailyInfo = new ParseDailyInfo(json);
+                List<DailyInfo> dailyInfoList = parseDailyInfo.parseJsonArray();
             }
             return false;
         }
@@ -51,11 +55,9 @@ public class DailyJourneyTableActivity extends AppCompatActivity {
 
     }
     private void showDailyTable(){
-        List<ConditionInfo> conditionInfoList = new ArrayList<>();
-
+        List<DailyInfo> dailyInfoList = new ArrayList<>();
         FirebaseOperation.fuzzyQueries("daily","email", DialogueHelper.getSender().getEmail(),mhandler);
-
-        DailyJourneyCardAdapter dailyJourneyCardAdapter = new DailyJourneyCardAdapter(DailyJourneyTableActivity.this, conditionInfoList);
+        DailyJourneyCardAdapter dailyJourneyCardAdapter = new DailyJourneyCardAdapter(DailyJourneyTableActivity.this, dailyInfoList);
         recyclerView.setAdapter(dailyJourneyCardAdapter);
     }
 

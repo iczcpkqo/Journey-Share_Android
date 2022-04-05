@@ -12,17 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.journey.R;
 import com.journey.model.ConditionInfo;
+import com.journey.model.DailyInfo;
 import com.journey.model.Peer;
 
 import java.util.List;
 
 public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCardAdapter.DailyViewHolder> {
 
-    List<ConditionInfo> conditionInfoList;
+    List<DailyInfo> dailyInfoList;
     Context context;
-    public DailyJourneyCardAdapter(Context context , List<ConditionInfo> conditionInfoList){
+    public DailyJourneyCardAdapter(Context context , List<DailyInfo> dailyInfoList){
         this.context = context;
-        this.conditionInfoList = conditionInfoList;
+        this.dailyInfoList = dailyInfoList;
     }
     @NonNull
     @Override
@@ -33,21 +34,21 @@ public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCa
 
     @Override
     public void onBindViewHolder(@NonNull DailyViewHolder holder, int position) {
-        ConditionInfo conditionInfo = conditionInfoList.get(position);
-        holder.email.setText(conditionInfo.getUserEmail());
-        holder.date.setText(conditionInfo.getDateTime());
-        holder.oAddress.setText(conditionInfo.getOriginAddress());
-        holder.eAddress.setText(conditionInfo.getEndAddress());
-        holder.gender.setText(conditionInfo.getPreferGender());
-        holder.min_age.setText(conditionInfo.getMinAge());
-        holder.max_age.setText(conditionInfo.getMaxAge());
-        holder.score.setText(conditionInfo.getMinScore());
-        holder.mode.setText(conditionInfo.getJourneyMode());
+        DailyInfo dailyInfo = dailyInfoList.get(position);
+        holder.email.setText(dailyInfo.getEmail());
+        holder.date.setText(dailyInfo.getDateTime());
+        holder.oAddress.setText(dailyInfo.getOriginAddress());
+        holder.eAddress.setText(dailyInfo.getEndAddress());
+        holder.gender.setText(dailyInfo.getPreferGender());
+        holder.min_age.setText(dailyInfo.getMinAge());
+        holder.max_age.setText(dailyInfo.getMaxAge());
+        holder.score.setText(dailyInfo.getMinScore());
+        holder.mode.setText(dailyInfo.getJourneyMode());
     }
 
     @Override
     public int getItemCount() {
-        return conditionInfoList.size();
+        return dailyInfoList.size();
     }
 
     public class DailyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

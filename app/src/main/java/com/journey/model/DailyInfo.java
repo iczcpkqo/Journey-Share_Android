@@ -1,50 +1,44 @@
 package com.journey.model;
 
-import java.io.Serializable;
-
-public class ConditionInfo implements Serializable {
-    private String userEmail;
+public class DailyInfo {
+    private String email;
     private String dateTime;
     private String originAddress;
     private String endAddress;
-    private String preferGender;
-    private String minAge;
-    private String maxAge;
-    private String minScore;
     private String origin_lon;
     private String origin_lat;
     private String end_lon;
     private String end_lat;
-    private String startAddress;
-    private String destination;
+    private String maxAge;
+    private String minAge;
+    private String minScore;
+    private String preferGender;
     private String journeyMode;
     private String route;
 
-    public ConditionInfo(String userEmail, String dateTime, String originAddress, String endAddress, String preferGender, String minAge, String maxAge, String minScore, String origin_lon, String origin_lat, String end_lon, String end_lat, String startAddress, String destination, String journeyMode, String route) {
-        this.userEmail = userEmail;
+    public DailyInfo(String email, String dateTime, String originAddress, String endAddress, String origin_lon, String origin_lat, String end_lon, String end_lat, String maxAge, String minAge, String minScore, String preferGender, String journeyMode, String route) {
+        this.email = email;
         this.dateTime = dateTime;
         this.originAddress = originAddress;
         this.endAddress = endAddress;
-        this.preferGender = preferGender;
-        this.minAge = minAge;
-        this.maxAge = maxAge;
-        this.minScore = minScore;
         this.origin_lon = origin_lon;
         this.origin_lat = origin_lat;
         this.end_lon = end_lon;
         this.end_lat = end_lat;
-        this.startAddress = startAddress;
-        this.destination = destination;
+        this.maxAge = maxAge;
+        this.minAge = minAge;
+        this.minScore = minScore;
+        this.preferGender = preferGender;
         this.journeyMode = journeyMode;
         this.route = route;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getDateTime() {
@@ -69,38 +63,6 @@ public class ConditionInfo implements Serializable {
 
     public void setEndAddress(String endAddress) {
         this.endAddress = endAddress;
-    }
-
-    public String getPreferGender() {
-        return preferGender;
-    }
-
-    public void setPreferGender(String preferGender) {
-        this.preferGender = preferGender;
-    }
-
-    public String getMinAge() {
-        return minAge;
-    }
-
-    public void setMinAge(String minAge) {
-        this.minAge = minAge;
-    }
-
-    public String getMaxAge() {
-        return maxAge;
-    }
-
-    public void setMaxAge(String maxAge) {
-        this.maxAge = maxAge;
-    }
-
-    public String getMinScore() {
-        return minScore;
-    }
-
-    public void setMinScore(String minScore) {
-        this.minScore = minScore;
     }
 
     public String getOrigin_lon() {
@@ -135,20 +97,36 @@ public class ConditionInfo implements Serializable {
         this.end_lat = end_lat;
     }
 
-    public String getStartAddress() {
-        return startAddress;
+    public String getMaxAge() {
+        return maxAge;
     }
 
-    public void setStartAddress(String startAddress) {
-        this.startAddress = startAddress;
+    public void setMaxAge(String maxAge) {
+        this.maxAge = maxAge;
     }
 
-    public String getDestination() {
-        return destination;
+    public String getMinAge() {
+        return minAge;
     }
 
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setMinAge(String minAge) {
+        this.minAge = minAge;
+    }
+
+    public String getMinScore() {
+        return minScore;
+    }
+
+    public void setMinScore(String minScore) {
+        this.minScore = minScore;
+    }
+
+    public String getPreferGender() {
+        return preferGender;
+    }
+
+    public void setPreferGender(String preferGender) {
+        this.preferGender = preferGender;
     }
 
     public String getJourneyMode() {

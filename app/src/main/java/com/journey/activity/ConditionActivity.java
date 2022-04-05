@@ -208,7 +208,7 @@ public class ConditionActivity extends AppCompatActivity {
         ConditionInfo conditionInfo = new ConditionInfo(
                 userEmail,choose_date,origin_address,end_address,prefer_gender,
                 min_age,max_age, min_score,origin_lon,origin_lat,end_lon,
-                end_lat,startAddress,destination,journey_mode);
+                end_lat,startAddress,destination,journey_mode,null);
         return conditionInfo;
     }
 
@@ -224,18 +224,19 @@ public class ConditionActivity extends AppCompatActivity {
                           String minAge,
                           String minScore,
                           String preferGender,
-                          String journeyMode)
+                          String journeyMode,
+                          String route)
     {
         Map<String,Object> data = new HashMap<String,Object>();
         data.put("email",email);
-        data.put("minScore",minScore);
         data.put("dateTime",dateTime);
-        data.put("endAddress",endAddress);
-        data.put("end_lat",end_lat);
-        data.put("end_lon",end_lon);
         data.put("originAddress",originAddress);
-        data.put("origin_lat",origin_lat);
+        data.put("endAddress",endAddress);
         data.put("origin_lon",origin_lon);
+        data.put("origin_lat",origin_lat);
+        data.put("minScore",minScore);
+        data.put("end_lon",end_lon);
+        data.put("end_lat",end_lat);
         data.put("maxAge",maxAge);
         data.put("minAge",minAge);
         data.put("journeyMode",journeyMode);
@@ -266,7 +267,7 @@ public class ConditionActivity extends AppCompatActivity {
 
                 saveData(userEmail,choose_date,origin_address,end_address,
                         origin_lon,origin_lat,end_lon,end_lat,
-                        min_age,max_age,min_score,prefer_gender,journey_mode);
+                        min_age,max_age,min_score,prefer_gender,journey_mode,null);
 
                 Intent conInfo = new Intent(this, DailyJourneyTableActivity.class);
                 startActivityForResult(conInfo,1);
