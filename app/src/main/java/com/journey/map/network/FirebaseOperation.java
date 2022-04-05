@@ -62,6 +62,28 @@ public class FirebaseOperation {
     private DocumentReference noteRef;
     private int sleepTime = 1000;
 
+    static public void updata(String collectionPath,String documentPath,String key,Object value)
+    {
+        FirebaseFirestore sdb = FirebaseFirestore.getInstance();
+        DocumentReference washingtonRef = sdb.collection(collectionPath).document(documentPath);
+
+        // Set the "isCapital" field of the city 'DC'
+        washingtonRef
+                .update(key, value)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+    }
+
     static public void isExist(String collectionPath,String documentPath,Handler currentHandler)
     {
 
@@ -107,6 +129,36 @@ public class FirebaseOperation {
                         {
                             message.what = 1;
                             message.obj = jsonMsg;
+                            break;
+                        }
+                        break;
+                    }
+
+                } else {
+                    message.what = 0;
+                }
+                mhandler.sendMessage(message);
+            }
+        });
+    }
+
+    public static  void  fuzzyQueriesToData(String collectionPath,String key,String value,Handler mhandler) {
+        FirebaseFirestore fuzzyDb = FirebaseFirestore.getInstance();
+
+        fuzzyDb.collection(collectionPath).whereEqualTo(key,value).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Message message = new Message();
+                message.what = 0;
+
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Map<String, Object> data = document.getData();
+                        data.put("uuid",document.getId());
+                        if(data != null)
+                        {
+                            message.what = 1;
+                            message.obj = data;
                             break;
                         }
                         break;

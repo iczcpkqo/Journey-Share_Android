@@ -153,11 +153,11 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                                                 FirebaseOperation operation = new FirebaseOperation(getString(R.string.firebase_record),currentPeer.getUuid(),mHandler);
                                                 Map<String,Object> data = new HashMap<String,Object>();
                                                 data.put(BE_LONG_TO,currentPeer.getEmail());
-                                                data.put(ARRIVAL,currentPeer.getDestination());
+                                                data.put(ARRIVAL,lg.summary());
                                                 data.put(ARRIVAL_DATE,new Timestamp(new Date()));
                                                 data.put(DEPARTURE, currentPeer.getStartAddress());
                                                 data.put(COMPANION, allName);
-                                                data.put(DISTANCE,routeProgress.distanceTraveled());
+                                                data.put(DISTANCE, String.format("%.2f",routeProgress.distanceTraveled()/1000)+"(km)");
                                                 double cost = ((routeProgress.distanceTraveled()/1000)*1.14)+3.8;
                                                 String costString = String.format("%.2f",cost)+"€";
                                                 data.put(COST,costString);

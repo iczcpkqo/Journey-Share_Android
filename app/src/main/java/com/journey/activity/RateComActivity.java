@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +14,8 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -27,8 +31,13 @@ import com.journey.R;
 import com.journey.adapter.RatingItemAdapter;
 import com.journey.entity.Rating;
 import com.journey.entity.Record;
+import com.journey.map.network.FirebaseOperation;
+import com.journey.model.Peer;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -37,7 +46,37 @@ public class RateComActivity extends AppCompatActivity {
 
     ArrayList<Rating> ratingTarget;
     RatingItemAdapter rid;
+    Handler mainHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(@NonNull Message message) {
+            if(message.what == 1)
+            {
+                Map<String, Object> data = (Map<String, Object>) message.obj;
+                Long orderNumber = (Long) data.get("order");
+                double mark = (double) data.get("mark");
+                Rating rt = findRating((String) data.get("email"));
+                mark += rt.getRating();
+                String uuid = (String) data.get("uuid");
+                FirebaseOperation.updata("users",uuid,"mark",mark/orderNumber);
+                FirebaseOperation.updata("users",uuid,"order",orderNumber);
+                FirebaseOperation.updata("users",uuid,"uuid",uuid);
+            }
+            return false;
+        }
+    });
 
+    private  Rating findRating(String email)
+    {
+        Rating rt = null;
+        Iterator<Rating> iter = ratingTarget.iterator();
+        while (iter.hasNext()) {
+            rt = iter.next();
+            if (rt.getTo().equals(email)){
+                break;
+            }
+        };
+        return  rt;
+    }
     public void ratingChangeHandler(RatingBar view){
 
         String target = view.getTag().toString();
@@ -74,6 +113,13 @@ public class RateComActivity extends AppCompatActivity {
         }
         rid.notifyDataSetChanged();
         button.setText("Rated");
+
+        Iterator<Rating> iter = ratingTarget.iterator();
+        while (iter.hasNext()) {
+            Rating currentRating = iter.next();
+
+            FirebaseOperation.fuzzyQueriesToData("users","email",currentRating.getTo(),mainHandler);
+        }
 
     }
 

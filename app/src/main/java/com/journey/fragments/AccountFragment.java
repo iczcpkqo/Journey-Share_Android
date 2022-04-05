@@ -31,7 +31,9 @@ import com.journey.R;
 import com.journey.RegisterActivity;
 import com.journey.activity.ConditionActivity;
 import com.journey.fragments.journeyModeFragments.DailyFragment;
+import com.journey.map.OfflineMap;
 import com.journey.service.database.DialogueHelper;
+import com.mapbox.mapboxsdk.plugins.offline.ui.OfflineActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,7 +42,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
-
 
 public class AccountFragment extends Fragment {
     private Button modify;
@@ -53,6 +54,7 @@ public class AccountFragment extends Fragment {
     private TextView age;
     private TextView birthday;
     private Button logout;
+    private Button mapButton;
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseAuth mAuth;
 
@@ -81,6 +83,15 @@ public class AccountFragment extends Fragment {
         age = view.findViewById(R.id.Age);
         birthday = view.findViewById(R.id.Birthday);
         logout = view.findViewById(R.id.Logout);
+        mapButton =  view.findViewById(R.id.download_map);
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent =  new Intent(AccountFragment.this.getActivity(), OfflineMap.class);
+                startActivity(intent);
+            }
+        });
         readData();
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
