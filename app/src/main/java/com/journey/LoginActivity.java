@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,7 @@ import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Button login;
-    private Button register;
+    private TextView register;
     private EditText username;
     private EditText password;
     private Button login_in;
@@ -45,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // [END declare_auth]
 
     public void init() {
-        register = (Button) findViewById(R.id.register);
+        register = (TextView) findViewById(R.id.register);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
         login_in = (Button) findViewById(R.id.login_in);

@@ -51,4 +51,19 @@
         <!-- Used for the background -->
         <item name="android:background">@drawable/real_time_table_round</item>
     </style>
+
+    <!-- theme in login -->
+    <style name="parent">
+        <item name="android:layout_width">370dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+    <style name="loginInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:layout_marginRight">2dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
