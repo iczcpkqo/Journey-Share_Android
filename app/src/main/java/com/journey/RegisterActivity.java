@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
@@ -39,7 +40,7 @@ import com.journey.service.database.UserDb;
 
 
 public class RegisterActivity extends AppCompatActivity {
-    private Button back;
+    private TextView back;
     private Button signup;
     private Button datepicker;
     private Spinner gender;
@@ -58,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
     String[] month_list = {"Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec"};
 
     public void init() {
-        back = (Button) findViewById(R.id.back);
+        back = (TextView) findViewById(R.id.back);
         signup = (Button) findViewById(R.id.signup);
         datepicker = (Button) findViewById(R.id.datepicker);
         age = (EditText) findViewById(R.id.age);

@@ -1,134 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    android:layout_gravity="center"
+    android:focusableInTouchMode="true"
+    android:gravity="center" >
 
-    <EditText
-        android:id="@+id/username"
-        android:layout_width="355dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="28dp"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:hint="Username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/phone"
-        android:layout_width="355dp"
-        android:layout_height="wrap_content"
-        android:hint="Phone Number"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/username"
-        app:layout_constraintTop_toBottomOf="@+id/username"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/email"
-        android:layout_width="355dp"
-        android:layout_height="42dp"
-        android:hint="Email (Use lowercase letters)"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/phone"
-        app:layout_constraintTop_toBottomOf="@+id/phone"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:padding="20dp"
+                    android:text="Start with your new journey!"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
 
-    <Spinner
-        android:id="@+id/gender"
-        style="@android:style/Widget.Spinner"
-        android:layout_width="349dp"
-        android:layout_height="37dp"
-        android:entries="@array/ctype"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/email"
-        app:layout_constraintTop_toBottomOf="@+id/email"/>
+            </RelativeLayout>
 
-    <EditText
-        android:id="@+id/age"
-        android:layout_width="355dp"
-        android:layout_height="42dp"
-        android:hint="Age"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/gender"
-        app:layout_constraintTop_toBottomOf="@+id/gender"/>
+            <com.google.android.material.textfield.TextInputLayout style="@style/parent">
 
-    <Button
-        android:text="The month and day of birth"
-        android:id="@+id/datepicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/round_corner"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/age"
-        app:layout_constraintTop_toBottomOf="@+id/age"/>
+                <EditText
+                    android:id="@+id/username"
+                    style="@style/loginInput"
+                    android:background="@drawable/rounded_corners"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="355dp"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/datepicker"
-        app:layout_constraintTop_toBottomOf="@+id/datepicker"/>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/parent"
+                android:layout_marginTop="10dp">
 
-    <EditText
-        android:id="@+id/confirm"
-        android:layout_width="355dp"
-        android:layout_height="wrap_content"
-        android:hint="Confirm Password"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="@+id/password"
-        app:layout_constraintTop_toBottomOf="@+id/password"/>
+                <EditText
+                    android:id="@+id/phone"
+                    style="@style/loginInput"
+                    android:background="@drawable/rounded_corners"
+                    android:hint="Phone Number"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/signup"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="100dp"
-        android:background="@drawable/round_corner"
-        android:text="Sign Up"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/confirm"
-        app:layout_constraintTop_toBottomOf="@+id/confirm"/>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/parent"
+                android:layout_marginTop="10dp">
 
-    <Button
-        android:id="@+id/back"
-        android:layout_width="122dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="28dp"
-        android:background="@drawable/round_corner"
-        android:text="Back"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/signup"
-        app:layout_constraintTop_toBottomOf="@+id/signup" />
+                <EditText
+                    android:id="@+id/email"
+                    style="@style/loginInput"
+                    android:background="@drawable/rounded_corners"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Spinner
+                android:id="@+id/gender"
+                style="@android:style/Widget.Spinner"
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:entries="@array/ctype"
+                app:layout_constraintStart_toStartOf="@+id/email"
+                app:layout_constraintTop_toBottomOf="@+id/email" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/parent"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/age"
+                    style="@style/loginInput"
+                    android:background="@drawable/rounded_corners"
+                    android:hint="Age"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/parent"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/password"
+                    style="@style/loginInput"
+                    android:background="@drawable/rounded_corners"
+                    android:hint="Password"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/parent"
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/confirm"
+                    style="@style/loginInput"
+                    android:background="@drawable/rounded_corners"
+                    android:hint="Confirm Password"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 
+            <Button
+                android:id="@+id/datepicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:text="The month and day of birth"
+                app:layout_constraintStart_toStartOf="@+id/age"
+                app:layout_constraintTop_toBottomOf="@+id/age" />
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/parent" >
 
+                <TextView
+                    android:id="@+id/back"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:gravity="center"
+                    android:text="Already have an account?"
+                    android:textColor="@color/icon_color"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/signup"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginBottom="200dp"
+                android:background="@drawable/round_corner"
+                android:text="Register"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
