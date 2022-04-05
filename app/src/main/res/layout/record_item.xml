@@ -126,23 +126,25 @@
                     android:text="Detail"
                     android:textColor="#00695C" />
 
-                <!--                <TextView-->
-                <!--                    style="?attr/borderlessButtonStyle"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginLeft="96dp"-->
-                <!--                    android:layout_marginRight="8dp"-->
-                <!--                    android:text="Score:" />-->
+                <TextView
+                    android:id="@+id/cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:text="5.77€"
+                    android:textSize="15dp" />
 
-                <!--                <RatingBar-->
-                <!--                    android:paddingVertical="16dp"-->
-                <!--                    android:id="@+id/ratingBar"-->
-                <!--                    android:numStars="5"-->
-                <!--                    android:rating="3.5"-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    style="?android:attr/ratingBarStyleSmall"-->
-                <!--                    />-->
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:text="556km"
+                    android:textSize="15dp" />
             </LinearLayout>
         </LinearLayout>
 </LinearLayout>
