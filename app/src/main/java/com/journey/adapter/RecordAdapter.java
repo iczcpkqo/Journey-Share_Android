@@ -30,6 +30,10 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         TextView arrival = (TextView) convertView.findViewById(R.id.arrival);
         TextView date = (TextView) convertView.findViewById(R.id.date);
         Button btn = (Button) convertView.findViewById(R.id.detailBtn);
+        TextView cost = (TextView) convertView.findViewById(R.id.cost);
+        TextView distance = (TextView) convertView.findViewById(R.id.distance);
+        cost.setText(record.getCost());
+        distance.setText(record.getDistance());
         departure.setText(record.getDeparture());
         arrival.setText(record.getArrival());
         date.setText(record.getCreateDateString());

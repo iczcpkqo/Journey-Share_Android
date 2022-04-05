@@ -13,13 +13,34 @@ public class Record implements Serializable {
     private Date ArrvialDate;
     private String companion;
 
-    public Record(String documentId, String departure, String arrival, Date createDate, Date ArrvialDate, String companion) {
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    private String cost;
+    private String distance;
+
+    public Record(String documentId, String departure, String arrival, Date createDate, Date ArrvialDate, String companion,String mcost,String mdistance) {
         this.documentId = documentId;
         this.departure = departure;
         this.arrival = arrival;
         this.createDate = createDate;
         this.ArrvialDate = ArrvialDate;
         this.companion = companion;
+        this.cost = mcost;
+        this.distance = mdistance;
     }
 
     public String getDeparture() {

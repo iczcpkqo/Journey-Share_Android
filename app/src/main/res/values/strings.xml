@@ -92,4 +92,20 @@
     <string name="CURRENT_PEER_EMAIL">CURRENT_PEER_EMAIL</string>
     <!--condition list in condition activity-->
     <string name="CONDITION_LIST">CONDITION_LIST</string>
+
+
+    <string name="set_region_name_hint">Set Zone Name</string>
+    <string name="dialog_title">Title</string>
+    <string name="dialog_message">Message</string>
+    <string name="dialog_positive_button">Positive</string>
+    <string name="dialog_toast">Warning</string>
+    <string name="dialog_negative_button">give up</string>
+    <string name="end_progress_success">Progress Complete</string>
+    <string name="toast_no_regions_yet">No Regions Yet</string>
+    <string name="navigate_title">Negative Title</string>
+    <string name="navigate_positive_button">Find Location</string>
+    <string name="navigate_neutral_button_title">Header with Position Neutral</string>
+    <string name="toast_region_deleted">Region Deleted</string>
+    <string name="navigate_negative_button_title">Locating Canceled</string>
+    <string name="region_name">Region %1$d</string>
 </resources>

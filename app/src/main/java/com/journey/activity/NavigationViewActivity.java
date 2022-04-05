@@ -48,8 +48,11 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
     private  static final String ARRIVAL = "arrival";
     private  static final String ARRIVAL_DATE = "arrivalDate";
     private  static final String COMPANION = "companion";
+    private  static final String DISTANCE = "distance";
+
     private  static final String DATE = "date";
     private  static final String DEPARTURE = "departure";
+    private static final String COST = "Cost";
     boolean isSingle;
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -154,6 +157,10 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                                                 data.put(ARRIVAL_DATE,new Timestamp(new Date()));
                                                 data.put(DEPARTURE, currentPeer.getStartAddress());
                                                 data.put(COMPANION, allName);
+                                                data.put(DISTANCE,routeProgress.distanceTraveled());
+                                                double cost = ((routeProgress.distanceTraveled()/1000)*1.14)+3.8;
+                                                String costString = String.format("%.2f",cost)+"€";
+                                                data.put(COST,costString);
                                                 data.put(DATE, new Timestamp(new Date(currentPeer.getStartTime())));
                                                 operation.saveDocData(data);
                                                 if(!NetworkUtils.isNetworkConnected(getApplicationContext()))

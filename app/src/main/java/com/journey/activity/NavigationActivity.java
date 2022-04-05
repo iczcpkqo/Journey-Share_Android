@@ -364,11 +364,11 @@ public class NavigationActivity extends AppCompatActivity implements
 
 
 
-        peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
-        currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
+        // peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
+        //currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
 
-//        peersList = testPeerList();
-//        currentUserID = "test2@tcd.com";
+        peersList = testPeerList();
+        currentUserID = "test2@tcd.com";
         //FirebaseOperation.fuzzyQueries("users","email",currentUserID,mHandler);
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
