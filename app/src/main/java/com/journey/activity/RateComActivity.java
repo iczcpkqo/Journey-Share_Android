@@ -53,11 +53,17 @@ public class RateComActivity extends AppCompatActivity {
             {
                 Map<String, Object> data = (Map<String, Object>) message.obj;
                 Long orderNumber = (Long) data.get("order");
+                orderNumber++;
                 double mark = (double) data.get("mark");
+
                 Rating rt = findRating((String) data.get("email"));
-                mark += rt.getRating();
+                double currentMark = rt.getRating();
                 String uuid = (String) data.get("uuid");
-                FirebaseOperation.updata("users",uuid,"mark",mark/orderNumber);
+
+                currentMark = ((orderNumber*mark)+currentMark)/(orderNumber+1);
+
+                currentMark = (double) Math.round(currentMark * 100) / 100;
+                FirebaseOperation.updata("users",uuid,"mark",currentMark);
                 FirebaseOperation.updata("users",uuid,"order",orderNumber);
                 FirebaseOperation.updata("users",uuid,"uuid",uuid);
             }
