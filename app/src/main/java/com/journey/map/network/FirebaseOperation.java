@@ -32,10 +32,12 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -162,6 +164,40 @@ public class FirebaseOperation {
                             break;
                         }
                         break;
+                    }
+
+                } else {
+                    message.what = 0;
+                }
+                mhandler.sendMessage(message);
+            }
+        });
+    }
+
+    public static  void  fuzzyQueriesToDailyData(String collectionPath,String key,String value,Handler mhandler) {
+        FirebaseFirestore fuzzyDb = FirebaseFirestore.getInstance();
+
+        fuzzyDb.collection(collectionPath).whereEqualTo(key,value).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Message message = new Message();
+                message.what = 0;
+                List<Map<String,Object>> listData = new ArrayList<Map<String,Object>>();
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Map<String, Object> data = document.getData();
+
+                        if(data != null)
+                        {
+
+                            message.what = 1;
+                            message.obj = data;
+                            listData.add(data);
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
 
                 } else {

@@ -54,7 +54,7 @@ public class RateComActivity extends AppCompatActivity {
                 Map<String, Object> data = (Map<String, Object>) message.obj;
                 Long orderNumber = (Long) data.get("order");
                 orderNumber++;
-                double mark = (double) data.get("mark");
+                long mark = (long) data.get("mark");
 
                 Rating rt = findRating((String) data.get("email"));
                 double currentMark = rt.getRating();

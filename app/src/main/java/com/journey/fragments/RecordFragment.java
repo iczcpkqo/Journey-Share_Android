@@ -83,7 +83,14 @@ public class RecordFragment extends Fragment {
                 adapter.clear();
                 for (QueryDocumentSnapshot doc: value){
                     Map<String, Object> data = doc.getData();
-                    Record tmp = new Record((String)doc.getId(),(String)data.get("departure"),(String)data.get("arrival"),((Timestamp)data.get("date")).toDate(),((Timestamp)data.get("arrivalDate")).toDate(),(String)data.get("companion"),(String)data.get("cost"),(String) data.get("distance"));
+                    Record tmp = new Record((String)doc.getId(),
+                            (String)data.get("departure"),
+                            (String)data.get("arrival"),
+                            ((Timestamp)data.get("date")).toDate(),
+                            ((Timestamp)data.get("arrivalDate")).toDate(),
+                            (String)data.get("companion"),
+                            (String)data.get("cost"),
+                            (String) data.get("distance"));
                     adapter.add(tmp);
                 }
                 Log.d("listener","current:"+record);

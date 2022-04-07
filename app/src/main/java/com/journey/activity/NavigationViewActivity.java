@@ -30,6 +30,8 @@ import com.mapbox.services.android.navigation.v5.milestone.Milestone;
 import com.mapbox.services.android.navigation.v5.milestone.MilestoneEventListener;
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,7 +54,7 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
 
     private  static final String DATE = "date";
     private  static final String DEPARTURE = "departure";
-    private static final String COST = "Cost";
+    private static final String COST = "cost";
     boolean isSingle;
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -150,7 +152,7 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                                             {
                                                 Thread.sleep(5000);
                                                 String allName =  getAllName(peers);
-                                                FirebaseOperation operation = new FirebaseOperation(getString(R.string.firebase_record),currentPeer.getUuid(),mHandler);
+                                                FirebaseOperation operation = new FirebaseOperation(getString(R.string.firebase_record),currentPeer.getUuid()+currentPeer.getEmail(),mHandler);
                                                 Map<String,Object> data = new HashMap<String,Object>();
                                                 data.put(BE_LONG_TO,currentPeer.getEmail());
                                                 data.put(ARRIVAL,lg.summary());
@@ -158,10 +160,14 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                                                 data.put(DEPARTURE, currentPeer.getStartAddress());
                                                 data.put(COMPANION, allName);
                                                 data.put(DISTANCE, String.format("%.2f",routeProgress.distanceTraveled()/1000)+"(km)");
+
+
+
+
                                                 double cost = ((routeProgress.distanceTraveled()/1000)*1.14)+3.8;
                                                 String costString = String.format("%.2f",cost)+"€";
                                                 data.put(COST,costString);
-                                                data.put(DATE, new Timestamp(new Date(currentPeer.getStartTime())));
+                                                data.put(DATE,new Timestamp(new Date()));
                                                 operation.saveDocData(data);
                                                 if(!NetworkUtils.isNetworkConnected(getApplicationContext()))
                                                 {
@@ -173,7 +179,7 @@ public class NavigationViewActivity extends AppCompatActivity implements OnNavig
                                                 return;
                                             }
                                             message.obj = "You have arrived at a leader position!";
-                                            Thread.sleep(10000);
+                                            Thread.sleep(8000);
                                             message.what = FirebaseOperation.FILE_EXISTS_RECORD;
 
                                             mHandler.sendMessage(message);

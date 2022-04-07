@@ -21,6 +21,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.Timestamp;
 import com.journey.R;
 import com.journey.map.network.NetworkUtils;
 import com.journey.service.database.ChatingService;
@@ -50,6 +51,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -86,8 +88,7 @@ public class NavigationActivity extends AppCompatActivity implements
     DirectionsRoute currentRoute_2;
     Button navigationButton;
     NetworkUtils network = new NetworkUtils();
-
-
+    boolean misSingle = true;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -118,8 +119,11 @@ public class NavigationActivity extends AppCompatActivity implements
                 e.printStackTrace();
             }
             toast("You have arrived at your destination.");
+            if( misSingle == false || currentPeer.getLeader() == true )
+            {
+                finish();
+            }
 
-            finish();
         }
     }
 
@@ -138,6 +142,7 @@ public class NavigationActivity extends AppCompatActivity implements
             }
             else if(msg.what == FirebaseOperation.START_NAVIGATION)
             {
+                misSingle = false;
                 setToNavigationRoute(currentRoute_2,false);
             }
             else if(msg.what == FirebaseOperation.FILE_NOT_FOUND)
@@ -154,6 +159,7 @@ public class NavigationActivity extends AppCompatActivity implements
             {
                 toast("Multiple anchor point routes have been got.");
                 currentRoute_2 =(DirectionsRoute) msg.obj;
+                misSingle = false;
                 setToNavigationRoute(currentRoute_2,false);
             }
             else if(msg.what == FirebaseOperation.ARRIVED_LEADER)
@@ -364,11 +370,11 @@ public class NavigationActivity extends AppCompatActivity implements
 
 
 
-        // peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
-        //currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
+        peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
+        currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
 
-        peersList = testPeerList();
-        currentUserID = "test2@tcd.com";
+        //peersList = testPeerList();
+        //currentUserID = "test2@tcd.com";
         //FirebaseOperation.fuzzyQueries("users","email",currentUserID,mHandler);
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
@@ -379,6 +385,7 @@ public class NavigationActivity extends AppCompatActivity implements
                 @Override
                 public void onClick(View view) {
                     setToNavigationRoute(currentRoute_2,false);
+                    navigationButton.setVisibility(View.INVISIBLE);
                 }
             });
         }
@@ -390,6 +397,7 @@ public class NavigationActivity extends AppCompatActivity implements
                     toast("Navigate to Destination !");
                     Map<String, Object> data = new HashMap<String,Object>();
                     data.put("START",new String("1"));
+                    navigationButton.setVisibility(View.INVISIBLE);
                     FirebaseOperation db = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
                     db.saveDocData("map",currentPeer.getUuid(),data,FirebaseOperation.START_NAVIGATION);
                 }
@@ -529,6 +537,7 @@ public class NavigationActivity extends AppCompatActivity implements
             if(temporaryPeer.getEmail().equals(mCurretnID))
             {
                 currentPeer = temporaryPeer;
+                currentPeer.setPort(new Timestamp(new Date()).toString() );
             }
             else
             {
