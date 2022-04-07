@@ -23,6 +23,7 @@ import com.journey.service.database.DialogueHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 // implement onDailyItemLister interface
 public class DailyJourneyTableActivity extends AppCompatActivity implements DailyJourneyCardAdapter.OnDailyItemListener{
@@ -36,6 +37,8 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
             {
                 //Transform a json to java object
                 String json = (String) message.obj;
+                Map<String, Object> data = (Map<String, Object>) message.obj;
+
                 ParseCondition parseCondition = new ParseCondition(json);
                 List<ConditionInfo> conInfoList = parseCondition.parseJsonArray();
             }
@@ -49,6 +52,10 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         addJourney = findViewById(R.id.add_journey_tv);
         recyclerView = findViewById(R.id.daily_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        FirebaseOperation.fuzzyQueriesToData("daily","email",
+                DialogueHelper.getSender().getEmail(),mhandler);
+
         List<ConditionInfo> cList = getConInfo();
         showDailyTable(cList);
         addDailyJourney();
@@ -71,7 +78,6 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         return conList;
     }
     private void showDailyTable(List<ConditionInfo> conList){
-        FirebaseOperation.fuzzyQueries("daily","email", DialogueHelper.getSender().getEmail(),mhandler);
         //passing array list and onDailyItemLister interface to Daily Journey card adapter
         DailyJourneyCardAdapter dailyJourneyCardAdapter = new DailyJourneyCardAdapter(DailyJourneyTableActivity.this, conList, this);
         recyclerView.setAdapter(dailyJourneyCardAdapter);
