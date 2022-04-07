@@ -15,12 +15,10 @@ public class ConditionInfo implements Serializable {
     private String origin_lat;
     private String end_lon;
     private String end_lat;
-    private String startAddress;
-    private String destination;
     private String journeyMode;
     private String route;
 
-    public ConditionInfo(String userEmail, String dateTime, String originAddress, String endAddress, String preferGender, String minAge, String maxAge, String minScore, String origin_lon, String origin_lat, String end_lon, String end_lat, String startAddress, String destination, String journeyMode, String route) {
+    public ConditionInfo(String userEmail, String dateTime, String originAddress, String endAddress, String preferGender, String minAge, String maxAge, String minScore, String origin_lon, String origin_lat, String end_lon, String end_lat, String journeyMode, String route) {
         this.userEmail = userEmail;
         this.dateTime = dateTime;
         this.originAddress = originAddress;
@@ -33,8 +31,6 @@ public class ConditionInfo implements Serializable {
         this.origin_lat = origin_lat;
         this.end_lon = end_lon;
         this.end_lat = end_lat;
-        this.startAddress = startAddress;
-        this.destination = destination;
         this.journeyMode = journeyMode;
         this.route = route;
     }
@@ -133,22 +129,6 @@ public class ConditionInfo implements Serializable {
 
     public void setEnd_lat(String end_lat) {
         this.end_lat = end_lat;
-    }
-
-    public String getStartAddress() {
-        return startAddress;
-    }
-
-    public void setStartAddress(String startAddress) {
-        this.startAddress = startAddress;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     public String getJourneyMode() {

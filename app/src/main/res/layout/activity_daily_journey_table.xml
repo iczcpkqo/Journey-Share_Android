@@ -15,4 +15,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/add_journey_tv"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="@id/daily_recyclerview"
+        app:layout_constraintEnd_toEndOf="@+id/daily_recyclerview"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/ic_baseline_add_circle_24"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

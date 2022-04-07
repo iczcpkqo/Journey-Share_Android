@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParseDailyInfo {
+public class ParseCondition {
 
     public static final String emailTag = "email";;
     public static final String dateTimeTag = "dateTime";
@@ -25,17 +25,17 @@ public class ParseDailyInfo {
     public static final String preferGenderTag = "preferGender";
     public static final String journeyModeTag = "journeyMode";
     public static final String routeTag = "route";
-    private final String dailyInfoJson;
+    private final String conInfoJson;
 
-    public ParseDailyInfo(String jsonData) {
-        dailyInfoJson = jsonData;
+    public ParseCondition(String jsonData) {
+        conInfoJson = jsonData;
     }
 
-    public List<DailyInfo> parseJsonArray()
+    public List<ConditionInfo> parseJsonArray()
     {
-        List<DailyInfo> dailyInfoList = new ArrayList<>();
+        List<ConditionInfo> InfoList = new ArrayList<>();
         try {
-            JSONArray dailyList = new JSONArray(dailyInfoJson);
+            JSONArray dailyList = new JSONArray(conInfoJson);
             for (int i =0;i<dailyList.length();i++)
             {
                 JSONObject jsonObject = dailyList.getJSONObject(i);
@@ -53,7 +53,7 @@ public class ParseDailyInfo {
                 String preferGender = jsonObject.optString(preferGenderTag);
                 String journeyMode = jsonObject.optString(journeyModeTag);
                 String route = jsonObject.optString(routeTag);
-                dailyInfoList.add( new DailyInfo(email,
+                InfoList.add( new ConditionInfo(email,
                                                 dateTime,
                                                 originAddress,
                                                 endAddress,
@@ -71,7 +71,7 @@ public class ParseDailyInfo {
         }catch (Exception ex){
 
         }
-        return dailyInfoList;
+        return InfoList;
 
     }
 }

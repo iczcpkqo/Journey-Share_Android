@@ -99,9 +99,16 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
 
     }
     private void getConInfo(){
-        if(getIntent() != null && getIntent().getExtras() != null && getIntent().hasExtra(ConditionActivity.CONDITION_INFO)){
+        if(getIntent() != null && getIntent().getExtras() != null && getIntent().hasExtra(ConditionActivity.CONDITION_INFO)) {
             //deserialization condition info
             ConditionInfo conditionInfo = (ConditionInfo) getIntent().getSerializableExtra(ConditionActivity.CONDITION_INFO);
+            getFields(conditionInfo);
+        }else {
+            ConditionInfo conditionInfo = (ConditionInfo) getIntent().getSerializableExtra(DailyJourneyTableActivity.CONDITION_INFO);
+            getFields(conditionInfo);
+        }
+    }
+    private void getFields(ConditionInfo conditionInfo){
             dateTime = conditionInfo.getDateTime();
             originAddress = conditionInfo.getOriginAddress();
             endAddress = conditionInfo.getEndAddress();
@@ -113,10 +120,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
             longitude = conditionInfo.getOrigin_lon();
             dLatitude = conditionInfo.getEnd_lat();
             dLongitude = conditionInfo.getEnd_lon();
-            startAddress = conditionInfo.getStartAddress();
-            destination = conditionInfo.getDestination();
             journeyMode = conditionInfo.getJourneyMode();
-        }
     }
     private void setConInfo(){
         TextView dt, origin, end, gen, min, max, s;
@@ -129,8 +133,8 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
         s = findViewById(R.id.score_tv);
 
         dt.setText(dateTime);
-        origin.setText(startAddress);
-        end.setText(destination);
+        origin.setText(originAddress);
+        end.setText(endAddress);
         gen.setText(preferGender);
         min.setText(minAge);
         max.setText(maxAge);
@@ -161,7 +165,7 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
                 Double.parseDouble(longitude), Double.parseDouble(latitude), Double.parseDouble(dLongitude),
                 Double.parseDouble(dLatitude),0L,0L,
                 3,"12334",3, null,null,
-                null, null,null,mode,startAddress,destination,
+                null, null,null,mode,originAddress,endAddress,
                 null, Integer.valueOf(minAge),Integer.valueOf(maxAge),preferGender);
         return peer;
     }

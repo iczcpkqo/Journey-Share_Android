@@ -50,7 +50,7 @@
     <item name="daily_max_age_tv" type="id"/>
     <item name="daily_score_tv" type="id"/>
     <item name="daily_mode_tv" type="id"/>
-
+    <item name="add_journey_tv" type="id"/>
     <!--account fragment-->
     <item name="download_map" type="id"/>
 </resources>

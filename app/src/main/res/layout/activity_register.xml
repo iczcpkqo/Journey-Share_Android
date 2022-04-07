@@ -45,7 +45,7 @@
                     android:id="@+id/username"
                     style="@style/loginInput"
                     android:background="@drawable/rounded_corners"
-                    android:hint="Email"
+                    android:hint="Name"
                     android:inputType="textEmailAddress"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>

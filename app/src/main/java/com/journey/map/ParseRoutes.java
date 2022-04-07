@@ -117,6 +117,7 @@ public class ParseRoutes {
                 .accessToken(token)
                 .origin(origin)
                 .destination(destination)
+                .profile(DirectionsCriteria.PROFILE_WALKING)
                 .addWaypointNames("Start;"+currentPeer.getEmail())
                 .build()
                 .getRoute(new Callback<DirectionsResponse>() {

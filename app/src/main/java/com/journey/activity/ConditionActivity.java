@@ -208,7 +208,7 @@ public class ConditionActivity extends AppCompatActivity {
         ConditionInfo conditionInfo = new ConditionInfo(
                 userEmail,choose_date,origin_address,end_address,prefer_gender,
                 min_age,max_age, min_score,origin_lon,origin_lat,end_lon,
-                end_lat,startAddress,destination,journey_mode,null);
+                end_lat,journey_mode,null);
         return conditionInfo;
     }
 
@@ -216,14 +216,14 @@ public class ConditionActivity extends AppCompatActivity {
                           String dateTime,
                           String originAddress,
                           String endAddress,
+                          String preferGender,
+                          String minAge,
+                          String maxAge,
+                          String minScore,
                           String origin_lon,
                           String origin_lat,
                           String end_lon,
                           String end_lat,
-                          String maxAge,
-                          String minAge,
-                          String minScore,
-                          String preferGender,
                           String journeyMode,
                           String route)
     {
@@ -232,17 +232,16 @@ public class ConditionActivity extends AppCompatActivity {
         data.put("dateTime",dateTime);
         data.put("originAddress",originAddress);
         data.put("endAddress",endAddress);
+        data.put("preferGender",preferGender);
+        data.put("minAge",minAge);
+        data.put("maxAge",maxAge);
+        data.put("minScore",minScore);
         data.put("origin_lon",origin_lon);
         data.put("origin_lat",origin_lat);
-        data.put("minScore",minScore);
         data.put("end_lon",end_lon);
         data.put("end_lat",end_lat);
-        data.put("maxAge",maxAge);
-        data.put("minAge",minAge);
         data.put("journeyMode",journeyMode);
-        data.put("preferGender",preferGender);
         data.put("route","null");
-
         String uuid = UUID.randomUUID().toString();
         FirebaseOperation.saveDocData("daily",uuid,data,mHandler,1);
     }
@@ -264,10 +263,9 @@ public class ConditionActivity extends AppCompatActivity {
                 conInfo.putExtra(CONDITION_INFO,conditionInfo);
                 startActivityForResult(conInfo,1);
             }else if(id == 0){
-
-                saveData(userEmail,choose_date,origin_address,end_address,
-                        origin_lon,origin_lat,end_lon,end_lat,
-                        min_age,max_age,min_score,prefer_gender,journey_mode,null);
+                saveData(userEmail,choose_date,origin_address,end_address,prefer_gender,
+                        min_age,max_age, min_score,origin_lon,origin_lat,end_lon,
+                        end_lat,journey_mode,null);
 
                 Intent conInfo = new Intent(this, DailyJourneyTableActivity.class);
                 startActivityForResult(conInfo,1);
