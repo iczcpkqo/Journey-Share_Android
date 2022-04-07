@@ -52,10 +52,19 @@ public class RateComActivity extends AppCompatActivity {
             if(message.what == 1)
             {
                 Map<String, Object> data = (Map<String, Object>) message.obj;
-                Long orderNumber = (Long) data.get("order");
-                orderNumber++;
-                long mark = (long) data.get("mark");
 
+                Long orderNumber = (Long) data.get("order");
+                double mark = 0;
+                if(orderNumber == 0)
+                {
+                    mark = ((Long) data.get("mark")).doubleValue();
+
+                }
+                else {
+                    mark =  (double)data.get("mark");
+                }
+
+                orderNumber++;
                 Rating rt = findRating((String) data.get("email"));
                 double currentMark = rt.getRating();
                 String uuid = (String) data.get("uuid");
