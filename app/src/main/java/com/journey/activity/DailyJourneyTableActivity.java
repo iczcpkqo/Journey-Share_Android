@@ -55,7 +55,7 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
 //                Map<String,Object> l = (Map<String, Object>) message.obj;
                 ConditionInfo c = (ConditionInfo) message.obj;
                 parseMessage(c);
-                showDailyTable();
+//                showDailyTable();
             }
             return false;
         }
@@ -68,7 +68,8 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         recyclerView = findViewById(R.id.daily_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         readDaily();
-        showDailyTable();
+        List<ConditionInfo> list = getConInfo();
+        showDailyTable(list);
         addDailyJourney();
     }
 
@@ -88,8 +89,8 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         conList.add(cInfo);
         return conList;
     }
-    private void showDailyTable(){
-        cList.add(conditionInfo);
+    private void showDailyTable(List<ConditionInfo> cList){
+//        cList.add(conditionInfo);
         if(cList != null){
             //passing array list and onDailyItemLister interface to Daily Journey card adapter
             DailyJourneyCardAdapter dailyJourneyCardAdapter = new DailyJourneyCardAdapter(DailyJourneyTableActivity.this, cList, this);
