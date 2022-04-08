@@ -222,6 +222,7 @@ public class FirebaseOperation {
                 } else {
                     message.what = 0;
                 }
+                message.obj = listData;
                 mhandler.sendMessage(message);
             }
         }).addOnFailureListener(new OnFailureListener() {

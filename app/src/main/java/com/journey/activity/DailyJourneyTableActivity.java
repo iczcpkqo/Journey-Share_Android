@@ -52,7 +52,7 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         public boolean handleMessage(@NonNull Message message) {
             if(message.what == 1)
             {
-//                Map<String,Object> l = (Map<String, Object>) message.obj;
+                List<Map<String,Object>> listData   = (List<Map<String,Object>> ) message.obj;
                 ConditionInfo c = (ConditionInfo) message.obj;
                 parseMessage(c);
 //                showDailyTable();
@@ -129,6 +129,7 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
     public void readDaily() {
         FirebaseOperation.fuzzyQueriesToDailyData("daily", "email",
                 DialogueHelper.getSender().getEmail(), mhandler);
+
     }
     public void parseMessage(ConditionInfo c){
         String email = (String) c.getUserEmail();
