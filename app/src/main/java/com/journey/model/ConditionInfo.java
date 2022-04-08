@@ -34,7 +34,9 @@ public class ConditionInfo implements Serializable {
         this.journeyMode = journeyMode;
         this.route = route;
     }
+    public ConditionInfo(){
 
+    }
     public String getUserEmail() {
         return userEmail;
     }

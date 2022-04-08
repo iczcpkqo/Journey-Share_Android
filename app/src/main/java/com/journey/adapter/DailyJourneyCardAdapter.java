@@ -74,7 +74,7 @@ public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCa
 
         @Override
         public void onClick(View view) {
-            Log.d(TAG,"onclick" + getAdapterPosition());
+//            Log.d(TAG,"onclick" + getAdapterPosition());
             onDailyItemListener.onDailyItemClick(getAdapterPosition());
         }
     }

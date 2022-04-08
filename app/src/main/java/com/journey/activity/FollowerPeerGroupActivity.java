@@ -62,8 +62,8 @@ public class FollowerPeerGroupActivity extends AppCompatActivity {
     final private static String MATCHED_PEERS = "MATCHED_PEERS";
     LoadingDialog loadingDialog = new LoadingDialog(this,  8000, 2000, "");
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://10.6.47.25:8080/")
-//            .baseUrl("http://192.168.0.137:8080/")
+//            .baseUrl("http://10.6.40.176:8080/")
+            .baseUrl("http://192.168.0.81:8080/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 

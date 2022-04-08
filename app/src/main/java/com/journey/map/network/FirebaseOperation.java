@@ -24,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.R;
+import com.journey.activity.ConditionActivity;
+import com.journey.model.ConditionInfo;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -123,17 +125,16 @@ public class FirebaseOperation {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 Message message = new Message();
                 message.what = 0;
-
+                List<ConditionInfo> cList = new ArrayList<>();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        String jsonMsg = JSON.toJSON(document.getData()).toString();
-                        if(jsonMsg != null)
-                        {
-                            message.what = 1;
-                            message.obj = jsonMsg;
-                            break;
-                        }
-                        break;
+                        ConditionInfo conInfo = document.toObject(ConditionInfo.class);
+                        cList.add(conInfo);
+                    }
+                    if(cList != null && cList.size() != 0)
+                    {
+                        message.what = 1;
+                        message.obj = cList;
                     }
 
                 } else {
@@ -171,27 +172,45 @@ public class FirebaseOperation {
                 }
                 mhandler.sendMessage(message);
             }
-        });
+        } );
     }
 
     public static  void  fuzzyQueriesToDailyData(String collectionPath,String key,String value,Handler mhandler) {
         FirebaseFirestore fuzzyDb = FirebaseFirestore.getInstance();
 
         fuzzyDb.collection(collectionPath).whereEqualTo(key,value).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 Message message = new Message();
                 message.what = 0;
                 List<Map<String,Object>> listData = new ArrayList<Map<String,Object>>();
+                ConditionInfo cInfo = new ConditionInfo();
+                List<ConditionInfo> cList = new ArrayList<>();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> data = document.getData();
-
+                        String email = (String) document.get("email");
+                        String dateTime = (String) document.get("dateTime");
+                        String originAddress = (String) document.get("originAddress");
+                        String endAddress = (String) document.get("endAddress");
+                        String preferGender = (String) document.get("preferGender");
+                        String minAge = (String) document.get("minAge");
+                        String maxAge = (String) document.get("maxAge");
+                        String minScore = (String) document.get("minScore");
+                        String origin_lon = (String) document.get("origin_lon");
+                        String origin_lat = (String) document.get("origin_lat");
+                        String end_lon = (String) document.get("end_lon");
+                        String end_lat = (String) document.get("end_lat");
+                        String journeyMode = (String) document.get("journeyMode");
+                        String route = (String) document.get("route");
                         if(data != null)
                         {
-
                             message.what = 1;
-                            message.obj = data;
+                            cInfo = new ConditionInfo(email,dateTime,originAddress,endAddress,preferGender,
+                                    minAge,maxAge, minScore,origin_lon,origin_lat,end_lon,
+                                    end_lat,journeyMode,route);
+                            message.obj = cInfo;
                             listData.add(data);
                         }
                         else
@@ -204,6 +223,12 @@ public class FirebaseOperation {
                     message.what = 0;
                 }
                 mhandler.sendMessage(message);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w("firebaseFailure", "Error writing document", e);
+
             }
         });
     }

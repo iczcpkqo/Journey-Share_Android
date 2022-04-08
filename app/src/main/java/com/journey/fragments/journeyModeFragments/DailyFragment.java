@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 
 import com.journey.R;
 import com.journey.activity.ConditionActivity;
+import com.journey.activity.DailyJourneyTableActivity;
+
 /**
  * @Description:
  * @author: Congqin Yan
@@ -40,7 +42,7 @@ public class DailyFragment extends Fragment {
         daily_journey_condition.setOnClickListener(view -> moveToCondition());
     }
     private void moveToCondition(){
-        Intent intent = new Intent(getActivity(), ConditionActivity.class);
+        Intent intent = new Intent(getActivity(), DailyJourneyTableActivity.class);
         intent.putExtra("id", 0);
         startActivity(intent);
     }

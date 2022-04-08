@@ -329,7 +329,7 @@ public class ConditionActivity extends AppCompatActivity {
 
     //show the current time
     private void setCurrentTime(Calendar calendar,EditText chooseDateTime) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         chooseDateTime.setText(simpleDateFormat.format(calendar.getTime()));
     }
 
@@ -347,7 +347,7 @@ public class ConditionActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         calendar.set(Calendar.MINUTE,minute);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         chooseDateTime.setText(simpleDateFormat.format(calendar.getTime()));
                     }
                 };
