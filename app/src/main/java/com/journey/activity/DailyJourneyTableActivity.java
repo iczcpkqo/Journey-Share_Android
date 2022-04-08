@@ -50,7 +50,7 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
     private Handler mhandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message message) {
-            if(message.what == 1)
+            if(message.what == 1 && message.obj != null)
             {
                 List<Map<String,Object>> listData   = (List<Map<String,Object>> ) message.obj;
                 ConditionInfo c = (ConditionInfo) message.obj;

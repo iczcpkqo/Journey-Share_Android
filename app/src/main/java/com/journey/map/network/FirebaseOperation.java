@@ -184,6 +184,7 @@ public class FirebaseOperation {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 Message message = new Message();
                 message.what = 0;
+                message.obj = null;
                 List<Map<String,Object>> listData = new ArrayList<Map<String,Object>>();
                 ConditionInfo cInfo = new ConditionInfo();
                 List<ConditionInfo> cList = new ArrayList<>();
@@ -218,11 +219,11 @@ public class FirebaseOperation {
                             break;
                         }
                     }
-
+                    message.obj = listData;
                 } else {
                     message.what = 0;
                 }
-                message.obj = listData;
+
                 mhandler.sendMessage(message);
             }
         }).addOnFailureListener(new OnFailureListener() {
