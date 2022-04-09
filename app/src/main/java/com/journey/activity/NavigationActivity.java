@@ -24,6 +24,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.Timestamp;
 import com.journey.R;
 import com.journey.map.network.NetworkUtils;
+import com.journey.map.network.PeerClient;
+import com.journey.map.network.PeerSever;
 import com.journey.service.database.ChatingService;
 import com.journey.map.ParseRoutes;
 import com.journey.map.network.FirebaseOperation;
@@ -75,7 +77,8 @@ public class NavigationActivity extends AppCompatActivity implements
     private Peer currentPeer;
     private List<Peer> otherPeers = new ArrayList<Peer>();
     private String serverIP = "";
-    private int serverPort ;
+    private int serverPort  = 0;
+    private int clinetPort  = 0;
     FirebaseOperation currentFirebase ;
     private String mapDatabase = "map";
 
@@ -89,7 +92,8 @@ public class NavigationActivity extends AppCompatActivity implements
     Button navigationButton;
     NetworkUtils network = new NetworkUtils();
     boolean misSingle = true;
-
+    PeerSever server = null;
+    PeerClient client = null;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -372,7 +376,8 @@ public class NavigationActivity extends AppCompatActivity implements
 
         peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
         currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
-
+        server = new PeerSever(serverPort,mHandler,peersList);
+        client = new PeerClient(clinetPort,currentPeer.getIp(),mHandler,currentPeer);
         //peersList = testPeerList();
         //currentUserID = "test2@tcd.com";
         //FirebaseOperation.fuzzyQueries("users","email",currentUserID,mHandler);

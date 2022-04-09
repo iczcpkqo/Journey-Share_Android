@@ -34,6 +34,8 @@ public class PeerSever {
 
     public PeerSever(int port,Handler handler,List<Peer> peers)
     {
+        if(serverPort == 0)
+            return;
         mainTheradHandler = handler;
         serverPort = port;
         clientList = new ArrayList<peerNetowrkInformation>();

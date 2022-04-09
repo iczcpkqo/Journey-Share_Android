@@ -25,6 +25,8 @@ public class PeerClient {
     OutputStreamWriter output;
     CommunicationThread comm;
     public PeerClient(int serverPort, String serverIp, Handler mainTheradHandler, Peer peer) {
+        if(serverPort == 0)
+            return;
         this.serverPort = serverPort;
         this.serverIp = serverIp;
         this.mainTheradHandler = mainTheradHandler;
@@ -36,6 +38,7 @@ public class PeerClient {
     {
 
     }
+
     public void startClient()
     {
         this.clientThread = new Thread(){
