@@ -34,6 +34,7 @@
         <RelativeLayout
             android:layout_height="wrap_content"
             android:layout_width="wrap_content">
+
             <Button
                 android:id="@+id/daily_condition_btn"
                 android:layout_width="210dp"
@@ -44,7 +45,18 @@
                 android:layout_marginBottom="200dp"
                 android:background="@drawable/round_corner"
                 android:text="Daily Condition"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
+            <Button
+                android:id="@+id/daily_table_btn"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="130dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginBottom="200dp"
+                android:background="@drawable/round_corner"
+                android:text="Daily History"
+                android:textColor="@color/white" />
         </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

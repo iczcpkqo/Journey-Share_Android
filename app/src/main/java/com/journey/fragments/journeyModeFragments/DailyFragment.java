@@ -25,24 +25,34 @@ import com.journey.activity.DailyJourneyTableActivity;
 public class DailyFragment extends Fragment {
 
     private Button daily_journey_condition;
+    private Button daily_table;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_daily, container, false);
-
+        daily_table = view.findViewById(R.id.daily_table_btn);
         daily_journey_condition = view.findViewById(R.id.daily_condition_btn);
 
         conditionBtnListener();
+        dailyTableBtnListener();
         return view;
     }
     // daily button listener and passing the id to condition activity
     private void conditionBtnListener() {
         daily_journey_condition.setOnClickListener(view -> moveToCondition());
     }
+    private void dailyTableBtnListener() {
+        daily_table.setOnClickListener(view -> moveToDailyTable());
+    }
     private void moveToCondition(){
         Intent intent = new Intent(getActivity(), ConditionActivity.class);
+        intent.putExtra("id", 0);
+        startActivity(intent);
+    }
+    private void moveToDailyTable(){
+        Intent intent = new Intent(getActivity(), DailyJourneyTableActivity.class);
         intent.putExtra("id", 0);
         startActivity(intent);
     }
