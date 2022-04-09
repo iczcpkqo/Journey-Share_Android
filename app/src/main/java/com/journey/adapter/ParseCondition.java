@@ -38,44 +38,39 @@ public class ParseCondition {
     {
         List<ConditionInfo> InfoList = new ArrayList<>();
         try {
-//            JSONArray dailyList = new JSONArray(conInfoJson);
-            JsonParser parser = new JsonParser();
-            JsonElement jsonTree = parser.parse(conInfoJson);
-            JsonObject jsonObject = jsonTree.getAsJsonObject();
-
-
-//            for (int i =0;i<dailyList.length();i++)
-//            {
-//                JSONObject jsonObject = dailyList.getJSONObject(i);
-//                String email = jsonObject.optString(emailTag);
-//                String dateTime = jsonObject.optString(dateTimeTag);
-//                String originAddress = jsonObject.optString(originAddressTag);
-//                String endAddress = jsonObject.optString(endAddressTag);
-//                String origin_lon = jsonObject.optString(origin_lonTag);
-//                String origin_lat = jsonObject.optString(origin_latTag);
-//                String end_lon = jsonObject.optString(end_lonTag);
-//                String end_lat = jsonObject.optString(end_latTag);
-//                String maxAge = jsonObject.optString(maxAgeTag);
-//                String minAge = jsonObject.optString(minAgeTag);
-//                String minScore = jsonObject.optString(minScoreTag);
-//                String preferGender = jsonObject.optString(preferGenderTag);
-//                String journeyMode = jsonObject.optString(journeyModeTag);
-//                String route = jsonObject.optString(routeTag);
-//                InfoList.add( new ConditionInfo(email,
-//                                                dateTime,
-//                                                originAddress,
-//                                                endAddress,
-//                                                origin_lon,
-//                                                origin_lat,
-//                                                end_lon,
-//                                                end_lat,
-//                                                maxAge,
-//                                                minAge,
-//                                                minScore,
-//                                                preferGender,
-//                                                journeyMode,
-//                                                route));
-//                                                }
+            JSONArray dailyList = new JSONArray(conInfoJson);
+            for (int i =0;i<dailyList.length();i++)
+            {
+                JSONObject jsonObject = dailyList.getJSONObject(i);
+                String email = jsonObject.optString(emailTag);
+                String dateTime = jsonObject.optString(dateTimeTag);
+                String originAddress = jsonObject.optString(originAddressTag);
+                String endAddress = jsonObject.optString(endAddressTag);
+                String origin_lon = jsonObject.optString(origin_lonTag);
+                String origin_lat = jsonObject.optString(origin_latTag);
+                String end_lon = jsonObject.optString(end_lonTag);
+                String end_lat = jsonObject.optString(end_latTag);
+                String maxAge = jsonObject.optString(maxAgeTag);
+                String minAge = jsonObject.optString(minAgeTag);
+                String minScore = jsonObject.optString(minScoreTag);
+                String preferGender = jsonObject.optString(preferGenderTag);
+                String journeyMode = jsonObject.optString(journeyModeTag);
+                String route = jsonObject.optString(routeTag);
+                InfoList.add( new ConditionInfo(email,
+                                                dateTime,
+                                                originAddress,
+                                                endAddress,
+                                                origin_lon,
+                                                origin_lat,
+                                                end_lon,
+                                                end_lat,
+                                                maxAge,
+                                                minAge,
+                                                minScore,
+                                                preferGender,
+                                                journeyMode,
+                                                route));
+                                                }
         }catch (Exception ex){
 
         }

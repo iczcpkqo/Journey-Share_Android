@@ -42,7 +42,7 @@ public class DailyFragment extends Fragment {
         daily_journey_condition.setOnClickListener(view -> moveToCondition());
     }
     private void moveToCondition(){
-        Intent intent = new Intent(getActivity(), DailyJourneyTableActivity.class);
+        Intent intent = new Intent(getActivity(), ConditionActivity.class);
         intent.putExtra("id", 0);
         startActivity(intent);
     }

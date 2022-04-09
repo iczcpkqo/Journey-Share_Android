@@ -53,9 +53,8 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
             if(message.what == 1 && message.obj != null)
             {
                 List<Map<String,Object>> listData   = (List<Map<String,Object>> ) message.obj;
-                ConditionInfo c = (ConditionInfo) message.obj;
-                parseMessage(c);
-//                showDailyTable();
+                parseMessage(listData);
+                showDailyTable();
             }
             return false;
         }
@@ -68,8 +67,6 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         recyclerView = findViewById(R.id.daily_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         readDaily();
-        List<ConditionInfo> list = getConInfo();
-        showDailyTable(list);
         addDailyJourney();
     }
 
@@ -89,7 +86,7 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         conList.add(cInfo);
         return conList;
     }
-    private void showDailyTable(List<ConditionInfo> cList){
+    private void showDailyTable(){
 //        cList.add(conditionInfo);
         if(cList != null){
             //passing array list and onDailyItemLister interface to Daily Journey card adapter
@@ -131,23 +128,25 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
                 DialogueHelper.getSender().getEmail(), mhandler);
 
     }
-    public void parseMessage(ConditionInfo c){
-        String email = (String) c.getUserEmail();
-        String dateTime = (String) c.getDateTime();
-        String originAddress = (String) c.getOriginAddress();
-        String endAddress = (String) c.getEndAddress();
-        String preferGender = (String) c.getPreferGender();
-        String minAge = (String) c.getMinAge();
-        String maxAge = (String) c.getMaxAge();
-        String minScore = (String) c.getMinScore();
-        String origin_lon = (String) c.getOrigin_lon();
-        String origin_lat = (String) c.getOrigin_lat();
-        String end_lon = (String) c.getEnd_lon();
-        String end_lat = (String) c.getEnd_lat();
-        String journeyMode = (String) c.getJourneyMode();
-        String route = (String) c.getRoute();
-        conditionInfo = new ConditionInfo(email,dateTime,originAddress,endAddress,preferGender,
-                minAge,maxAge, minScore,origin_lon,origin_lat,end_lon,
-                end_lat,journeyMode,route);
+    public void parseMessage(List<Map<String, Object>> listData){
+
+        for (Map<String, Object> map : listData) {
+            ConditionInfo cInfo = new ConditionInfo();
+            Object v = map.toString();
+            List<String> a = new ArrayList<>();
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue().toString();
+                a.add(key);
+                a.add(value);
+            }
+            //{(0)dateTime=2022-04-08 19:22:48, (2)minScore=1, (4)end_lat=53.34653, (6)preferGender=Male, (8)origin_lon=-6.331199157991676,
+            // (10)originAddress=Chapelizod Road, Dublin, Dublin D20, Ireland, (12)journeyMode=Car, (14)origin_lat=53.3464057372658,
+            // (16)route=null, (18)maxAge=99, (20)minAge=1, (22)email=liu@tcd.com, (24)endAddress=Chapelizod Road, Dublin, Dublin D08, Ireland,
+            // (26)end_lon=-6.321053}
+            cInfo = new ConditionInfo(a.get(23),a.get(1),a.get(11),a.get(25),a.get(7),a.get(21),a.get(19),a.get(3),a.get(9),
+                                      a.get(15),a.get(27), a.get(5),a.get(13),a.get(17));
+            cList.add(cInfo);
+        }
     }
 }
