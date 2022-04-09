@@ -8,13 +8,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="#B2DFDB"
+            android:background="@drawable/round_corner"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginRight="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_rounded_corner"
+                android:layout_margin="5dp">
 
                 <!-- Image -->
 
@@ -112,7 +113,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:background="@color/white"
+                android:background="@color/icon_color"
                 android:orientation="horizontal">
 
                 <Button
@@ -121,10 +122,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:layout_marginTop="4dp"
-                    android:background="#B2DFDB"
                     android:onClick="showDetail"
                     android:text="Detail"
-                    android:textColor="#00695C" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/cost"
@@ -133,6 +133,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
+                    android:textColor="@color/white"
                     android:text="5.77€"
                     android:textSize="15dp" />
 
@@ -144,7 +145,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="20dp"
                     android:text="556km"
-                    android:textSize="15dp" />
+                    android:textSize="15dp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
         </LinearLayout>
 </LinearLayout>

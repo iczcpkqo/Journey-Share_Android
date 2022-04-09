@@ -42,7 +42,7 @@
 
         <Button
             android:id="@+id/submitRatingBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:clickable="false"
             android:linksClickable="false"
@@ -51,6 +51,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingList" />
+            app:layout_constraintTop_toBottomOf="@+id/ratingList"
+            android:background="@drawable/rounded_corners"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
