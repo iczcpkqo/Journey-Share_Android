@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -58,7 +59,9 @@ public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCa
     // view holder class to render each holder
     public class DailyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView email, date, oAddress, eAddress, mode;
+        Button dailyDelete;
         OnDailyItemListener onDailyItemListener;
+        private DailyJourneyCardAdapter dailyJourneyCardAdapter;
         public DailyViewHolder(@NonNull View itemView, OnDailyItemListener onDailyItemListener) {
             super(itemView);
             this.onDailyItemListener = onDailyItemListener;
@@ -70,6 +73,7 @@ public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCa
             // once the item view interface was clicked, the unknown listener interface calls
             // the onClick method and it pass the adapter position
             itemView.setOnClickListener(this);
+            dailyDelete = itemView.findViewById(R.id.daily_table_btn);
         }
 
         @Override
