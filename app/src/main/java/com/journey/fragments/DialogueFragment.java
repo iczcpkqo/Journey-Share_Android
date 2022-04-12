@@ -72,6 +72,9 @@ public class DialogueFragment extends Fragment {
 //        this.sortDialogue = new HashMap<>();
         dialogueList.clear();
 
+        // DONE: 获取动态IP
+//        System.out.println(DialogueHelper.getDynamicIp());
+
         // DONE: 传参启动
 //        Chating.go(getActivity(), Arrays.asList("liu@qq.com", "race@123.com"));
 //        for (int i =0; i<3; i++)
