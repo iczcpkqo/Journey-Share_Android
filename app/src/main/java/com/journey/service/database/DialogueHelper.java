@@ -135,6 +135,14 @@ public class DialogueHelper {
     }
 
     public static String getDynamicIp() {
+        return getDynamicLink().get("ip").toString();
+    }
+
+    public static String getDynamicPort() {
+        return getDynamicLink().get("port").toString();
+    }
+
+    public static Map<String, Object> getDynamicLink() {
         File file = new File(android.os.Environment.getExternalStorageDirectory()+"/DynamicIp.txt");
         FileReader fis = null;
         BufferedReader br = null;
@@ -163,7 +171,7 @@ public class DialogueHelper {
             }
         }
 
-        return DynamicIp.get("ip").toString();
+        return DynamicIp;
     }
 
 }

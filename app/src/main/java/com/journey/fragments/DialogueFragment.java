@@ -74,6 +74,8 @@ public class DialogueFragment extends Fragment {
 
         // DONE: 获取动态IP
 //        System.out.println(DialogueHelper.getDynamicIp());
+//        System.out.println(DialogueHelper.getDynamicIp());
+//        System.out.println(DialogueHelper.getDynamicPort());
 
         // DONE: 传参启动
 //        Chating.go(getActivity(), Arrays.asList("liu@qq.com", "race@123.com"));
