@@ -1,25 +1,17 @@
 package com.journey.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.journey.R;
-import com.journey.activity.ConditionActivity;
-import com.journey.activity.RealTimeJourneyTableActivity;
 import com.journey.model.ConditionInfo;
-import com.journey.model.DailyInfo;
-import com.journey.model.Peer;
-
 import java.util.List;
 
 public class DailyJourneyCardAdapter extends RecyclerView.Adapter<DailyJourneyCardAdapter.DailyViewHolder>{

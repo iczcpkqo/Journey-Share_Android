@@ -1,11 +1,7 @@
 package com.journey.entity;
 
-import com.google.firebase.firestore.CollectionReference;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author: Xiang Mao

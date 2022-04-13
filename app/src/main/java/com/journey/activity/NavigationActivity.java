@@ -92,8 +92,8 @@ public class NavigationActivity extends AppCompatActivity implements
     Button navigationButton;
     NetworkUtils network = new NetworkUtils();
     boolean misSingle = true;
-    PeerSever server = null;
-    PeerClient client = null;
+    PeerSever server;
+    PeerClient client;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
@@ -255,82 +255,7 @@ public class NavigationActivity extends AppCompatActivity implements
         }
         return null;
     }
-    private List<Peer> testPeerList()
-    {
-        //53.3498, -6.2603
-        //origin:53.3496, -6.2600
-        //waypoint :53.3480, -6.2593
-        //waypoint :53.3457, -6.2573
-        //waypoint :53.339132, -6.272588
-        //destination: 53.3446, -6.2595
-        List<Peer> peers = new ArrayList<Peer>();
-        //10.0.2.16
-        String serverIP = getLocalIpAddress();
-        Peer user1 = new Peer("test1@tcd.com",
-                "Female",
-                12,
-                4.5,
-                -6.2594,
-                53.3481,
-                -6.2483,
-                53.3481,
-                0L,
-                0L,
-                1,
-                "12",
-                12,
-                true,
-                true,
-                "1234567891",
-                true,
-                null,
-                serverIP,
-                "3344",null,null,null,null,null);
-        Peer user2 = new Peer("user_2@user_2.com",
-                "Female",
-                12,
-                4.5,
-                53.3479,
-                -6.2576,
-                53.3483,
-                -6.2551,
-                0L,
-                0L,
-                1,
-                "12",
-                12,
-                false,
-                false,
-                "1234567891",
-                true,
-                null,
-                "127.0.0.1",
-                "3030",null,null, null, null, null);
-        Peer user3 = new Peer("test2@tcd.com",
-                "Female",
-                12,
-                4.5,
-                -6.2588,
-                53.3490,
-                -6.2515,
-                53.3483,
-                0L,
-                0L,
-                1,
-                "12",
-                12,
-                null,
-                false,
-                "1234567891",
-                true,
-                null,
-                "127.0.0.1",
-                "3030",null,null,null,null,null);
-        peers.add(user1);
-        //peers.add(user2);
-        peers.add(user3);
-        return peers;
-    }
+
     private boolean isLeader(List<Peer>peers,Peer peer)
     {
         boolean isLeader = false;
@@ -376,11 +301,6 @@ public class NavigationActivity extends AppCompatActivity implements
 
         peersList = (List<Peer>) FirebaseOperation.encodeNetworkData((String) getIntent().getExtras().get(getString(R.string.PEER_LIST)));
         currentUserID = (String) getIntent().getExtras().get(getString(R.string.CURRENT_PEER_EMAIL));
-//        server = new PeerSever(serverPort,mHandler,peersList);
-//        client = new PeerClient(clinetPort,currentPeer.getIp(),mHandler,currentPeer);
-        //peersList = testPeerList();
-        //currentUserID = "test2@tcd.com";
-        //FirebaseOperation.fuzzyQueries("users","email",currentUserID,mHandler);
         currentPeer = getCurrentPeer(currentUserID,peersList);
         currentFirebase = new FirebaseOperation("map",currentPeer.getUuid(),mHandler);
         navigationButton = findViewById(R.id.select_navigation_button);

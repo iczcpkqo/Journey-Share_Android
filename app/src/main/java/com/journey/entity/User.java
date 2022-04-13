@@ -1,12 +1,5 @@
 package com.journey.entity;
 
-import android.util.Log;
-
-import com.google.firebase.firestore.FieldValue;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class User implements Comparable<User>{

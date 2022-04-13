@@ -1,11 +1,10 @@
 package com.journey.entity;
 
-import com.google.common.collect.Lists;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.journey.service.database.DialogueHelper;
-import com.mapbox.mapboxsdk.style.expressions.Expression;
 
-import java.text.ParseException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

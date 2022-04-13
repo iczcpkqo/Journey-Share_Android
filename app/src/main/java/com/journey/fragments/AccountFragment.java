@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,7 +17,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -28,12 +25,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.LoginActivity;
 import com.journey.R;
-import com.journey.RegisterActivity;
-import com.journey.activity.ConditionActivity;
-import com.journey.fragments.journeyModeFragments.DailyFragment;
+
 import com.journey.map.OfflineMap;
 import com.journey.service.database.DialogueHelper;
-import com.mapbox.mapboxsdk.plugins.offline.ui.OfflineActivity;
+
 
 import java.io.BufferedReader;
 import java.io.File;
