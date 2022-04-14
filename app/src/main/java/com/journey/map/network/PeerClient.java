@@ -8,21 +8,17 @@ import com.mapbox.geojson.Point;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.List;
 
 public class PeerClient {
     private Thread clientThread;
     private int serverPort;
     private String serverIp;
-    Message message;
     Handler mainTheradHandler;
     Socket socket;
     Peer currentPeer;
-    OutputStreamWriter output;
     CommunicationThread comm;
     public PeerClient(int serverPort, String serverIp, Handler mainTheradHandler, Peer peer) {
         if(serverPort == 0)

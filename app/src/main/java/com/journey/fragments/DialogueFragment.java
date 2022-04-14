@@ -24,7 +24,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.journey.R;
 import com.journey.adapter.DialogueAdapter;
-import com.journey.dontremoveme.Chating;
 import com.journey.entity.Dialogue;
 import com.journey.entity.User;
 import com.journey.service.database.DialogueHelper;
@@ -71,6 +70,11 @@ public class DialogueFragment extends Fragment {
         this.sender = DialogueHelper.getSender();
 //        this.sortDialogue = new HashMap<>();
         dialogueList.clear();
+
+        // DONE: 获取动态IP
+//        System.out.println(DialogueHelper.getDynamicIp());
+//        System.out.println(DialogueHelper.getDynamicIp());
+//        System.out.println(DialogueHelper.getDynamicPort());
 
         // DONE: 传参启动
 //        Chating.go(getActivity(), Arrays.asList("liu@qq.com", "race@123.com"));

@@ -3,6 +3,7 @@ package com.journey.activity;
 import static com.google.firebase.Timestamp.*;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,6 +61,14 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         }
     });
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Intent inte = new Intent();
+        DailyJourneyTableActivity.this.setResult(-2, inte);
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_journey_table);
@@ -111,14 +120,14 @@ public class DailyJourneyTableActivity extends AppCompatActivity implements Dail
         // convert timestamp to long
         java.sql.Timestamp ts2 = java.sql.Timestamp.valueOf(cur.getDateTime());
         long jTime = ts2.getTime();
-        if(jTime == curTime){
+        if( jTime == curTime){
             Intent conInfo = new Intent(this, RealTimeJourneyTableActivity.class);
             //send serialized conditionInfo to real time activity
             conInfo.putExtra(CONDITION_INFO, (ConditionInfo) cList.get(position));
             startActivityForResult(conInfo,1);
-        }else if(curTime > jTime){
+        }else if(jTime < curTime){
             Toast.makeText(DailyJourneyTableActivity.this, "The journey has finished", Toast.LENGTH_SHORT).show();
-        }else {
+        }else if(jTime > curTime){
             Toast.makeText(DailyJourneyTableActivity.this, "Please wait, journey will start at "+cur.getDateTime(), Toast.LENGTH_SHORT).show();
         }
 

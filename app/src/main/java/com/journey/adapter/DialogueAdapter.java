@@ -71,17 +71,10 @@ public class DialogueAdapter extends RecyclerView.Adapter<DialogueAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position){
         Dialogue dia = dialogueList.get(position);
 
-        // 根据用户情况设置会话标题
         holder.title.setText(dia.getTitle().replace(",", ", "));
 
-        // 根据用户信息设置头像
-//        holder.img.setImageResource(holder.headCupboard.get((int) (dialogueList.get(position).getSender().getGender().equals("Female")?0:1) ));
+
         holder.img.setImageResource(holder.headCupboard.get(dia.getType().equals("single") ? (int)dia.getReceiver().get(0).getHeadImg():9));
-//        if(dia.getReceiver() != null) {
-//            Log.d(TAG, "The Recever ==> " +  dia.getReceiver().get(0).getHeadImg());
-//            Log.d(TAG, "The Recever ==> " +  dia.getReceiver().get(0).getEmail());
-//            Log.d(TAG, "The Recever ==> " +  dia.getReceiver().get(0).getUsername());
-//        }
     }
 
     @Override

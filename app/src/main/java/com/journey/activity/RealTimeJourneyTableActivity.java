@@ -73,8 +73,8 @@ public class RealTimeJourneyTableActivity extends AppCompatActivity {
     private Button joinJourney;
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.81:8080/")
-//            .baseUrl("http://10.6.40.176:8080/")
+            .baseUrl("http://192.168.0.137:8080/")//y
+//            .baseUrl("http://10.6.40.176:8080/")//z
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();

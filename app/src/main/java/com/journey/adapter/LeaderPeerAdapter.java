@@ -7,14 +7,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.journey.R;
-import com.journey.activity.LeaderPeerGroupActivity;
-import com.journey.activity.LoadingDialog;
 import com.journey.model.Peer;
 
 import java.util.List;
@@ -78,9 +76,6 @@ public class LeaderPeerAdapter extends RecyclerView.Adapter<LeaderPeerAdapter.Pe
         @Override
         public void onClick(View view) {
             itemView.findViewById(R.id.delete_btn).setOnClickListener(view1 -> {
-//                leaderPeerAdapter.peerList.remove(getAdapterPosition());
-//                leaderPeerAdapter.notifyItemRemoved(getAdapterPosition());
-//                notifyItemRangeChanged(getAdapterPosition(), peerList.size());
             });
         }
     }

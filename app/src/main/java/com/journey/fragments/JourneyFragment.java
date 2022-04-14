@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.journey.R;
 import com.journey.fragments.journeyModeFragments.DailyFragment;
 import com.journey.fragments.journeyModeFragments.RealTimeFragment;
+import com.journey.service.database.DialogueHelper;
 
 /**
  * @Description:
@@ -31,6 +32,7 @@ public class JourneyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        DialogueHelper.saveDynamicIp();
 
         View view = inflater.inflate(R.layout.fragment_journey, container, false);
 

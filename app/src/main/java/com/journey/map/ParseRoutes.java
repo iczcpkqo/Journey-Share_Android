@@ -14,18 +14,10 @@ import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncher;
-import com.mapbox.services.android.navigation.ui.v5.NavigationLauncherOptions;
 import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -183,22 +175,6 @@ public class ParseRoutes {
                 }
                 message.obj = currentRoute;
                 mainHandler.sendMessage(message);
-//                if(navigationMapRoute != null)
-//                {
-//                    navigationMapRoute.removeRoute();
-//                }else
-//                {
-//                    navigationMapRoute = new NavigationMapRoute(null,mapview,mapboxMap);
-//                }
-//                navigationMapRoute.addRoute(currentRoute);
-//                if(navigationFlg)
-//                {
-//                    NavigationLauncherOptions options = NavigationLauncherOptions.builder()
-//                            .directionsRoute(currentRoute)
-//                            .shouldSimulateRoute(true)
-//                            .build();
-//                    NavigationLauncher.startNavigation(mapActivity,options);
-//                }
             }
 
             @Override
