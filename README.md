@@ -1,6 +1,8 @@
 # Android Client Deployment Notes
 
 > Gopher travel Android Client
+>
+> git@gitlab.scss.tcd.ie:group-2_ase/main-project_journey-sharing.git
 
 ## Introduction
 
