@@ -7,10 +7,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.junit.Assert.*;
-
-
-import android.widget.Spinner;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -19,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,12 +25,12 @@ import org.junit.runner.RunWith;
 public class RegisterActivityTest {
 
     @Rule
-    public ActivityScenarioRule<RegisterActivity> mActivityTestRule = new ActivityScenarioRule<>(RegisterActivity.class);
+    public ActivityScenarioRule<RegisterActivity> rActivityTestRule = new ActivityScenarioRule<>(RegisterActivity.class);
 
 
-    @Before
+    @After
     public void setUp() throws Exception {
-
+        rActivityTestRule = null;
     }
 
     @Test
