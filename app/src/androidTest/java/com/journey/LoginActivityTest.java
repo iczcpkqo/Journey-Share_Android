@@ -19,8 +19,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import static org.junit.Assert.*;
 
@@ -35,15 +33,22 @@ import org.junit.runner.RunWith;
 public class LoginActivityTest {
 
     @Rule
-    public ActivityScenarioRule<LoginActivity> mActivityTestRule = new ActivityScenarioRule<>(LoginActivity.class);
+    public ActivityScenarioRule<LoginActivity> lActivityTestRule = new ActivityScenarioRule<>(LoginActivity.class);
 
     @Rule
-    public ActivityScenarioRule<LoginActivity> mIntentsRule =
+    public ActivityScenarioRule<LoginActivity> lIntentsRule =
             new ActivityScenarioRule<>(LoginActivity.class);
 
     @org.junit.Before
     public void setUp() throws Exception {
         Intents.init();
+    }
+
+    @org.junit.After
+    public void tearDown() throws Exception{
+        lIntentsRule = null;
+        lActivityTestRule = null;
+        Intents.release();
     }
 
     @Test
